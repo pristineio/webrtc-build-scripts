@@ -1,0 +1,4 @@
+# Uneccessary files
+.DS_Store
+*~
+*.swp
