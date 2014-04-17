@@ -208,7 +208,7 @@ build_apprtc() {
 }
 
 # Updates webrtc and builds apprtc in debug
-build_apprtc() {
+build_debug_apprtc() {
     pull_depot_tools &&
     pull_webrtc && 
     prepare_gyp_defines &&
