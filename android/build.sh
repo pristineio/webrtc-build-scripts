@@ -37,7 +37,7 @@ install_jdk1_6() {
 	WORKING_DIR=`pwd`
     wget http://ghaffarian.net/downloads/Java/JDK/jdk-6u45-linux-x64.bin
     sudo mkdir /usr/lib/jvm
-    cd /usr/lib/jvm && sudo /bin/sh ~/jdk-6u45-linux-x64.bin -noregister
+    cd /usr/lib/jvm && sudo sh $WORKING_DIR/jdk-6u45-linux-x64.bin -noregister
     sudo update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/jdk1.6.0_45/bin/javac 50000
     sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/jdk1.6.0_45/bin/java 50000
     sudo update-alternatives --config javac
@@ -46,6 +46,7 @@ install_jdk1_6() {
     JAVA_HOME=`echo ${JAVA_HOME%/bin/java}`
     echo "export JAVA_HOME=$JAVA_HOME" >> ~/.bashrc
     source ~/.bashrc
+    rm $WORKING_DIR/jdk-6u45-linux-x64.bin
     cd $WORKING_DIR
 }
 
