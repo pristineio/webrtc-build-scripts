@@ -19,7 +19,6 @@ create_directory_if_not_found() {
 
 # Installs all android related dependencies
 install_dependencies() {
-	echo Get the current working directory so we can change directories back when done
 	WORKING_DIR=`pwd`
 
 	sudo apt-get -y install wget git gnupg flex bison gperf build-essential zip curl libc6-dev libncurses5-dev:i386 x11proto-core-dev libx11-dev:i386 libreadline6-dev:i386 libgl1-mesa-glx:i386 libgl1-mesa-dev g++-multilib mingw32 tofrodos python-markdown libxml2-utils xsltproc zlib1g-dev:i386 subversion
@@ -31,11 +30,11 @@ install_dependencies() {
 	cd $WEBRTC_ROOT
 
 	echo Go back to working directory
-	cd $WORKING_DIR
 }
 
 # Installs jdk 1.6
 install_jdk1_6() {
+	WORKING_DIR=`pwd`
     wget http://ghaffarian.net/downloads/Java/JDK/jdk-6u45-linux-x64.bin
     sudo mkdir /usr/lib/jvm
     cd /usr/lib/jvm && sudo /bin/sh ~/jdk-6u45-linux-x64.bin -noregister
@@ -43,14 +42,15 @@ install_jdk1_6() {
     sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/jdk1.6.0_45/bin/java 50000
     sudo update-alternatives --config javac
     sudo update-alternatives --config java
-    cd /usr/lib/jvm
-    sudo ln -s jdk1.6.0_45 java-6-sun
+    JAVA_HOME=`readlink -f $(which java)`
+    JAVA_HOME=`echo ${JAVA_HOME%/bin/java}`
+    echo "export JAVA_HOME=$JAVA_HOME" >> ~/.bashrc
+    source ~/.bashrc
+    cd $WORKING_DIR
 }
 
 # Update/Get/Ensure the Gclient Depot Tools
 pull_depot_tools() {
-
-	echo Get the current working directory so we can change directories back when done
 	WORKING_DIR=`pwd`
 	
 	echo If no directory where depot tools should be...
@@ -71,15 +71,11 @@ pull_depot_tools() {
 		git pull
 	fi	
 	PATH="$PATH:$DEPOT_TOOLS"
-	echo Go back to working directory
 	cd $WORKING_DIR
 }
 
 # Update/Get the webrtc code base
 pull_webrtc() {
-	pull_depot_tools
-
-	echo Get the current working directory so we can change directories back when done
 	WORKING_DIR=`pwd`
 	
 	# If no directory where webrtc root should be...
@@ -106,7 +102,6 @@ pull_webrtc() {
         gclient sync -r $trunkA$1 --nohooks
     fi
 
-	echo Return working directory
 	cd $WORKING_DIR
 }
 
@@ -125,7 +120,6 @@ prepare_gyp_defines() {
 
 # Clean up and generate the build scripts
 prepare_build() {
-	echo Get the current working directory so we can change directories back when done
 	WORKING_DIR=`pwd`
 
 	echo Change directory into webrtc trunk
@@ -140,13 +134,11 @@ prepare_build() {
 	echo gclient runhooks
 	gclient runhooks
 
-	echo Return working directory
 	cd $WORKING_DIR
 }
 
 # Builds the apprtc demo
 execute_build() {
-	echo Get the current working directory so we can change directories back when done
 	WORKING_DIR=`pwd`
 
 	echo Change directory into webrtc trunk
@@ -183,7 +175,6 @@ execute_build() {
 	echo "Copy $WEBRTC_ROOT/trunk/talk/examples/android/libs/libjingle_peerconnection.jar to $RELEASE_DIR/libjingle_peerconnection.jar"
 	cp -p "$WEBRTC_ROOT/trunk/talk/examples/android/libs/libjingle_peerconnection.jar" "$RELEASE_DIR/libjingle_peerconnection.jar"
 
-	echo Return working directory
 	cd $WORKING_DIR
 }
 
@@ -194,7 +185,7 @@ get_webrtc_revision() {
 
 # Builds the apprtc demo for android
 build_apprtc() {
-    pull_android_install_dependencies &&
+    pull_depot_tools &&
     pull_webrtc && 
     prepare_gyp_defines &&
     prepare_build && 

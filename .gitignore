@@ -2,3 +2,6 @@
 .DS_Store
 *~
 *.swp
+
+# No binaries
+*.bin
