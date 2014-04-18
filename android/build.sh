@@ -1,8 +1,7 @@
 # !/bin/bash
 
 # Set your environment how you want
-WORKING_DIR="$HOME"
-PROJECT_ROOT="$WORKING_DIR"
+PROJECT_ROOT="$HOME"
 DEPOT_TOOLS="$PROJECT_ROOT/depot_tools"
 WEBRTC_ROOT="$PROJECT_ROOT/webrtc"
 
@@ -19,42 +18,44 @@ create_directory_if_not_found() {
 
 # Installs all android related dependencies
 install_dependencies() {
-	WORKING_DIR=`pwd`
-
 	sudo apt-get -y install wget git gnupg flex bison gperf build-essential zip curl libc6-dev libncurses5-dev:i386 x11proto-core-dev libx11-dev:i386 libreadline6-dev:i386 libgl1-mesa-glx:i386 libgl1-mesa-dev g++-multilib mingw32 tofrodos python-markdown libxml2-utils xsltproc zlib1g-dev:i386 subversion
-	sudo ln -s /usr/lib/i386-linux-gnu/mesa/libGL.so.1 /usr/lib/i386-linux-gnu/libGL.so
 	REPO="$WEBRTC_ROOT/repo"
 	PATH="$REPO:$PATH"
 	curl http://commondatastorage.googleapis.com/git-repo-downloads/repo > "$REPO"
 	chmod a+x "$REPO"
-	cd $WEBRTC_ROOT
-
-	echo Go back to working directory
 }
 
 # Installs jdk 1.6
 install_jdk1_6() {
 	WORKING_DIR=`pwd`
+
+    # Download the jdk 1.6
     wget http://ghaffarian.net/downloads/Java/JDK/jdk-6u45-linux-x64.bin
+
+    # Install the jdk
     sudo mkdir /usr/lib/jvm
     cd /usr/lib/jvm && sudo sh $WORKING_DIR/jdk-6u45-linux-x64.bin -noregister
     sudo update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/jdk1.6.0_45/bin/javac 50000
     sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/jdk1.6.0_45/bin/java 50000
     sudo update-alternatives --config javac
     sudo update-alternatives --config java
+
+    # Set your JAVA_HOME
     JAVA_HOME=`readlink -f $(which java)`
     JAVA_HOME=`echo ${JAVA_HOME%/bin/java}`
     echo "export JAVA_HOME=$JAVA_HOME" >> ~/.bashrc
     source ~/.bashrc
-    rm $WORKING_DIR/jdk-6u45-linux-x64.bin
+
+    # Navigate back and remove jdk bin
     cd $WORKING_DIR
+    rm $WORKING_DIR/jdk-6u45-linux-x64.bin
 }
 
 # Update/Get/Ensure the Gclient Depot Tools
 pull_depot_tools() {
 	WORKING_DIR=`pwd`
 	
-	echo If no directory where depot tools should be...
+    # Either clone or get latest depot tools
 	if [ ! -d "$DEPOT_TOOLS" ]
 	then
 	    echo Make directory for gclient called Depot Tools
@@ -64,7 +65,6 @@ pull_depot_tools() {
 	    git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git $DEPOT_TOOLS
 
 	else
-
 		echo Change directory into the depot tools
 		cd $DEPOT_TOOLS
 
@@ -72,6 +72,8 @@ pull_depot_tools() {
 		git pull
 	fi	
 	PATH="$PATH:$DEPOT_TOOLS"
+
+    # Navigate back
 	cd $WORKING_DIR
 }
 
@@ -81,16 +83,14 @@ pull_webrtc() {
 	
 	# If no directory where webrtc root should be...
 	create_directory_if_not_found $WEBRTC_ROOT
-
-    echo Change directory to webrtc root
     cd $WEBRTC_ROOT
 
-    # Ensure our target os is correcot building android
+    # Ensure our target os is correct building android
+    echo Configuring gclient for Android build
 	gclient config http://webrtc.googlecode.com/svn/trunk
 	echo "target_os = ['unix', 'android']" >> .gclient
 
-	echo Ensure gclient is in a clean state 
-
+    # Get latest webrtc source
 	echo Pull down the latest from the webrtc repo
 	echo this can take a while
 	if [ -z $1 ]
@@ -103,12 +103,14 @@ pull_webrtc() {
         gclient sync -r $trunkA$1 --nohooks
     fi
 
+    # Navigate back
 	cd $WORKING_DIR
 }
 
 # Setup our defines for the build
 prepare_gyp_defines() {
     # Setup deps for android and configure environment
+    echo Setting up build environment for Android
 	$WEBRTC_ROOT/trunk/build/install-build-deps-android.sh
 	source $WEBRTC_ROOT/trunk/build/android/envsetup.sh
 
@@ -164,6 +166,9 @@ execute_build() {
 	cp -p "$WEBRTC_ROOT/trunk/talk/examples/android/libs/libjingle_peerconnection.jar" "$RELEASE_DIR/libjingle_peerconnection.jar"
 
 	cd $WORKING_DIR
+
+    REVISION_NUM=`get_webrtc_revision`
+    echo "Release build for apprtc complete for revision $REVISION_NUM"
 }
 
 # Builds the apprtc demo in debug
@@ -192,6 +197,7 @@ execute_debug_build() {
 	cp -p "$WEBRTC_ROOT/trunk/talk/examples/android/libs/libjingle_peerconnection.jar" "$DEBUG_DIR/libjingle_peerconnection.jar"
 
 	cd $WORKING_DIR
+    echo "Debug build for apprtc complete for revision $REVISION_NUM"
 }
 
 # Gets the webrtc revision
