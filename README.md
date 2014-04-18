@@ -31,9 +31,9 @@ build_apprtc
 # Build in debug mode
 build_debug_apprtc
 
-###iOS
-Coming soon...
-
 ```
 
 When the scripts are done you can find the .jar and .so file in $WEBRTC_HOME under "libjingle\_peerconnection\_builds".
+
+###iOS
+Coming soon...
