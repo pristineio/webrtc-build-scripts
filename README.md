@@ -1,5 +1,4 @@
 ##WebRTC Build Scripts
-====================
 A set of build scripts useful for building WebRTC libraries for Android and iOS.
 
 ###Android
