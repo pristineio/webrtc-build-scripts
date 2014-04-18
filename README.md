@@ -1,7 +1,10 @@
 ##WebRTC Build Scripts
 ====================
-
 A set of build scripts useful for building WebRTC libraries for Android and iOS.
+
+###Android
+The following instructions are for building the native WebRTC libraries for Android.
+
 
 ####Getting Started
 You should only need Ubuntu 12.04 on a 64 bit machine to get going.
@@ -20,7 +23,7 @@ install_jdk1_6
 
 ```
 
-Then you can build the libraries
+Then you can build the Android example
 ```shell
 
 # Build apprtc
@@ -28,6 +31,9 @@ build_apprtc
 
 # Build in debug mode
 build_debug_apprtc
+
+###iOS
+Coming soon...
 
 ```
 
