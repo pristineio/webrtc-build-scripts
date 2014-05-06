@@ -18,11 +18,7 @@ create_directory_if_not_found() {
 
 # Installs all android related dependencies
 install_dependencies() {
-	sudo apt-get -y install wget git gnupg flex bison gperf build-essential zip curl libc6-dev libncurses5-dev:i386 x11proto-core-dev libx11-dev:i386 libreadline6-dev:i386 libgl1-mesa-glx:i386 libgl1-mesa-dev g++-multilib mingw32 tofrodos python-markdown libxml2-utils xsltproc zlib1g-dev:i386 subversion
-	REPO="$WEBRTC_ROOT/repo"
-	PATH="$REPO:$PATH"
-	curl http://commondatastorage.googleapis.com/git-repo-downloads/repo > "$REPO"
-	chmod a+x "$REPO"
+	sudo apt-get -y install wget git gnupg flex bison gperf build-essential zip curl subversion
 }
 
 # Installs jdk 1.6
