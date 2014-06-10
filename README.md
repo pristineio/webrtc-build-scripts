@@ -36,4 +36,14 @@ build_debug_apprtc
 When the scripts are done you can find the .jar and .so file in $WEBRTC_HOME under "libjingle\_peerconnection\_builds".
 
 ###iOS
-Coming soon...
+These steps must be run on Mac OSX
+
+```shell
+
+# Source the ios routines
+source ios/build.sh
+
+# We use the term webrtc dance a lot
+dance
+
+```
