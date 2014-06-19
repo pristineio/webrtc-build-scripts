@@ -1,0 +1,13 @@
+solutions = [
+  { "name"        : "trunk",
+    "url"         : "https://github.com/thebehera/webrtc-mirror.git",
+    "deps_file"   : "DEPS",
+    "managed"     : True,
+    "custom_deps" : {
+    },
+    "safesync_url": "",
+  }
+]
+ 
+cache_dir = None
+target_os=['mac']
