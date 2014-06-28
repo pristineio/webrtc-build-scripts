@@ -1,7 +1,7 @@
 ##WebRTC Build Scripts
 A set of build scripts useful for building WebRTC libraries for Android and iOS.
 
-###Android
+###Android-- [Guide here](http://tech.pristine.io/build-android-apprtc/)
 The following instructions are for building the native WebRTC libraries for Android.
 
 
@@ -35,7 +35,7 @@ build_debug_apprtc
 
 When the scripts are done you can find the .jar and .so file in $WEBRTC_HOME under "libjingle\_peerconnection\_builds".
 
-###iOS
+###iOS -- [Guide here](http://tech.pristine.io/build-ios-apprtc/)
 These steps must be run on Mac OSX
 
 ```shell
