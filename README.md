@@ -26,7 +26,7 @@ install_jdk1_6
 ##### On Mac or Windows
 If you don't have a Ubuntu machine available, or you are too lazy to setup a virtual machine manually, you can build WebRTC for Android on your Mac or Windows PC through our Vagrant script.
 
-First of all, you need to install Vagrant. After that, from the `/android` directory, you need to execute the following in you shell:
+First of all, you need to [download and install](http://www.vagrantup.com/downloads.html) Vagrant. After that, from the `/android` directory, you need to execute the following in you shell:
 
 ```shell
 
