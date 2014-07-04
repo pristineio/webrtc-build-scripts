@@ -5,7 +5,8 @@ A set of build scripts useful for building WebRTC libraries for Android and iOS.
 The following instructions are for building the native WebRTC libraries for Android.
 
 
-####Getting Started
+#### Getting Started
+##### On Linux
 You should only need Ubuntu 12.04 on a 64 bit machine to get going.
 
 This is only required once.
@@ -21,6 +22,23 @@ install_dependencies
 install_jdk1_6
 
 ```
+
+##### On Mac or Windows
+If you don't have a Ubuntu machine available, or you are too lazy to setup a virtual machine manually, you can build WebRTC for Android on your Mac or Windows PC through our Vagrant script.
+
+First of all, you need to install Vagrant. After that, from the `/android` directory, you need to execute the following in you shell:
+
+```shell
+
+# Boot up and provision the Vagrant box
+vagrant up
+
+# SSH into the Vagrant box
+vagrant ssh
+
+```
+
+#### Building the libraries
 
 Then you can build the Android example
 ```shell
