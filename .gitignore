@@ -5,3 +5,6 @@
 
 # No binaries
 *.bin
+
+# Vagrant
+.vagrant
