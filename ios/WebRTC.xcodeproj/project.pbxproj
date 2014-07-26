@@ -554,7 +554,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
-					"/Users/rbehera/webrtc/libjingle_peerconnection_builds/Debug-iphoneos",
+					"$(PROJECT_DIR)/webrtc/libjingle_peerconnection_builds/Debug-iphoneos",
 					"$(PROJECT_DIR)/webrtc/libjingle_peerconnection_builds",
 					"$(PROJECT_DIR)/webrtc",
 				);
@@ -574,7 +574,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
-					"/Users/rbehera/webrtc/libjingle_peerconnection_builds/Debug-iphoneos",
+					"$(PROJECT_DIR)/webrtc/libjingle_peerconnection_builds/Debug-iphoneos",
 					"$(PROJECT_DIR)/webrtc/libjingle_peerconnection_builds",
 					"$(PROJECT_DIR)/webrtc",
 				);
@@ -632,7 +632,7 @@
 				INFOPLIST_FILE = "AppRTCDemo/AppRTCDemo-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"/Users/rbehera/webrtc/libjingle_peerconnection_builds/Debug-iphoneos",
+					"$(PROJECT_DIR)/webrtc/libjingle_peerconnection_builds/Debug-iphoneos",
 					"$(PROJECT_DIR)/webrtc/libjingle_peerconnection_builds/Profile-iphoneos",
 					"$(PROJECT_DIR)/webrtc/libjingle_peerconnection_builds",
 					"$(PROJECT_DIR)/webrtc",
@@ -656,7 +656,7 @@
 				INFOPLIST_FILE = "AppRTCDemo/AppRTCDemo-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"/Users/rbehera/webrtc/libjingle_peerconnection_builds/Debug-iphoneos",
+					"$(PROJECT_DIR)/webrtc/libjingle_peerconnection_builds/Debug-iphoneos",
 					"$(PROJECT_DIR)/webrtc/libjingle_peerconnection_builds/Profile-iphoneos",
 					"$(PROJECT_DIR)/webrtc/libjingle_peerconnection_builds",
 					"$(PROJECT_DIR)/webrtc",
