@@ -193,6 +193,7 @@ function lipo_ia32_and_armv7() {
     WEBRTC_REVISION=`get_revision_number`
     if [ "$WEBRTC_DEBUG" = true ] ; then
         lipo -create $BUILD/libWebRTC-$WEBRTC_REVISION-sim-Debug.a $BUILD/libWebRTC-$WEBRTC_REVISION-ios-Debug.a -output $BUILD/libWebRTC-$WEBRTC_REVISION-armv7-ia32-Debug.a
+        rm $WEBRTC/libWebRTC-LATEST-Universal-Debug.a
         ln -s $BUILD/libWebRTC-$WEBRTC_REVISION-armv7-ia32-Debug.a $WEBRTC/libWebRTC-LATEST-Universal-Debug.a
         echo "The libWebRTC-LATEST-Universal-Debug.a in this same directory, is revision " > $WEBRTC/libWebRTC-LATEST-Universal-Debug.a.version.txt
         echo $WEBRTC_REVISION >> $WEBRTC/libWebRTC-LATEST-Universal-Debug.a.version.txt
@@ -200,6 +201,7 @@ function lipo_ia32_and_armv7() {
 
     if [ "$WEBRTC_PROFILE" = true ] ; then
         lipo -create $BUILD/libWebRTC-$WEBRTC_REVISION-sim-Profile.a $BUILD/libWebRTC-$WEBRTC_REVISION-ios-Profile.a -output $BUILD/libWebRTC-$WEBRTC_REVISION-armv7-ia32-Profile.a
+        rm $BUILD/libWebRTC-$WEBRTC_REVISION-armv7-ia32-Profile.a
         ln -s $BUILD/libWebRTC-$WEBRTC_REVISION-armv7-ia32-Profile.a $WEBRTC/libWebRTC-LATEST-Universal-Profile.a
         echo "The libWebRTC-LATEST-Universal-Profile.a in this same directory, is revision " > $WEBRTC/libWebRTC-LATEST-Universal-Profile.a.version.txt
         echo $WEBRTC_REVISION >> $WEBRTC/libWebRTC-LATEST-Universal-Profile.a.version.txt
@@ -207,6 +209,7 @@ function lipo_ia32_and_armv7() {
 
     if [ "$WEBRTC_RELEASE" = true ] ; then
         lipo -create $BUILD/libWebRTC-$WEBRTC_REVISION-sim-Release.a $BUILD/libWebRTC-$WEBRTC_REVISION-ios-Release.a -output $BUILD/libWebRTC-$WEBRTC_REVISION-armv7-ia32-Release.a
+        rm $BUILD/libWebRTC-$WEBRTC_REVISION-armv7-ia32-Release.a
         ln -s $BUILD/libWebRTC-$WEBRTC_REVISION-armv7-ia32-Release.a $WEBRTC/libWebRTC-LATEST-Universal-Release.a
         echo "The libWebRTC-LATEST-Universal-Release.a in this same directory, is revision " > $WEBRTC/libWebRTC-LATEST-Universal-Release.a.version.txt
         echo $WEBRTC_REVISION >> $WEBRTC/libWebRTC-LATEST-Universal-Release.a.version.txt
