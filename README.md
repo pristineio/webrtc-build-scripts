@@ -61,7 +61,13 @@ These steps must be run on Mac OSX
 # Source the ios routines
 source ios/build.sh
 
+# EDIT 7/29/14: Forgot to mention that you should specify if you want a debug/profile/release build by executing WEBRTC_DEBUG=true WEBRTC_PROFILE=true or WEBRTC_RELEASE=true ... WHOOPS MY B
+# Now it will autoselect debug if you do not specify anything (to help find bugs)
+
 # We use the term webrtc dance a lot
 dance
+
+# Open the xcode project, and execute the AppRTC Demo on any iOS 7 device or simulator
+open ../../../ios/WebRTC.xcodeproj
 
 ```
