@@ -14,4 +14,4 @@ done
 PROJECT_DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 source "$PROJECT_DIR/build.sh"
-sync
+update2Revision

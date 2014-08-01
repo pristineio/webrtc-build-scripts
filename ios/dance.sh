@@ -14,6 +14,8 @@ done
 PROJECT_DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 source "$PROJECT_DIR/build.sh"
-get_webrtc
+#get_webrtc
+update2Revision 6809
 build_webrtc
-echo "Finished Dancing!"
+#echo "Finished Dancing!"
+publishToCocoaPods
