@@ -71,3 +71,37 @@ dance
 open ../../../ios/WebRTC.xcodeproj
 
 ```
+
+##### Cocoapods!! Starting from revision 6798
+[![Version](https://img.shields.io/cocoapods/v/libjingle_peerconnection.svg?style=flat)](http://cocoadocs.org/docsets/libjingle_peerconnection)
+[![License](https://img.shields.io/cocoapods/l/libjingle_peerconnection.svg?style=flat)](http://cocoadocs.org/docsets/libjingle_peerconnection)
+[![Platform](https://img.shields.io/cocoapods/p/libjingle_peerconnection.svg?style=flat)](http://cocoadocs.org/docsets/libjingle_peerconnection)
+
+###### Usage
+
+To run the example AppRTC Demo project, clone the repo, and run `pod install` from the Example directory first.
+
+###### Requirements
+A fast internet connection.... for your own sanity
+
+###### Installation
+
+libjingle_peerconnection is available through [CocoaPods](http://cocoapods.org). To install
+it, simply add the following line to your Podfile:
+
+    pod "libjingle_peerconnection"
+    
+
+    # Add this to the bottom so it won't have issues with active architecture
+    post_install do |installer_representation|
+        installer_representation.project.targets.each do |target|
+            target.build_configurations.each do |config|
+                config.build_settings['ONLY_ACTIVE_ARCH'] = 'NO'
+                config.build_settings['VALID_ARCHS'] = ['armv7', 'i386']
+            end
+        end
+    end
+
+You might see some versions like 6798.2 .. Yes that is revision number 6798 from the [webrtc revision changelist](https://code.google.com/p/webrtc/source/list) and the minor (the .2 part) reflects any change I'd make on the cocoapods project configuration side.
+
+
