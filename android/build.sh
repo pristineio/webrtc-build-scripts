@@ -204,7 +204,7 @@ get_webrtc_revision() {
 # Updates webrtc and builds apprtc
 build_apprtc() {
     pull_depot_tools &&
-    pull_webrtc && 
+    pull_webrtc $1 && 
     prepare_gyp_defines &&
     prepare_build && 
     execute_build
@@ -213,7 +213,7 @@ build_apprtc() {
 # Updates webrtc and builds apprtc in debug
 build_debug_apprtc() {
     pull_depot_tools &&
-    pull_webrtc && 
+    pull_webrtc $1 && 
     prepare_gyp_defines &&
     prepare_build && 
     execute_debug_build
