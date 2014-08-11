@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C095E5EC1952485F00B9FAA0 /* libWebRTC-LATEST-Universal-Debug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C095E5EB1952485F00B9FAA0 /* libWebRTC-LATEST-Universal-Debug.a */; };
-		C095E5ED1952488200B9FAA0 /* libWebRTC-LATEST-Universal-Debug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C095E5EB1952485F00B9FAA0 /* libWebRTC-LATEST-Universal-Debug.a */; };
 		C0A129371951F48300C523D2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0A129361951F48300C523D2 /* Foundation.framework */; };
 		C0A129FB1952015900C523D2 /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0A129F91952015900C523D2 /* AudioUnit.framework */; };
 		C0A129FC1952015900C523D2 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0A129FA1952015900C523D2 /* AVFoundation.framework */; };
@@ -70,7 +68,6 @@
 		C08538F4195240BB00C7A2E7 /* pull.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = pull.sh; sourceTree = "<group>"; };
 		C08538F5195240F800C7A2E7 /* build_webrtc.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = build_webrtc.sh; sourceTree = "<group>"; };
 		C088209A1952345000A12E2E /* dance.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = dance.sh; sourceTree = "<group>"; };
-		C095E5EB1952485F00B9FAA0 /* libWebRTC-LATEST-Universal-Debug.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC-LATEST-Universal-Debug.a"; path = "webrtc/libWebRTC-LATEST-Universal-Debug.a"; sourceTree = "<group>"; };
 		C0A022B219533DCD0086F2E6 /* RTCAudioSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCAudioSource.h; path = webrtc/trunk/talk/app/webrtc/objc/public/RTCAudioSource.h; sourceTree = SOURCE_ROOT; };
 		C0A022B319533DCD0086F2E6 /* RTCAudioTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCAudioTrack.h; path = webrtc/trunk/talk/app/webrtc/objc/public/RTCAudioTrack.h; sourceTree = SOURCE_ROOT; };
 		C0A022B419533DCD0086F2E6 /* RTCDataChannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCDataChannel.h; path = webrtc/trunk/talk/app/webrtc/objc/public/RTCDataChannel.h; sourceTree = SOURCE_ROOT; };
@@ -155,7 +152,6 @@
 				C0A12A07195201E400C523D2 /* libc.dylib in Frameworks */,
 				C0A12A08195201E400C523D2 /* libsqlite3.dylib in Frameworks */,
 				C0A12A09195201E400C523D2 /* libstdc++.6.0.9.dylib in Frameworks */,
-				C095E5ED1952488200B9FAA0 /* libWebRTC-LATEST-Universal-Debug.a in Frameworks */,
 				C0A12A0A195201E400C523D2 /* UIKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -172,7 +168,6 @@
 				C0A12BC31952063300C523D2 /* libc.dylib in Frameworks */,
 				C0A12BC41952063600C523D2 /* libsqlite3.dylib in Frameworks */,
 				C0A12BC51952063800C523D2 /* libstdc++.6.0.9.dylib in Frameworks */,
-				C095E5EC1952485F00B9FAA0 /* libWebRTC-LATEST-Universal-Debug.a in Frameworks */,
 				C0A12AB7195202A600C523D2 /* UIKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -203,7 +198,6 @@
 		C0A129351951F48300C523D2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				C095E5EB1952485F00B9FAA0 /* libWebRTC-LATEST-Universal-Debug.a */,
 				C0A129FD195201E400C523D2 /* CoreGraphics.framework */,
 				C0A129FE195201E400C523D2 /* CoreMedia.framework */,
 				C0A129FF195201E400C523D2 /* GLKit.framework */,
@@ -632,12 +626,10 @@
 				INFOPLIST_FILE = "AppRTCDemo/AppRTCDemo-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/webrtc/libjingle_peerconnection_builds/Debug-iphoneos",
-					"$(PROJECT_DIR)/webrtc/libjingle_peerconnection_builds/Profile-iphoneos",
-					"$(PROJECT_DIR)/webrtc/libjingle_peerconnection_builds",
 					"$(PROJECT_DIR)/webrtc",
 				);
 				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = "-lWebRTC-LATEST-Universal-Debug";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = armv7;
@@ -656,11 +648,9 @@
 				INFOPLIST_FILE = "AppRTCDemo/AppRTCDemo-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/webrtc/libjingle_peerconnection_builds/Debug-iphoneos",
-					"$(PROJECT_DIR)/webrtc/libjingle_peerconnection_builds/Profile-iphoneos",
-					"$(PROJECT_DIR)/webrtc/libjingle_peerconnection_builds",
 					"$(PROJECT_DIR)/webrtc",
 				);
+				OTHER_LDFLAGS = "-lWebRTC-LATEST-Universal-Release";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = armv7;
