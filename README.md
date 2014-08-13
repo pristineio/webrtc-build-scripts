@@ -51,6 +51,17 @@ build_debug_apprtc
 
 ```
 
+You can build a particular [revision](https://code.google.com/p/webrtc/source/list)
+```shell
+
+# Build apprtc
+build_apprtc 6783
+
+# Build in debug mode
+build_debug_apprtc 6783
+
+```
+
 When the scripts are done you can find the .jar and .so file in $WEBRTC_HOME under "libjingle\_peerconnection\_builds".
 
 ###iOS -- [Guide here](http://tech.pristine.io/build-ios-apprtc/)
