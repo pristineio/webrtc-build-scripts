@@ -15,5 +15,7 @@ PROJECT_DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 source "$PROJECT_DIR/build.sh"
 get_webrtc
+
 build_webrtc
 echo "Finished Dancing!"
+
