@@ -68,7 +68,12 @@
       </CommandLineArguments>
       <EnvironmentVariables>
          <EnvironmentVariable
-            key = "DEBUG"
+            key = "WEBRTC_DEBUG"
+            value = "true"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "WEBRTC_RELEASE"
             value = "true"
             isEnabled = "YES">
          </EnvironmentVariable>

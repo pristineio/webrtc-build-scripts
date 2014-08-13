@@ -80,7 +80,7 @@ function wrsim() {
     export GYP_CROSSCOMPILE=1
 }
 
-# Gets the revision number of the current WebRTC Revision from https://code.google.com/p/webrtc/source/list
+# Gets the revision number of the current WebRTC svn repo on the filesystem
 function get_revision_number() {
     svn info $WEBRTC/trunk | awk '{ if ($1 ~ /Revision/) { print $2 } }'
 }
@@ -119,12 +119,12 @@ function update2Revision() {
         sync "$1"
     fi
 
-    echo "-- webrtc has been sucessfully fetched"
+    echo "-- webrtc has been sucessfully updated"
 }
 
 # This function cleans out your webrtc directory and does a fresh clone -- slower than a pull
-# Pass in a revision number as an argument to fetch that specific revision ex: fetch 6798
-function fetch() {
+# Pass in a revision number as an argument to clone that specific revision ex: clone 6798
+function clone() {
 
     DIR=`pwd`
 
@@ -245,7 +245,7 @@ function lipo_ia32_and_armv7() {
 # Pass in an argument if you want to get a specific webrtc revision
 function get_webrtc() {
     pull_depot_tools
-    fetch "$1"
+    clone "$1"
 }
 
 # Build webrtc for an ios device and simulator, then create a universal library

@@ -1,6 +1,8 @@
 ##WebRTC Build Scripts
 A set of build scripts useful for building WebRTC libraries for Android and iOS.
 
+Bugs: Please submit the [revision](https://code.google.com/p/webrtc/source/list) number that you are using. There are frequent updates to this project so please watch the changelist for bug fixes.
+
 ###Android-- [Guide here](http://tech.pristine.io/build-android-apprtc/)
 The following instructions are for building the native WebRTC libraries for Android.
 
@@ -67,23 +69,35 @@ When the scripts are done you can find the .jar and .so file in $WEBRTC_HOME und
 ###iOS -- [Guide here](http://tech.pristine.io/build-ios-apprtc/)
 These steps must be run on Mac OSX
 
-```shell
+Source the ios routines or  [open the Xcode project](https://github.com/pristineio/webrtc-build-scripts/tree/master/ios/WebRTC.xcodeproj)
+    source [ios/build.sh](https://github.com/pristineio/webrtc-build-scripts/blob/master/ios/build.sh)
 
-# Source the ios routines
-source ios/build.sh
+    Specify if you want to build for Debug/Profile/Release by setting either  WEBRTC_DEBUG=true , WEBRTC_PROFILE=true or WEBRTC_RELEASE=true as an environment variable in your bash or xcode scheme run settings.
 
-# EDIT 7/29/14: Forgot to mention that you should specify if you want a debug/profile/release build by executing WEBRTC_DEBUG=true WEBRTC_PROFILE=true or WEBRTC_RELEASE=true ... WHOOPS MY B
-# Now it will autoselect debug if you do not specify anything (to help find bugs)
+We use the term webrtc dance a lot to build 
+    dance
 
-# We use the term webrtc dance a lot
-dance
+Check which [revision](https://code.google.com/p/webrtc/source/list) you are using at ./webrtc-build-scripts/ios/webrtc/libWebRTC-LATEST-Universal-Debug.a.version.txt
 
-# Open the xcode project, and execute the AppRTC Demo on any iOS 7 device or simulator
-open ../../../ios/WebRTC.xcodeproj
 
-```
+Open the xcode project, and execute the AppRTC Demo on any iOS 7 device or simulator
+    open ../../../ios/WebRTC.xcodeproj
 
-##### Cocoapods!! Starting from revision 6798
+
+You can also build a particular [revision](https://code.google.com/p/webrtc/source/list)
+
+Pull WebRTC
+    update2Revision 6783
+
+Make changes then,
+
+
+Build WebRTC
+    build_webrtc
+Make sure you label your new binaries that are generated in ./webrtc-build-scripts/ios/webrtc/libjingle_peerconnection_builds 
+
+
+##### Cocoapods!! Starting from [revision](https://code.google.com/p/webrtc/source/list) 6798 -- Known bug with Git Repo - In the process of moving to HTTP source for binaries
 [![Version](https://img.shields.io/cocoapods/v/libjingle_peerconnection.svg?style=flat)](http://cocoadocs.org/docsets/libjingle_peerconnection)
 [![License](https://img.shields.io/cocoapods/l/libjingle_peerconnection.svg?style=flat)](http://cocoadocs.org/docsets/libjingle_peerconnection)
 [![Platform](https://img.shields.io/cocoapods/p/libjingle_peerconnection.svg?style=flat)](http://cocoadocs.org/docsets/libjingle_peerconnection)
@@ -96,6 +110,7 @@ To run the example AppRTC Demo project, clone the repo, and run `pod install` fr
 A fast internet connection.... for your own sanity
 
 ###### Installation
+--IMPORTANT NOTE-- The Coccoapods bitbucket repo hit the hard filesize limit, I am working with the cocoapods team to move to an HTTP source. Unfortunately the transistion between git and http wasn't smooth but I will update soon.
 
 libjingle_peerconnection is available through [CocoaPods](http://cocoapods.org). To install
 it, simply add the following line to your Podfile:
@@ -113,6 +128,6 @@ it, simply add the following line to your Podfile:
         end
     end
 
-You might see some versions like 6798.2 .. Yes that is revision number 6798 from the [webrtc revision changelist](https://code.google.com/p/webrtc/source/list) and the minor (the .2 part) reflects any change I'd make on the cocoapods project configuration side.
+You might see some versions like 6798.2 .. Yes that is [revision](https://code.google.com/p/webrtc/source/list) number 6798 from the [webrtc changelist](https://code.google.com/p/webrtc/source/list) and the minor (the .2 part) reflects any change I'd make on the cocoapods project configuration side.
 
 
