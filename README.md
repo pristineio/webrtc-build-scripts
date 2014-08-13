@@ -69,32 +69,27 @@ When the scripts are done you can find the .jar and .so file in $WEBRTC_HOME und
 ###iOS -- [Guide here](http://tech.pristine.io/build-ios-apprtc/)
 These steps must be run on Mac OSX
 
-Source the ios routines or  [open the Xcode project](https://github.com/pristineio/webrtc-build-scripts/tree/master/ios/WebRTC.xcodeproj)
+    # Source the ios routines or  [open the Xcode project](https://github.com/pristineio/webrtc-build-scripts/tree/master/ios/WebRTC.xcodeproj)
     source [ios/build.sh](https://github.com/pristineio/webrtc-build-scripts/blob/master/ios/build.sh)
-
-    Specify if you want to build for Debug/Profile/Release by setting either  WEBRTC_DEBUG=true , WEBRTC_PROFILE=true or WEBRTC_RELEASE=true as an environment variable in your bash or xcode scheme run settings.
-
-We use the term webrtc dance a lot to build 
+    # Specify if you want to build for Debug/Profile/Release by setting either  WEBRTC_DEBUG=true , WEBRTC_PROFILE=true or WEBRTC_RELEASE=true as an environment variable in your bash or xcode scheme run settings.
+    # We use the term webrtc dance a lot to build 
     dance
-
-Check which [revision](https://code.google.com/p/webrtc/source/list) you are using at ./webrtc-build-scripts/ios/webrtc/libWebRTC-LATEST-Universal-Debug.a.version.txt
-
-
-Open the xcode project, and execute the AppRTC Demo on any iOS 7 device or simulator
+    # Check which [revision](https://code.google.com/p/webrtc/source/list) you are using at ./webrtc-build-scripts/ios/webrtc/libWebRTC-LATEST-Universal-Debug.a.version.txt
+    # Open the xcode project, and execute the AppRTC Demo on any iOS 7 device or simulator
     open ../../../ios/WebRTC.xcodeproj
-
 
 You can also build a particular [revision](https://code.google.com/p/webrtc/source/list)
 
-Pull WebRTC
+    #Pull WebRTC
     update2Revision 6783
 
 Make changes then,
 
-
-Build WebRTC
+    #Build WebRTC
     build_webrtc
-Make sure you label your new binaries that are generated in ./webrtc-build-scripts/ios/webrtc/libjingle_peerconnection_builds 
+
+Make sure you label your new binaries that are generated in 
+./webrtc-build-scripts/ios/webrtc/libjingle_peerconnection_builds 
 
 
 ##### Cocoapods!! Starting from [revision](https://code.google.com/p/webrtc/source/list) 6798 -- Known bug with Git Repo - In the process of moving to HTTP source for binaries
