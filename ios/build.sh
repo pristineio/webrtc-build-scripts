@@ -129,9 +129,9 @@ function clone() {
     DIR=`pwd`
 
     rm -rf $WEBRTC
-    mkdir $WEBRTC
+    mkdir -v $WEBRTC
 
-    update2Revision
+    update2Revision "$1"
 }
 
 # Fire the sync command. Accepts an argument as the revision number that you want to sync to
