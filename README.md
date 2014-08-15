@@ -64,24 +64,29 @@ build_debug_apprtc 6783
 
 When the scripts are done you can find the .jar and .so file in $WEBRTC_HOME under "libjingle\_peerconnection\_builds".
 
+
+
 ###iOS -- [Guide here](http://tech.pristine.io/build-ios-apprtc/)
 These steps must be run on Mac OSX
+
 Source the [ios build scripts](https://github.com/pristineio/webrtc-build-scripts/blob/master/ios/build.sh) or  [open the Xcode project](https://github.com/pristineio/webrtc-build-scripts/tree/master/ios/WebRTC.xcodeproj)
 
 ```shell
 source ios/build.sh
 ```
 
-Specify if you want to build for Debug/Profile/Release by setting either  
+Specify if you want to build for Debug/Profile/Release by setting either WEBRTC_DEBUG, WEBRTC_PROFILE, WEBRTC_RELEASE as an environment variable in your bash or xcode scheme run settings.
 ```shell
 WEBRTC_DEBUG=true
 WEBRTC_PROFILE=true 
 #or
 WEBRTC_RELEASE=true
 ```
-as an environment variable in your bash or xcode scheme run settings.
 
 
+#### Building the libraries
+
+Then you can build the Android example
 ```shell
 # We use the term webrtc dance a lot to build 
 dance
