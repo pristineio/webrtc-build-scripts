@@ -21,7 +21,7 @@ BUILD="$WEBRTC/libjingle_peerconnection_builds"
 function create_directory_if_not_found() {
     if [ ! -d "$1" ];
     then
-        mkdir "$1"
+        mkdir -v "$1"
     fi
 }
 
