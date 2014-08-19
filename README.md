@@ -114,7 +114,7 @@ Make sure you label your new binaries that are generated in
 ./webrtc-build-scripts/ios/webrtc/libjingle_peerconnection_builds 
 ```
 
-##### Cocoapods!! Starting from [revision](https://code.google.com/p/webrtc/source/list) 6798 -- Known bug with Git Repo - In the process of moving to HTTP source for binaries
+##### Cocoapods!!
 [![Version](https://img.shields.io/cocoapods/v/libjingle_peerconnection.svg?style=flat)](http://cocoadocs.org/docsets/libjingle_peerconnection)
 [![License](https://img.shields.io/cocoapods/l/libjingle_peerconnection.svg?style=flat)](http://cocoadocs.org/docsets/libjingle_peerconnection)
 [![Platform](https://img.shields.io/cocoapods/p/libjingle_peerconnection.svg?style=flat)](http://cocoadocs.org/docsets/libjingle_peerconnection)
