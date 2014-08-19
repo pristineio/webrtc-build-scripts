@@ -127,9 +127,8 @@ To run the example AppRTC Demo project, clone the repo, and run `pod install` fr
 A fast internet connection.... for your own sanity
 
 ###### Installation
---IMPORTANT NOTE-- The Coccoapods bitbucket repo hit the hard filesize limit, I am working with the cocoapods team to move to an HTTP source. Unfortunately the transistion between git and http wasn't smooth but I will update soon.
 
-libjingle_peerconnection is available through [CocoaPods](http://cocoapods.org). To install
+libjingle_peerconnection starting from revision 6931 is available through [CocoaPods](http://cocoapods.org). To install
 it, simply add the following line to your Podfile:
 
     pod "libjingle_peerconnection"
@@ -145,6 +144,17 @@ it, simply add the following line to your Podfile:
         end
     end
 
-You might see some versions like 6798.2 .. Yes that is [revision](https://code.google.com/p/webrtc/source/list) number 6798 from the [webrtc changelist](https://code.google.com/p/webrtc/source/list) and the minor (the .2 part) reflects any change I'd make on the cocoapods project configuration side.
+
+###### Versioning
+
+The versioning can be explained as follows:
+
+[6931](https://code.google.com/p/webrtc/source/detail?r=6931).2.0 
+
+6931 reflects the SVN revision from the WebRTC root Google Code Project
+
+2 reflects a Release Build (0 for Debug, 1 for Release)
+
+0 reflects any changes I might need to make to the sample xcode project itself to work (incremented normally)
 
 
