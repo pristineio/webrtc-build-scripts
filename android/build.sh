@@ -92,11 +92,11 @@ pull_webrtc() {
 	if [ -z $1 ]
     then
         echo "gclient sync with newest"
-        gclient sync --nohooks
+        gclient sync 
     else
     	trunkA="trunk@"
         echo "gclient sync with r$1"
-        gclient sync -r $trunkA$1 --nohooks
+        gclient sync -r $trunkA$1 
     fi
 
     # Navigate back
