@@ -153,7 +153,7 @@ The versioning can be explained as follows:
 
 6931 reflects the SVN revision from the WebRTC root Google Code Project
 
-2 reflects a Release Build (0 for Debug, 1 for Release)
+2 reflects a Release Build (0 for Debug, 1 for Profile)
 
 0 reflects any changes I might need to make to the sample xcode project itself to work (incremented normally)
 
