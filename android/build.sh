@@ -110,11 +110,21 @@ prepare_gyp_defines() {
 	$WEBRTC_ROOT/trunk/build/install-build-deps-android.sh
 	source $WEBRTC_ROOT/trunk/build/android/envsetup.sh
 
-	echo Export the base settings of GYP_DEFINES so we can define how we want to build
-	export GYP_DEFINES="OS=android host_os=linux target_arch=arm libjingle_java=1 build_with_libjingle=1 build_with_chromium=0 enable_tracing=1 arm_neon=1 armv7=1 enable_android_opensl=1"
-	echo "GYP_DEFINES=$GYP_DEFINES"
-	export DEFINES=$GYP_DEFINES
-	echo "DEFINES=$DEFINES"
+
+    # Check to see if the user wants to set their own gyp defines
+    echo Export the base settings of GYP_DEFINES so we can define how we want to build
+    if [ -n $USER_GYP_DEFINES ]
+    then
+        echo "User has not specified any gyp defines so we proceed with default"
+        export GYP_DEFINES="OS=android host_os=linux target_arch=arm libjingle_java=1 build_with_libjingle=1 build_with_chromium=0 enable_tracing=1 arm_neon=1 armv7=1 enable_android_opensl=1"
+    else
+        echo "User has specified their own gyp defines"
+        export GYP_DEFINES="$USER_GYP_DEFINES"
+    fi
+
+    echo "GYP_DEFINES=$GYP_DEFINES"
+    export DEFINES=$GYP_DEFINES
+    echo "DEFINES=$DEFINES"
 }
 
 # Clean up and generate the build scripts
