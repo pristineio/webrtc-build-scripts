@@ -128,8 +128,6 @@ prepare_gyp_defines() {
     fi
 
     echo "GYP_DEFINES=$GYP_DEFINES"
-    export DEFINES=$GYP_DEFINES
-    echo "DEFINES=$DEFINES"
 }
 
 # Clean up and generate the build scripts
