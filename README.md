@@ -23,6 +23,8 @@ install_dependencies
 # Setup jdk
 install_jdk1_6
 
+# Pull WebRTC
+get_webrtc
 ```
 
 ##### On Mac or Windows
@@ -43,23 +45,37 @@ vagrant ssh
 #### Building the libraries
 
 Then you can build the Android example
+
 ```shell
 # Build apprtc
 build_apprtc
 
 # Build in debug mode
-build_debug_apprtc
+export WEBRTC_DEBUG=true
+build_apprtc
+```
+
+You can build for x86 platform
+
+```shell
+# Build apprtc
+export WEBRTC_ARCH=x86
+build_apprtc
+
+# Build in debug mode
+export WEBRTC_ARCH=x86
+export WEBRTC_DEBUG=true
+build_apprtc
 ```
 
 You can build a particular [revision](https://code.google.com/p/webrtc/source/list)
+
 ```shell
+# Pull WebRTC
+get_webrtc 6783
 
 # Build apprtc
-build_apprtc 6783
-
-# Build in debug mode
-build_debug_apprtc 6783
-
+build_apprtc
 ```
 
 When the scripts are done you can find the .jar and .so file in $WEBRTC_HOME under "libjingle\_peerconnection\_builds".
