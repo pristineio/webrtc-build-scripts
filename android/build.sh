@@ -170,10 +170,14 @@ get_webrtc_revision() {
     svn info "$WEBRTC_ROOT/trunk" | awk '{ if ($1 ~ /Revision/) { print $2 } }'
 }
 
+get_webrtc() {
+    pull_depot_tools &&
+    pull_webrtc $1
+}
+
 # Updates webrtc and builds apprtc
 build_apprtc() {
     pull_depot_tools &&
-    pull_webrtc $1 &&
     prepare_gyp_defines &&
     execute_build
 }
