@@ -50,7 +50,7 @@ install_jdk1_6() {
 # Update/Get/Ensure the Gclient Depot Tools
 pull_depot_tools() {
 	WORKING_DIR=`pwd`
-	
+
     # Either clone or get latest depot tools
 	if [ ! -d "$DEPOT_TOOLS" ]
 	then
@@ -66,7 +66,7 @@ pull_depot_tools() {
 
 		echo Pull the depot tools down to the latest
 		git pull
-	fi	
+	fi
 	PATH="$PATH:$DEPOT_TOOLS"
 
     # Navigate back
@@ -76,7 +76,7 @@ pull_depot_tools() {
 # Update/Get the webrtc code base
 pull_webrtc() {
 	WORKING_DIR=`pwd`
-	
+
 	# If no directory where webrtc root should be...
 	create_directory_if_not_found $WEBRTC_ROOT
     cd $WEBRTC_ROOT
@@ -92,11 +92,11 @@ pull_webrtc() {
 	if [ -z $1 ]
     then
         echo "gclient sync with newest"
-        gclient sync 
+        gclient sync
     else
     	trunkA="trunk@"
         echo "gclient sync with r$1"
-        gclient sync -r $trunkA$1 
+        gclient sync -r $trunkA$1
     fi
 
     # Navigate back
@@ -161,7 +161,7 @@ execute_build() {
 
 	echo Build AppRTCDemo in Release mode
 	ninja -C out/Release/ AppRTCDemo
-	
+
 	RELEASE_DIR="$PEERCONNECTION_BUILD/Release"
 	create_directory_if_not_found "$RELEASE_DIR"
 	create_directory_if_not_found "$RELEASE_DIR/$ARCHITECTURE"
@@ -214,17 +214,17 @@ get_webrtc_revision() {
 # Updates webrtc and builds apprtc
 build_apprtc() {
     pull_depot_tools &&
-    pull_webrtc $1 && 
+    pull_webrtc $1 &&
     prepare_gyp_defines &&
-    prepare_build && 
+    prepare_build &&
     execute_build
 }
 
 # Updates webrtc and builds apprtc in debug
 build_debug_apprtc() {
     pull_depot_tools &&
-    pull_webrtc $1 && 
+    pull_webrtc $1 &&
     prepare_gyp_defines &&
-    prepare_build && 
+    prepare_build &&
     execute_debug_build
 }
