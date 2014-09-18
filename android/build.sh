@@ -103,11 +103,16 @@ pull_webrtc() {
 	cd $WORKING_DIR
 }
 
+# Install required packages for Android
+prepare_requirements() {
+    echo Install required packages for Android
+    $WEBRTC_ROOT/trunk/build/install-build-deps-android.sh
+}
+
 # Setup our defines for the build
 prepare_gyp_defines() {
-    # Setup deps for android and configure environment
+    # Configure environment for Android
     echo Setting up build environment for Android
-	$WEBRTC_ROOT/trunk/build/install-build-deps-android.sh
 	source $WEBRTC_ROOT/trunk/build/android/envsetup.sh
 
 
