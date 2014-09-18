@@ -168,28 +168,15 @@ execute_build() {
         WEBRTC_CONFIGURATION="Release"
     fi
 
-    if [ "$WEBRTC_ARCH" = "x86" ] ; then
-        ARCHITECTURE="x86"
-    else
-        ARCHITECTURE="armeabi-v7a"
-    fi
-
-    echo "Build AppRTCDemo in $WEBRTC_CONFIGURATION mode"
+    echo "Build AppRTCDemo in $WEBRTC_CONFIGURATION (arch: ${WEBRTC_ARCH:-arm}) mode"
     ninja -C "out/$WEBRTC_CONFIGURATION/" AppRTCDemo
 
-    JAR_SOURCE_DIR="$WEBRTC_ROOT/trunk/talk/examples/android/libs"
-	JAR_TARGET_DIR="$PEERCONNECTION_BUILD/$WEBRTC_CONFIGURATION"
-    create_directory_if_not_found "$JAR_TARGET_DIR"
+    SOURCE_DIR="$WEBRTC_ROOT/trunk/talk/examples/android/libs"
+	TARGET_DIR="$PEERCONNECTION_BUILD/$WEBRTC_CONFIGURATION"
+    create_directory_if_not_found "$TARGET_DIR"
 
-    echo "Copy $JAR_SOURCE_DIR/libjingle_peerconnection.jar to $JAR_TARGET_DIR/libjingle_peerconnection.jar"
-    cp -p "$JAR_SOURCE_DIR/libjingle_peerconnection.jar" "$JAR_TARGET_DIR/libjingle_peerconnection.jar"
-
-    SO_SOURCE_DIR="$WEBRTC_ROOT/trunk/talk/examples/android/libs/$ARCHITECTURE"
-    SO_TARGET_DIR="$JAR_TARGET_DIR/$ARCHITECTURE"
-    create_directory_if_not_found "$SO_TARGET_DIR"
-
-	echo "Copy $SO_SOURCE_DIR/libjingle_peerconnection_so.so to $SO_TARGET_DIR/libjingle_peerconnection_so.so"
-	cp -p "$SO_SOURCE_DIR/libjingle_peerconnection_so.so" "$SO_TARGET_DIR/libjingle_peerconnection_so.so"
+    echo "Copy $SOURCE_DIR/* to $TARGET_DIR"
+    cp -pR "$SOURCE_DIR"/* "$TARGET_DIR"
 
 	cd $WORKING_DIR
 
