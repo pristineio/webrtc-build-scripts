@@ -158,57 +158,36 @@ execute_build() {
 
 	PEERCONNECTION_BUILD="$WEBRTC_ROOT/libjingle_peerconnection_builds"
 	create_directory_if_not_found "$PEERCONNECTION_BUILD"
-	DEBUG_DIR="$PEERCONNECTION_BUILD/Debug"
-	create_directory_if_not_found "$DEBUG_DIR"
-	ARCHITECTURE="armeabi-v7a"
 
-	DIRECTORY="$WEBRTC_ROOT/trunk/talk/examples/android/libs/$ARCHITECTURE"
+    if [ "$WEBRTC_DEBUG" = "true" ] ; then
+        WEBRTC_CONFIGURATION="Debug"
+    else
+        WEBRTC_CONFIGURATION="Release"
+    fi
 
-	echo Build AppRTCDemo in Release mode
-	ninja -C out/Release/ AppRTCDemo
+    echo "Build AppRTCDemo in $WEBRTC_CONFIGURATION mode"
+    ninja -C "out/$WEBRTC_CONFIGURATION/" AppRTCDemo
 
-	RELEASE_DIR="$PEERCONNECTION_BUILD/Release"
-	create_directory_if_not_found "$RELEASE_DIR"
-	create_directory_if_not_found "$RELEASE_DIR/$ARCHITECTURE"
-	echo "Copy $DIRECTORY/libjingle_peerconnection_so.so to $RELEASE_DIR/$ARCHITECTURE/libjingle_peerconnection_so.so"
-	cp -p "$DIRECTORY/libjingle_peerconnection_so.so" "$RELEASE_DIR/$ARCHITECTURE/libjingle_peerconnection_so.so"
+    JAR_SOURCE_DIR="$WEBRTC_ROOT/trunk/talk/examples/android/libs"
+	JAR_TARGET_DIR="$PEERCONNECTION_BUILD/$WEBRTC_CONFIGURATION"
+    create_directory_if_not_found "$JAR_TARGET_DIR"
 
-	echo "Copy $WEBRTC_ROOT/trunk/talk/examples/android/libs/libjingle_peerconnection.jar to $RELEASE_DIR/libjingle_peerconnection.jar"
-	cp -p "$WEBRTC_ROOT/trunk/talk/examples/android/libs/libjingle_peerconnection.jar" "$RELEASE_DIR/libjingle_peerconnection.jar"
+    echo "Copy $JAR_SOURCE_DIR/libjingle_peerconnection.jar to $JAR_TARGET_DIR/libjingle_peerconnection.jar"
+    cp -p "$JAR_SOURCE_DIR/libjingle_peerconnection.jar" "$JAR_TARGET_DIR/libjingle_peerconnection.jar"
+
+    ARCHITECTURE="armeabi-v7a"
+
+    SO_SOURCE_DIR="$WEBRTC_ROOT/trunk/talk/examples/android/libs/$ARCHITECTURE"
+    SO_TARGET_DIR="$JAR_TARGET_DIR/$ARCHITECTURE"
+    create_directory_if_not_found "$SO_TARGET_DIR"
+
+	echo "Copy $SO_SOURCE_DIR/libjingle_peerconnection_so.so to $SO_TARGET_DIR/libjingle_peerconnection_so.so"
+	cp -p "$SO_SOURCE_DIR/libjingle_peerconnection_so.so" "$SO_TARGET_DIR/libjingle_peerconnection_so.so"
 
 	cd $WORKING_DIR
 
     REVISION_NUM=`get_webrtc_revision`
-    echo "Release build for apprtc complete for revision $REVISION_NUM"
-}
-
-# Builds the apprtc demo in debug
-execute_debug_build() {
-	WORKING_DIR=`pwd`
-
-	echo Change directory into webrtc trunk
-	cd "$WEBRTC_ROOT/trunk"
-
-	echo Build AppRTCDemo in Debug mode
-	ninja -C out/Debug/ AppRTCDemo
-
-	PEERCONNECTION_BUILD="$WEBRTC_ROOT/libjingle_peerconnection_builds"
-	create_directory_if_not_found "$PEERCONNECTION_BUILD"
-	DEBUG_DIR="$PEERCONNECTION_BUILD/Debug"
-	create_directory_if_not_found "$DEBUG_DIR"
-	ARCHITECTURE="armeabi-v7a"
-
-	DIRECTORY="$WEBRTC_ROOT/trunk/talk/examples/android/libs/$ARCHITECTURE"
-
-	create_directory_if_not_found "$DEBUG_DIR/$ARCHITECTURE"
-	echo "Copy $DIRECTORY/libjingle_peerconnection_so.so to $DEBUG_DIR/$ARCHITECTURE/libjingle_peerconnection_so.so"
-	cp -p "$DIRECTORY/libjingle_peerconnection_so.so" "$DEBUG_DIR/$ARCHITECTURE/libjingle_peerconnection_so.so"
-
-	echo "Copy $WEBRTC_ROOT/trunk/talk/examples/android/libs/libjingle_peerconnection.jar to $DEBUG_DIR/libjingle_peerconnection.jar"
-	cp -p "$WEBRTC_ROOT/trunk/talk/examples/android/libs/libjingle_peerconnection.jar" "$DEBUG_DIR/libjingle_peerconnection.jar"
-
-	cd $WORKING_DIR
-    echo "Debug build for apprtc complete for revision $REVISION_NUM"
+    echo "$WEBRTC_CONFIGURATION build for apprtc complete for revision $REVISION_NUM"
 }
 
 # Gets the webrtc revision
@@ -223,13 +202,4 @@ build_apprtc() {
     prepare_gyp_defines &&
     prepare_build &&
     execute_build
-}
-
-# Updates webrtc and builds apprtc in debug
-build_debug_apprtc() {
-    pull_depot_tools &&
-    pull_webrtc $1 &&
-    prepare_gyp_defines &&
-    prepare_build &&
-    execute_debug_build
 }
