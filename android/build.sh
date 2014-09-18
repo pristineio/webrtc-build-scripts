@@ -121,7 +121,12 @@ prepare_gyp_defines() {
     if [ -n $USER_GYP_DEFINES ]
     then
         echo "User has not specified any gyp defines so we proceed with default"
-        export GYP_DEFINES="OS=android host_os=linux target_arch=arm libjingle_java=1 build_with_libjingle=1 build_with_chromium=0 enable_tracing=1 arm_neon=1 armv7=1 enable_android_opensl=1"
+        export GYP_DEFINES="OS=android host_os=linux libjingle_java=1 build_with_libjingle=1 build_with_chromium=0 enable_tracing=1 enable_android_opensl=1"
+        if [ "$WEBRTC_ARCH" = "x86" ] ; then
+            export GYP_DEFINES="$GYP_DEFINES target_arch=ia32"
+        else
+            export GYP_DEFINES="$GYP_DEFINES target_arch=arm arm_neon=1 armv7=1"
+        fi
     else
         echo "User has specified their own gyp defines"
         export GYP_DEFINES="$USER_GYP_DEFINES"
@@ -163,6 +168,12 @@ execute_build() {
         WEBRTC_CONFIGURATION="Release"
     fi
 
+    if [ "$WEBRTC_ARCH" = "x86" ] ; then
+        ARCHITECTURE="x86"
+    else
+        ARCHITECTURE="armeabi-v7a"
+    fi
+
     echo "Build AppRTCDemo in $WEBRTC_CONFIGURATION mode"
     ninja -C "out/$WEBRTC_CONFIGURATION/" AppRTCDemo
 
@@ -172,8 +183,6 @@ execute_build() {
 
     echo "Copy $JAR_SOURCE_DIR/libjingle_peerconnection.jar to $JAR_TARGET_DIR/libjingle_peerconnection.jar"
     cp -p "$JAR_SOURCE_DIR/libjingle_peerconnection.jar" "$JAR_TARGET_DIR/libjingle_peerconnection.jar"
-
-    ARCHITECTURE="armeabi-v7a"
 
     SO_SOURCE_DIR="$WEBRTC_ROOT/trunk/talk/examples/android/libs/$ARCHITECTURE"
     SO_TARGET_DIR="$JAR_TARGET_DIR/$ARCHITECTURE"
