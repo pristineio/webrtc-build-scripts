@@ -135,32 +135,13 @@ prepare_gyp_defines() {
     echo "GYP_DEFINES=$GYP_DEFINES"
 }
 
-# Clean up and generate the build scripts
-prepare_build() {
-	WORKING_DIR=`pwd`
-
-    echo Change directory into webrtc trunk
-    cd "$WEBRTC_ROOT/trunk"
-
-    echo cleaning old build
-    rm -rf out
-    mkdir out
-    mkdir out/Release
-    mkdir out/Debug
-
-    echo gclient runhooks
-    gclient runhooks
-
-    cd $WORKING_DIR
-}
-
 # Builds the apprtc demo
 execute_build() {
 	WORKING_DIR=`pwd`
 	cd "$WEBRTC_ROOT/trunk"
 
-	PEERCONNECTION_BUILD="$WEBRTC_ROOT/libjingle_peerconnection_builds"
-	create_directory_if_not_found "$PEERCONNECTION_BUILD"
+    echo Run gclient hooks
+    gclient runhooks
 
     if [ "$WEBRTC_DEBUG" = "true" ] ; then
         WEBRTC_CONFIGURATION="Debug"
@@ -172,7 +153,7 @@ execute_build() {
     ninja -C "out/$WEBRTC_CONFIGURATION/" AppRTCDemo
 
     SOURCE_DIR="$WEBRTC_ROOT/trunk/talk/examples/android/libs"
-	TARGET_DIR="$PEERCONNECTION_BUILD/$WEBRTC_CONFIGURATION"
+	TARGET_DIR="$WEBRTC_ROOT/libjingle_peerconnection_builds/$WEBRTC_CONFIGURATION"
     create_directory_if_not_found "$TARGET_DIR"
 
     echo "Copy $SOURCE_DIR/* to $TARGET_DIR"
@@ -194,6 +175,5 @@ build_apprtc() {
     pull_depot_tools &&
     pull_webrtc $1 &&
     prepare_gyp_defines &&
-    prepare_build &&
     execute_build
 }
