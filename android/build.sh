@@ -50,7 +50,7 @@ install_jdk1_6() {
 # Update/Get/Ensure the Gclient Depot Tools
 pull_depot_tools() {
 	WORKING_DIR=`pwd`
-	
+
     # Either clone or get latest depot tools
 	if [ ! -d "$DEPOT_TOOLS" ]
 	then
@@ -66,7 +66,7 @@ pull_depot_tools() {
 
 		echo Pull the depot tools down to the latest
 		git pull
-	fi	
+	fi
 	PATH="$PATH:$DEPOT_TOOLS"
 
     # Navigate back
@@ -76,7 +76,7 @@ pull_depot_tools() {
 # Update/Get the webrtc code base
 pull_webrtc() {
 	WORKING_DIR=`pwd`
-	
+
 	# If no directory where webrtc root should be...
 	create_directory_if_not_found $WEBRTC_ROOT
     cd $WEBRTC_ROOT
@@ -92,22 +92,27 @@ pull_webrtc() {
 	if [ -z $1 ]
     then
         echo "gclient sync with newest"
-        gclient sync 
+        gclient sync
     else
     	trunkA="trunk@"
         echo "gclient sync with r$1"
-        gclient sync -r $trunkA$1 
+        gclient sync -r $trunkA$1
     fi
 
     # Navigate back
 	cd $WORKING_DIR
 }
 
+# Install required packages for Android
+prepare_requirements() {
+    echo Install required packages for Android
+    $WEBRTC_ROOT/trunk/build/install-build-deps-android.sh
+}
+
 # Setup our defines for the build
 prepare_gyp_defines() {
-    # Setup deps for android and configure environment
+    # Configure environment for Android
     echo Setting up build environment for Android
-	$WEBRTC_ROOT/trunk/build/install-build-deps-android.sh
 	source $WEBRTC_ROOT/trunk/build/android/envsetup.sh
 
 
@@ -116,34 +121,18 @@ prepare_gyp_defines() {
     if [ -n $USER_GYP_DEFINES ]
     then
         echo "User has not specified any gyp defines so we proceed with default"
-        export GYP_DEFINES="OS=android host_os=linux target_arch=arm libjingle_java=1 build_with_libjingle=1 build_with_chromium=0 enable_tracing=1 arm_neon=1 armv7=1 enable_android_opensl=1"
+        export GYP_DEFINES="OS=android host_os=linux libjingle_java=1 build_with_libjingle=1 build_with_chromium=0 enable_tracing=1 enable_android_opensl=1"
+        if [ "$WEBRTC_ARCH" = "x86" ] ; then
+            export GYP_DEFINES="$GYP_DEFINES target_arch=ia32"
+        else
+            export GYP_DEFINES="$GYP_DEFINES target_arch=arm arm_neon=1 armv7=1"
+        fi
     else
         echo "User has specified their own gyp defines"
         export GYP_DEFINES="$USER_GYP_DEFINES"
     fi
 
     echo "GYP_DEFINES=$GYP_DEFINES"
-    export DEFINES=$GYP_DEFINES
-    echo "DEFINES=$DEFINES"
-}
-
-# Clean up and generate the build scripts
-prepare_build() {
-	WORKING_DIR=`pwd`
-
-    echo Change directory into webrtc trunk
-    cd "$WEBRTC_ROOT/trunk"
-
-    echo cleaning old build
-    rm -rf out
-    mkdir out
-    mkdir out/Release
-    mkdir out/Debug
-
-    echo gclient runhooks
-    gclient runhooks
-
-    cd $WORKING_DIR
 }
 
 # Builds the apprtc demo
@@ -151,59 +140,29 @@ execute_build() {
 	WORKING_DIR=`pwd`
 	cd "$WEBRTC_ROOT/trunk"
 
-	PEERCONNECTION_BUILD="$WEBRTC_ROOT/libjingle_peerconnection_builds"
-	create_directory_if_not_found "$PEERCONNECTION_BUILD"
-	DEBUG_DIR="$PEERCONNECTION_BUILD/Debug"
-	create_directory_if_not_found "$DEBUG_DIR"
-	ARCHITECTURE="armeabi-v7a"
+    echo Run gclient hooks
+    gclient runhooks
 
-	DIRECTORY="$WEBRTC_ROOT/trunk/talk/examples/android/libs/$ARCHITECTURE"
+    if [ "$WEBRTC_DEBUG" = "true" ] ; then
+        WEBRTC_CONFIGURATION="Debug"
+    else
+        WEBRTC_CONFIGURATION="Release"
+    fi
 
-	echo Build AppRTCDemo in Release mode
-	ninja -C out/Release/ AppRTCDemo
-	
-	RELEASE_DIR="$PEERCONNECTION_BUILD/Release"
-	create_directory_if_not_found "$RELEASE_DIR"
-	create_directory_if_not_found "$RELEASE_DIR/$ARCHITECTURE"
-	echo "Copy $DIRECTORY/libjingle_peerconnection_so.so to $RELEASE_DIR/$ARCHITECTURE/libjingle_peerconnection_so.so"
-	cp -p "$DIRECTORY/libjingle_peerconnection_so.so" "$RELEASE_DIR/$ARCHITECTURE/libjingle_peerconnection_so.so"
+    echo "Build AppRTCDemo in $WEBRTC_CONFIGURATION (arch: ${WEBRTC_ARCH:-arm}) mode"
+    ninja -C "out/$WEBRTC_CONFIGURATION/" AppRTCDemo
 
-	echo "Copy $WEBRTC_ROOT/trunk/talk/examples/android/libs/libjingle_peerconnection.jar to $RELEASE_DIR/libjingle_peerconnection.jar"
-	cp -p "$WEBRTC_ROOT/trunk/talk/examples/android/libs/libjingle_peerconnection.jar" "$RELEASE_DIR/libjingle_peerconnection.jar"
+    SOURCE_DIR="$WEBRTC_ROOT/trunk/talk/examples/android/libs"
+	TARGET_DIR="$WEBRTC_ROOT/libjingle_peerconnection_builds/$WEBRTC_CONFIGURATION"
+    create_directory_if_not_found "$TARGET_DIR"
+
+    echo "Copy $SOURCE_DIR/* to $TARGET_DIR"
+    cp -pR "$SOURCE_DIR"/* "$TARGET_DIR"
 
 	cd $WORKING_DIR
 
     REVISION_NUM=`get_webrtc_revision`
-    echo "Release build for apprtc complete for revision $REVISION_NUM"
-}
-
-# Builds the apprtc demo in debug
-execute_debug_build() {
-	WORKING_DIR=`pwd`
-
-	echo Change directory into webrtc trunk
-	cd "$WEBRTC_ROOT/trunk"
-
-	echo Build AppRTCDemo in Debug mode
-	ninja -C out/Debug/ AppRTCDemo
-
-	PEERCONNECTION_BUILD="$WEBRTC_ROOT/libjingle_peerconnection_builds"
-	create_directory_if_not_found "$PEERCONNECTION_BUILD"
-	DEBUG_DIR="$PEERCONNECTION_BUILD/Debug"
-	create_directory_if_not_found "$DEBUG_DIR"
-	ARCHITECTURE="armeabi-v7a"
-
-	DIRECTORY="$WEBRTC_ROOT/trunk/talk/examples/android/libs/$ARCHITECTURE"
-
-	create_directory_if_not_found "$DEBUG_DIR/$ARCHITECTURE"
-	echo "Copy $DIRECTORY/libjingle_peerconnection_so.so to $DEBUG_DIR/$ARCHITECTURE/libjingle_peerconnection_so.so"
-	cp -p "$DIRECTORY/libjingle_peerconnection_so.so" "$DEBUG_DIR/$ARCHITECTURE/libjingle_peerconnection_so.so"
-
-	echo "Copy $WEBRTC_ROOT/trunk/talk/examples/android/libs/libjingle_peerconnection.jar to $DEBUG_DIR/libjingle_peerconnection.jar"
-	cp -p "$WEBRTC_ROOT/trunk/talk/examples/android/libs/libjingle_peerconnection.jar" "$DEBUG_DIR/libjingle_peerconnection.jar"
-
-	cd $WORKING_DIR
-    echo "Debug build for apprtc complete for revision $REVISION_NUM"
+    echo "$WEBRTC_CONFIGURATION build for apprtc complete for revision $REVISION_NUM"
 }
 
 # Gets the webrtc revision
@@ -211,20 +170,14 @@ get_webrtc_revision() {
     svn info "$WEBRTC_ROOT/trunk" | awk '{ if ($1 ~ /Revision/) { print $2 } }'
 }
 
+get_webrtc() {
+    pull_depot_tools &&
+    pull_webrtc $1
+}
+
 # Updates webrtc and builds apprtc
 build_apprtc() {
     pull_depot_tools &&
-    pull_webrtc $1 && 
     prepare_gyp_defines &&
-    prepare_build && 
     execute_build
-}
-
-# Updates webrtc and builds apprtc in debug
-build_debug_apprtc() {
-    pull_depot_tools &&
-    pull_webrtc $1 && 
-    prepare_gyp_defines &&
-    prepare_build && 
-    execute_debug_build
 }
