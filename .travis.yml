@@ -1,2 +1,3 @@
 language: objective-c
-script: ./ios/dance.sh
+xcode_project: ./ios/WebRTC.xcodeproj # path to your xcodeproj folder
+xcode_scheme: WebRTC Dance
