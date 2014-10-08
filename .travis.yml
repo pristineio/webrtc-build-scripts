@@ -1,2 +1,2 @@
 language: objective-c
-script: source ./ios/build.sh && WEBRTC_DEBUG=true && update2Revision && build_webrtc
+script: source ./ios/build.sh && CHROME_HEADLESS=1 && WEBRTC_DEBUG=true && update2Revision && build_webrtc
