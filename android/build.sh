@@ -137,8 +137,8 @@ prepare_gyp_defines() {
 
 # Builds the apprtc demo
 execute_build() {
-	WORKING_DIR=`pwd`
-	cd "$WEBRTC_ROOT/src"
+    WORKING_DIR=`pwd`
+    cd "$WEBRTC_ROOT/src"
 
     echo Run gclient hooks
     gclient runhooks
@@ -152,17 +152,22 @@ execute_build() {
     echo "Build AppRTCDemo in $WEBRTC_CONFIGURATION (arch: ${WEBRTC_ARCH:-arm}) mode"
     ninja -C "out/$WEBRTC_CONFIGURATION/" AppRTCDemo
 
-    SOURCE_DIR="$WEBRTC_ROOT/src/talk/examples/android/libs"
-	TARGET_DIR="$WEBRTC_ROOT/libjingle_peerconnection_builds/$WEBRTC_CONFIGURATION"
-    create_directory_if_not_found "$TARGET_DIR"
+    if [ $? -eq 0 ]; then
+		    SOURCE_DIR="$WEBRTC_ROOT/src/talk/examples/android/libs"
+		    TARGET_DIR="$WEBRTC_ROOT/libjingle_peerconnection_builds/$WEBRTC_CONFIGURATION"
+		    create_directory_if_not_found "$TARGET_DIR"
 
-    echo "Copy $SOURCE_DIR/* to $TARGET_DIR"
-    cp -pR "$SOURCE_DIR"/* "$TARGET_DIR"
+		    echo "copy $SOURCE_DIR/* to $TARGET_DIR"
+		    cp -pr "$SOURCE_DIR"/* "$TARGET_DIR"
 
-	cd $WORKING_DIR
+		    cd $WORKDING_DIR
 
-    REVISION_NUM=`get_webrtc_revision`
-    echo "$WEBRTC_CONFIGURATION build for apprtc complete for revision $REVISION_NUM"
+		    REVISION_NUM=`get_webrtc_revision`
+		    echo "$WEBRTC_CONFIGURATION build for apprtc complete for revision $REVISION_NUM"
+    else
+		    REVISION_NUM=`get_webrtc_revision`
+		    echo "$WEBRTC_CONFIGURATION build for apprtc failed for revision $REVISION_NUM"
+    fi
 }
 
 # Gets the webrtc revision
