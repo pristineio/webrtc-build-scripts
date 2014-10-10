@@ -115,7 +115,6 @@ prepare_gyp_defines() {
     echo Setting up build environment for Android
 	source $WEBRTC_ROOT/src/build/android/envsetup.sh
 
-
     # Check to see if the user wants to set their own gyp defines
     echo Export the base settings of GYP_DEFINES so we can define how we want to build
     if [ -n $USER_GYP_DEFINES ]
@@ -152,21 +151,22 @@ execute_build() {
     echo "Build AppRTCDemo in $WEBRTC_CONFIGURATION (arch: ${WEBRTC_ARCH:-arm}) mode"
     ninja -C "out/$WEBRTC_CONFIGURATION/" AppRTCDemo
 
+    # Verify the build actually worked
     if [ $? -eq 0 ]; then
-		    SOURCE_DIR="$WEBRTC_ROOT/src/talk/examples/android/libs"
-		    TARGET_DIR="$WEBRTC_ROOT/libjingle_peerconnection_builds/$WEBRTC_CONFIGURATION"
-		    create_directory_if_not_found "$TARGET_DIR"
+        SOURCE_DIR="$WEBRTC_ROOT/src/talk/examples/android/libs"
+        TARGET_DIR="$WEBRTC_ROOT/libjingle_peerconnection_builds/$WEBRTC_CONFIGURATION"
+        create_directory_if_not_found "$TARGET_DIR"
 
-		    echo "copy $SOURCE_DIR/* to $TARGET_DIR"
-		    cp -pr "$SOURCE_DIR"/* "$TARGET_DIR"
+        echo "copy $SOURCE_DIR/* to $TARGET_DIR"
+        cp -pr "$SOURCE_DIR"/* "$TARGET_DIR"
 
-		    cd $WORKDING_DIR
+        cd $WORKDING_DIR
 
-		    REVISION_NUM=`get_webrtc_revision`
-		    echo "$WEBRTC_CONFIGURATION build for apprtc complete for revision $REVISION_NUM"
+        REVISION_NUM=`get_webrtc_revision`
+        echo "$WEBRTC_CONFIGURATION build for apprtc complete for revision $REVISION_NUM"
     else
-		    REVISION_NUM=`get_webrtc_revision`
-		    echo "$WEBRTC_CONFIGURATION build for apprtc failed for revision $REVISION_NUM"
+        REVISION_NUM=`get_webrtc_revision`
+        echo "$WEBRTC_CONFIGURATION build for apprtc failed for revision $REVISION_NUM"
     fi
 }
 
