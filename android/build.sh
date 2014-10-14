@@ -18,7 +18,7 @@ create_directory_if_not_found() {
 
 # Installs all android related dependencies
 install_dependencies() {
-	sudo apt-get -y install wget git gnupg flex bison gperf build-essential zip curl subversion
+	sudo apt-get -y install wget git gnupg flex bison gperf build-essential zip curl subversion pkg-config
 }
 
 # Installs jdk 1.6
