@@ -42,7 +42,7 @@ function pull_depot_tools() {
         echo Make directory for gclient called Depot Tools
         mkdir -p $DEPOT_TOOLS
 
-        echo Pull the depo tools project from chromium source into the depot tools directory
+        echo Pull the depot tools project from chromium source into the depot tools directory
         git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git $DEPOT_TOOLS
 
     else
@@ -85,10 +85,10 @@ function get_revision_number() {
     svn info $WEBRTC/src | awk '{ if ($1 ~ /Revision/) { print $2 } }'
 }
 
-# This funcion allows you to pull the latest changes from WebRTC without doing an entire clone, must faster to build and try changes
+# This function allows you to pull the latest changes from WebRTC without doing an entire clone, much faster to build and try changes
 # Pass in a revision number as an argument to pull that specific revision ex: update2Revision 6798
 function update2Revision() {
-    #Ensure that we have gclient added to our environment, so this function can run standalone
+    # Ensure that we have gclient added to our environment, so this function can run standalone
     pull_depot_tools 
     cd $WEBRTC
 
@@ -119,7 +119,7 @@ function update2Revision() {
         sync "$1"
     fi
 
-    echo "-- webrtc has been sucessfully updated"
+    echo "-- webrtc has been successfully updated"
 }
 
 # This function cleans out your webrtc directory and does a fresh clone -- slower than a pull
@@ -215,7 +215,7 @@ function lipo_ia32_and_armv7() {
         lipo -create $BUILD/libWebRTC-$WEBRTC_REVISION-sim-Debug.a $BUILD/libWebRTC-$WEBRTC_REVISION-ios-Debug.a -output $BUILD/libWebRTC-$WEBRTC_REVISION-armv7-ia32-Debug.a
         # Delete the latest symbolic link just in case :)
         rm $WEBRTC/libWebRTC-LATEST-Universal-Debug.a
-        # Create a symbolic link pointing to the exact revision that is the latest. This way I don't have to change the xcode project file everytime we update the revision number, while still keeping it easy to track which revision you are on
+        # Create a symbolic link pointing to the exact revision that is the latest. This way I don't have to change the xcode project file every time we update the revision number, while still keeping it easy to track which revision you are on
         ln -s $BUILD/libWebRTC-$WEBRTC_REVISION-armv7-ia32-Debug.a $WEBRTC/libWebRTC-LATEST-Universal-Debug.a
         # Make it clear which revision you are using .... You don't want to get in the state where you don't know which revision you were using... trust me
         echo "The libWebRTC-LATEST-Universal-Debug.a in this same directory, is revision " > $WEBRTC/libWebRTC-LATEST-Universal-Debug.a.version.txt
