@@ -149,7 +149,6 @@ function sync() {
 # Convenience function to copy the headers by creating a symbolic link to the headers directory deep within webrtc src
 function copy_headers() {
     create_directory_if_not_found "$BUILD"
-    create_directory_if_not_found "$WEBRTC/headers"
     ln -s $WEBRTC/src/talk/app/webrtc/objc/public/ $WEBRTC/headers
 }
 
