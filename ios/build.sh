@@ -42,7 +42,7 @@ function pull_depot_tools() {
         echo Make directory for gclient called Depot Tools
         mkdir -p $DEPOT_TOOLS
 
-        echo Pull the depo tools project from chromium source into the depot tools directory
+        echo Pull the depot tools project from chromium source into the depot tools directory
         git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git $DEPOT_TOOLS
 
     else
@@ -82,18 +82,18 @@ function wrsim() {
 
 # Gets the revision number of the current WebRTC svn repo on the filesystem
 function get_revision_number() {
-    svn info $WEBRTC/trunk | awk '{ if ($1 ~ /Revision/) { print $2 } }'
+    svn info $WEBRTC/src | awk '{ if ($1 ~ /Revision/) { print $2 } }'
 }
 
-# This funcion allows you to pull the latest changes from WebRTC without doing an entire clone, must faster to build and try changes
+# This function allows you to pull the latest changes from WebRTC without doing an entire clone, much faster to build and try changes
 # Pass in a revision number as an argument to pull that specific revision ex: update2Revision 6798
 function update2Revision() {
-    #Ensure that we have gclient added to our environment, so this function can run standalone
+    # Ensure that we have gclient added to our environment, so this function can run standalone
     pull_depot_tools 
     cd $WEBRTC
 
     # Configure gclient to pull from the google code master repo (svn). Git is faster, will be put in a later commit
-    gclient config http://webrtc.googlecode.com/svn/trunk
+    gclient config --name src http://webrtc.googlecode.com/svn/trunk
     wrios
 
     # Make sure that the target os is set to JUST MAC at first by adding that to the .gclient file that gclient config command created
@@ -119,7 +119,7 @@ function update2Revision() {
         sync "$1"
     fi
 
-    echo "-- webrtc has been sucessfully updated"
+    echo "-- webrtc has been successfully updated"
 }
 
 # This function cleans out your webrtc directory and does a fresh clone -- slower than a pull
@@ -146,16 +146,15 @@ function sync() {
     fi
 }
 
-# Convenience function to copy the headers by creating a symbolic link to the headers directory deep within webrtc trunk
+# Convenience function to copy the headers by creating a symbolic link to the headers directory deep within webrtc src
 function copy_headers() {
     create_directory_if_not_found "$BUILD"
-    create_directory_if_not_found "$WEBRTC/headers"
-    ln -s $WEBRTC/trunk/talk/app/webrtc/objc/public/ $WEBRTC/headers
+    ln -s $WEBRTC/src/talk/app/webrtc/objc/public/ $WEBRTC/headers
 }
 
 # Build AppRTC Demo for the simulator (ia32 architecture)
 function build_apprtc_sim() {
-    cd "$WEBRTC/trunk"
+    cd "$WEBRTC/src"
 
     wrsim
     gclient runhooks
@@ -165,23 +164,24 @@ function build_apprtc_sim() {
     WEBRTC_REVISION=`get_revision_number`
     if [ "$WEBRTC_DEBUG" = true ] ; then
         ninja -C "out_sim/Debug-iphonesimulator/" AppRTCDemo
-        libtool -static -o "$BUILD/libWebRTC-$WEBRTC_REVISION-sim-Debug.a" $WEBRTC/trunk/out_sim/Debug-iphonesimulator/*.a
+        libtool -static -o "$BUILD/libWebRTC-$WEBRTC_REVISION-sim-Debug.a" $WEBRTC/src/out_sim/Debug-iphonesimulator/*.a
     fi
 
     if [ "$WEBRTC_PROFILE" = true ] ; then
         ninja -C "out_sim/Profile-iphonesimulator/" AppRTCDemo
-        libtool -static -o "$BUILD/libWebRTC-$WEBRTC_REVISION-sim-Profile.a" $WEBRTC/trunk/out_sim/Profile-iphonesimulator/*.a
+        libtool -static -o "$BUILD/libWebRTC-$WEBRTC_REVISION-sim-Profile.a" $WEBRTC/src/out_sim/Profile-iphonesimulator/*.a
     fi
 
     if [ "$WEBRTC_RELEASE" = true ] ; then
         ninja -C "out_sim/Release-iphonesimulator/" AppRTCDemo
-        libtool -static -o "$BUILD/libWebRTC-$WEBRTC_REVISION-sim-Release.a" $WEBRTC/trunk/out_sim/Release-iphonesimulator/*.a
+        libtool -static -o "$BUILD/libWebRTC-$WEBRTC_REVISION-sim-Release.a" $WEBRTC/src/out_sim/Release-iphonesimulator/*.a
     fi
 }
 
 # Build AppRTC Demo for an armv7 real device
 function build_apprtc() {
-    cd "$WEBRTC/trunk"
+    cd "$WEBRTC/src"
+    
     wrios
     gclient runhooks
 
@@ -190,17 +190,17 @@ function build_apprtc() {
     WEBRTC_REVISION=`get_revision_number`
     if [ "$WEBRTC_DEBUG" = true ] ; then
         ninja -C "out_ios/Debug-iphoneos/" AppRTCDemo
-        libtool -static -o "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-Debug.a" $WEBRTC/trunk/out_ios/Debug-iphoneos/*.a
+        libtool -static -o "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-Debug.a" $WEBRTC/src/out_ios/Debug-iphoneos/*.a
     fi
 
     if [ "$WEBRTC_PROFILE" = true ] ; then
         ninja -C "out_ios/Profile-iphoneos/" AppRTCDemo
-        libtool -static -o "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-Profile.a" $WEBRTC/trunk/out_ios/Profile-iphoneos/*.a
+        libtool -static -o "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-Profile.a" $WEBRTC/src/out_ios/Profile-iphoneos/*.a
     fi
 
     if [ "$WEBRTC_RELEASE" = true ] ; then
         ninja -C "out_ios/Release-iphoneos/" AppRTCDemo
-        libtool -static -o "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-Release.a" $WEBRTC/trunk/out_ios/Release-iphoneos/*.a
+        libtool -static -o "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-Release.a" $WEBRTC/src/out_ios/Release-iphoneos/*.a
     fi
 }
 
@@ -214,7 +214,7 @@ function lipo_ia32_and_armv7() {
         lipo -create $BUILD/libWebRTC-$WEBRTC_REVISION-sim-Debug.a $BUILD/libWebRTC-$WEBRTC_REVISION-ios-Debug.a -output $BUILD/libWebRTC-$WEBRTC_REVISION-armv7-ia32-Debug.a
         # Delete the latest symbolic link just in case :)
         rm $WEBRTC/libWebRTC-LATEST-Universal-Debug.a
-        # Create a symbolic link pointing to the exact revision that is the latest. This way I don't have to change the xcode project file everytime we update the revision number, while still keeping it easy to track which revision you are on
+        # Create a symbolic link pointing to the exact revision that is the latest. This way I don't have to change the xcode project file every time we update the revision number, while still keeping it easy to track which revision you are on
         ln -s $BUILD/libWebRTC-$WEBRTC_REVISION-armv7-ia32-Debug.a $WEBRTC/libWebRTC-LATEST-Universal-Debug.a
         # Make it clear which revision you are using .... You don't want to get in the state where you don't know which revision you were using... trust me
         echo "The libWebRTC-LATEST-Universal-Debug.a in this same directory, is revision " > $WEBRTC/libWebRTC-LATEST-Universal-Debug.a.version.txt
