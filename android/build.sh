@@ -123,8 +123,6 @@ prepare_gyp_defines() {
         export GYP_DEFINES="OS=android host_os=linux libjingle_java=1 build_with_libjingle=1 build_with_chromium=0 enable_tracing=1 enable_android_opensl=1"
         if [ "$WEBRTC_ARCH" = "x86" ] ; then
             export GYP_DEFINES="$GYP_DEFINES target_arch=ia32"
-        else
-            export GYP_DEFINES="$GYP_DEFINES target_arch=arm arm_neon=1 armv7=1"
         fi
     else
         echo "User has specified their own gyp defines"
@@ -182,7 +180,7 @@ get_webrtc() {
 
 # Updates webrtc and builds apprtc
 build_apprtc() {
-    pull_depot_tools &&
+    prepare_requirements &&
     prepare_gyp_defines &&
     execute_build
 }
