@@ -15,7 +15,6 @@ PROJECT_DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 source "$PROJECT_DIR/build.sh"
 
-
 WEBRTC_DEBUG=true
 
 update2Revision
