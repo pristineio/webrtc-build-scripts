@@ -18,7 +18,7 @@ create_directory_if_not_found() {
 
 # Installs all android related dependencies
 install_dependencies() {
-	sudo apt-get -y install wget git gnupg flex bison gperf build-essential zip curl subversion
+	sudo apt-get -y install wget git gnupg flex bison gperf build-essential zip curl subversion pkg-config
 }
 
 # Installs jdk 1.6
@@ -75,15 +75,15 @@ pull_depot_tools() {
 
 # Update/Get the webrtc code base
 pull_webrtc() {
-	WORKING_DIR=`pwd`
+    WORKING_DIR=`pwd`
 
-	# If no directory where webrtc root should be...
-	create_directory_if_not_found $WEBRTC_ROOT
+    # If no directory where webrtc root should be...
+    create_directory_if_not_found $WEBRTC_ROOT
     cd $WEBRTC_ROOT
 
     # Ensure our target os is correct building android
     echo Configuring gclient for Android build
-	gclient config http://webrtc.googlecode.com/svn/trunk
+	gclient config --name=src http://webrtc.googlecode.com/svn/trunk
 	echo "target_os = ['unix', 'android']" >> .gclient
 
     # Get latest webrtc source
@@ -106,15 +106,14 @@ pull_webrtc() {
 # Install required packages for Android
 prepare_requirements() {
     echo Install required packages for Android
-    $WEBRTC_ROOT/trunk/build/install-build-deps-android.sh
+    $WEBRTC_ROOT/src/build/install-build-deps-android.sh
 }
 
 # Setup our defines for the build
 prepare_gyp_defines() {
     # Configure environment for Android
     echo Setting up build environment for Android
-	source $WEBRTC_ROOT/trunk/build/android/envsetup.sh
-
+	source $WEBRTC_ROOT/src/build/android/envsetup.sh
 
     # Check to see if the user wants to set their own gyp defines
     echo Export the base settings of GYP_DEFINES so we can define how we want to build
@@ -124,8 +123,6 @@ prepare_gyp_defines() {
         export GYP_DEFINES="OS=android host_os=linux libjingle_java=1 build_with_libjingle=1 build_with_chromium=0 enable_tracing=1 enable_android_opensl=1"
         if [ "$WEBRTC_ARCH" = "x86" ] ; then
             export GYP_DEFINES="$GYP_DEFINES target_arch=ia32"
-        else
-            export GYP_DEFINES="$GYP_DEFINES target_arch=arm arm_neon=1 armv7=1"
         fi
     else
         echo "User has specified their own gyp defines"
@@ -137,8 +134,8 @@ prepare_gyp_defines() {
 
 # Builds the apprtc demo
 execute_build() {
-	WORKING_DIR=`pwd`
-	cd "$WEBRTC_ROOT/trunk"
+    WORKING_DIR=`pwd`
+    cd "$WEBRTC_ROOT/src"
 
     echo Run gclient hooks
     gclient runhooks
@@ -152,22 +149,28 @@ execute_build() {
     echo "Build AppRTCDemo in $WEBRTC_CONFIGURATION (arch: ${WEBRTC_ARCH:-arm}) mode"
     ninja -C "out/$WEBRTC_CONFIGURATION/" AppRTCDemo
 
-    SOURCE_DIR="$WEBRTC_ROOT/trunk/talk/examples/android/libs"
-	TARGET_DIR="$WEBRTC_ROOT/libjingle_peerconnection_builds/$WEBRTC_CONFIGURATION"
-    create_directory_if_not_found "$TARGET_DIR"
+    # Verify the build actually worked
+    if [ $? -eq 0 ]; then
+        SOURCE_DIR="$WEBRTC_ROOT/src/talk/examples/android/libs"
+        TARGET_DIR="$WEBRTC_ROOT/libjingle_peerconnection_builds/$WEBRTC_CONFIGURATION"
+        create_directory_if_not_found "$TARGET_DIR"
 
-    echo "Copy $SOURCE_DIR/* to $TARGET_DIR"
-    cp -pR "$SOURCE_DIR"/* "$TARGET_DIR"
+        echo "copy $SOURCE_DIR/* to $TARGET_DIR"
+        cp -pr "$SOURCE_DIR"/* "$TARGET_DIR"
 
-	cd $WORKING_DIR
+        cd $WORKDING_DIR
 
-    REVISION_NUM=`get_webrtc_revision`
-    echo "$WEBRTC_CONFIGURATION build for apprtc complete for revision $REVISION_NUM"
+        REVISION_NUM=`get_webrtc_revision`
+        echo "$WEBRTC_CONFIGURATION build for apprtc complete for revision $REVISION_NUM"
+    else
+        REVISION_NUM=`get_webrtc_revision`
+        echo "$WEBRTC_CONFIGURATION build for apprtc failed for revision $REVISION_NUM"
+    fi
 }
 
 # Gets the webrtc revision
 get_webrtc_revision() {
-    svn info "$WEBRTC_ROOT/trunk" | awk '{ if ($1 ~ /Revision/) { print $2 } }'
+    svn info "$WEBRTC_ROOT/src" | awk '{ if ($1 ~ /Revision/) { print $2 } }'
 }
 
 get_webrtc() {
@@ -177,7 +180,7 @@ get_webrtc() {
 
 # Updates webrtc and builds apprtc
 build_apprtc() {
-    pull_depot_tools &&
+    prepare_requirements &&
     prepare_gyp_defines &&
     execute_build
 }
