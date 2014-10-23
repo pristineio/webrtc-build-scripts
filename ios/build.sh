@@ -139,7 +139,6 @@ function sync() {
     pull_depot_tools
     cd $WEBRTC
 
-    export CHROME_HEADLESS=1
     if [ -z $1 ]
     then
         gclient sync
