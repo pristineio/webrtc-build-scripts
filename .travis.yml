@@ -1,2 +1,3 @@
 language: objective-c
+before_install: sudo mkdir /b && sudo chmod 777 /b
 script: source ./ios/build.sh && WEBRTC_DEBUG=true && update2Revision && build_webrtc
