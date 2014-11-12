@@ -145,6 +145,13 @@ Make sure you label your new binaries that are generated in
 ./webrtc-build-scripts/ios/webrtc/libjingle_peerconnection_builds 
 ```
 
+Wanna try ARM64 ? -- it doesnt work as of r7663
+```shell
+get_webrtc
+export ARM64=true
+build_webrtc
+```
+
 ##### Cocoapods!!
 [![Version](https://img.shields.io/cocoapods/v/libjingle_peerconnection.svg?style=flat)](http://cocoadocs.org/docsets/libjingle_peerconnection)
 [![License](https://img.shields.io/cocoapods/l/libjingle_peerconnection.svg?style=flat)](http://cocoadocs.org/docsets/libjingle_peerconnection)

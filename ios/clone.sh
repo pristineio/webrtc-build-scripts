@@ -15,4 +15,5 @@ PROJECT_DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 source "$PROJECT_DIR/build.sh"
 pull_depot_tools
+rm -rf "$PROJECT_DIR/webrtc/src"
 get_webrtc

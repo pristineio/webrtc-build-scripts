@@ -15,9 +15,6 @@ PROJECT_DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 source "$PROJECT_DIR/build.sh"
 
-# I am unable to update past 6938. I will update a fix soon.
-update2Revision 6937
-
-build_webrtc
+dance
 echo "Finished Dancing!"
 
