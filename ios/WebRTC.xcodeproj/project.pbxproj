@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C095E5EC1952485F00B9FAA0 /* libWebRTC-LATEST-Universal-Debug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C095E5EB1952485F00B9FAA0 /* libWebRTC-LATEST-Universal-Debug.a */; };
+		C095E5ED1952488200B9FAA0 /* libWebRTC-LATEST-Universal-Debug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C095E5EB1952485F00B9FAA0 /* libWebRTC-LATEST-Universal-Debug.a */; };
 		C0A129371951F48300C523D2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0A129361951F48300C523D2 /* Foundation.framework */; };
 		C0A129FB1952015900C523D2 /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0A129F91952015900C523D2 /* AudioUnit.framework */; };
 		C0A129FC1952015900C523D2 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0A129FA1952015900C523D2 /* AVFoundation.framework */; };
@@ -22,23 +24,29 @@
 		C0A12AB7195202A600C523D2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0A12A03195201E400C523D2 /* UIKit.framework */; };
 		C0A12ABD195202A600C523D2 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C0A12ABB195202A600C523D2 /* InfoPlist.strings */; };
 		C0A12AC5195202A600C523D2 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0A12AC4195202A600C523D2 /* Images.xcassets */; };
-		C0A12AF8195202FF00C523D2 /* APPRTCAppClient.m in Sources */ = {isa = PBXBuildFile; fileRef = C0A12ADF195202FF00C523D2 /* APPRTCAppClient.m */; };
-		C0A12AF9195202FF00C523D2 /* APPRTCConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C0A12AE1195202FF00C523D2 /* APPRTCConnectionManager.m */; };
-		C0A12AFA195202FF00C523D2 /* channel.html in Resources */ = {isa = PBXBuildFile; fileRef = C0A12AE2195202FF00C523D2 /* channel.html */; };
-		C0A12AFB195202FF00C523D2 /* GAEChannelClient.m in Sources */ = {isa = PBXBuildFile; fileRef = C0A12AE4195202FF00C523D2 /* GAEChannelClient.m */; };
-		C0A12AFC195202FF00C523D2 /* APPRTCAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C0A12AE7195202FF00C523D2 /* APPRTCAppDelegate.m */; };
-		C0A12AFD195202FF00C523D2 /* APPRTCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0A12AEA195202FF00C523D2 /* APPRTCViewController.m */; };
-		C0A12AFE195202FF00C523D2 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = C0A12AEB195202FF00C523D2 /* Default.png */; };
-		C0A12AFF195202FF00C523D2 /* APPRTCViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C0A12AEC195202FF00C523D2 /* APPRTCViewController.xib */; };
-		C0A12B00195202FF00C523D2 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C0A12AEE195202FF00C523D2 /* Info.plist */; };
-		C0A12B01195202FF00C523D2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C0A12AEF195202FF00C523D2 /* main.m */; };
-		C0A12B02195202FF00C523D2 /* ResourceRules.plist in Resources */ = {isa = PBXBuildFile; fileRef = C0A12AF0195202FF00C523D2 /* ResourceRules.plist */; };
 		C0A12BC11952062E00C523D2 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0A129FE195201E400C523D2 /* CoreMedia.framework */; };
 		C0A12BC21952063100C523D2 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0A129FF195201E400C523D2 /* GLKit.framework */; };
 		C0A12BC31952063300C523D2 /* libc.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C0A12A00195201E400C523D2 /* libc.dylib */; };
 		C0A12BC41952063600C523D2 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C0A12A01195201E400C523D2 /* libsqlite3.dylib */; };
-		C0A12BC51952063800C523D2 /* libstdc++.6.0.9.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C0A12A02195201E400C523D2 /* libstdc++.6.0.9.dylib */; };
 		C0A12BC71952064000C523D2 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0A129FA1952015900C523D2 /* AVFoundation.framework */; };
+		C0C3A6FD1A13FBC80062D421 /* APPRTCAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C0C3A6F21A13FBC80062D421 /* APPRTCAppDelegate.m */; };
+		C0C3A6FE1A13FBC80062D421 /* APPRTCAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C0C3A6F21A13FBC80062D421 /* APPRTCAppDelegate.m */; };
+		C0C3A6FF1A13FBC80062D421 /* APPRTCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0C3A6F51A13FBC80062D421 /* APPRTCViewController.m */; };
+		C0C3A7001A13FBC80062D421 /* APPRTCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0C3A6F51A13FBC80062D421 /* APPRTCViewController.m */; };
+		C0C3A7011A13FBC80062D421 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = C0C3A6F61A13FBC80062D421 /* Default.png */; };
+		C0C3A7021A13FBC80062D421 /* APPRTCViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C0C3A6F81A13FBC80062D421 /* APPRTCViewController.xib */; };
+		C0C3A7031A13FBC80062D421 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C0C3A6FA1A13FBC80062D421 /* Info.plist */; };
+		C0C3A7041A13FBC80062D421 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C0C3A6FB1A13FBC80062D421 /* main.m */; };
+		C0C3A7051A13FBC80062D421 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C0C3A6FB1A13FBC80062D421 /* main.m */; };
+		C0C3A7061A13FBC80062D421 /* ResourceRules.plist in Resources */ = {isa = PBXBuildFile; fileRef = C0C3A6FC1A13FBC80062D421 /* ResourceRules.plist */; };
+		C0C3A70E1A13FBF30062D421 /* APPRTCAppClient.m in Sources */ = {isa = PBXBuildFile; fileRef = C0C3A7081A13FBF30062D421 /* APPRTCAppClient.m */; };
+		C0C3A70F1A13FBF30062D421 /* APPRTCAppClient.m in Sources */ = {isa = PBXBuildFile; fileRef = C0C3A7081A13FBF30062D421 /* APPRTCAppClient.m */; };
+		C0C3A7101A13FBF30062D421 /* APPRTCConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C0C3A70A1A13FBF30062D421 /* APPRTCConnectionManager.m */; };
+		C0C3A7111A13FBF30062D421 /* APPRTCConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C0C3A70A1A13FBF30062D421 /* APPRTCConnectionManager.m */; };
+		C0C3A7121A13FBF30062D421 /* channel.html in Resources */ = {isa = PBXBuildFile; fileRef = C0C3A70B1A13FBF30062D421 /* channel.html */; };
+		C0C3A7131A13FBF30062D421 /* GAEChannelClient.m in Sources */ = {isa = PBXBuildFile; fileRef = C0C3A70D1A13FBF30062D421 /* GAEChannelClient.m */; };
+		C0C3A7141A13FBF30062D421 /* GAEChannelClient.m in Sources */ = {isa = PBXBuildFile; fileRef = C0C3A70D1A13FBF30062D421 /* GAEChannelClient.m */; };
+		C0C3A7231A13FD680062D421 /* libstdc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C0C3A7221A13FD680062D421 /* libstdc++.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,32 +76,7 @@
 		C08538F4195240BB00C7A2E7 /* pull.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = pull.sh; sourceTree = "<group>"; };
 		C08538F5195240F800C7A2E7 /* build_webrtc.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = build_webrtc.sh; sourceTree = "<group>"; };
 		C088209A1952345000A12E2E /* dance.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = dance.sh; sourceTree = "<group>"; };
-		C0A022B219533DCD0086F2E6 /* RTCAudioSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCAudioSource.h; path = webrtc/trunk/talk/app/webrtc/objc/public/RTCAudioSource.h; sourceTree = SOURCE_ROOT; };
-		C0A022B319533DCD0086F2E6 /* RTCAudioTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCAudioTrack.h; path = webrtc/trunk/talk/app/webrtc/objc/public/RTCAudioTrack.h; sourceTree = SOURCE_ROOT; };
-		C0A022B419533DCD0086F2E6 /* RTCDataChannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCDataChannel.h; path = webrtc/trunk/talk/app/webrtc/objc/public/RTCDataChannel.h; sourceTree = SOURCE_ROOT; };
-		C0A022B519533DCD0086F2E6 /* RTCEAGLVideoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCEAGLVideoView.h; path = webrtc/trunk/talk/app/webrtc/objc/public/RTCEAGLVideoView.h; sourceTree = SOURCE_ROOT; };
-		C0A022B619533DCD0086F2E6 /* RTCI420Frame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCI420Frame.h; path = webrtc/trunk/talk/app/webrtc/objc/public/RTCI420Frame.h; sourceTree = SOURCE_ROOT; };
-		C0A022B719533DCD0086F2E6 /* RTCICECandidate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCICECandidate.h; path = webrtc/trunk/talk/app/webrtc/objc/public/RTCICECandidate.h; sourceTree = SOURCE_ROOT; };
-		C0A022B819533DCD0086F2E6 /* RTCICEServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCICEServer.h; path = webrtc/trunk/talk/app/webrtc/objc/public/RTCICEServer.h; sourceTree = SOURCE_ROOT; };
-		C0A022B919533DCD0086F2E6 /* RTCMediaConstraints.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCMediaConstraints.h; path = webrtc/trunk/talk/app/webrtc/objc/public/RTCMediaConstraints.h; sourceTree = SOURCE_ROOT; };
-		C0A022BA19533DCD0086F2E6 /* RTCMediaSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCMediaSource.h; path = webrtc/trunk/talk/app/webrtc/objc/public/RTCMediaSource.h; sourceTree = SOURCE_ROOT; };
-		C0A022BB19533DCD0086F2E6 /* RTCMediaStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCMediaStream.h; path = webrtc/trunk/talk/app/webrtc/objc/public/RTCMediaStream.h; sourceTree = SOURCE_ROOT; };
-		C0A022BC19533DCD0086F2E6 /* RTCMediaStreamTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCMediaStreamTrack.h; path = webrtc/trunk/talk/app/webrtc/objc/public/RTCMediaStreamTrack.h; sourceTree = SOURCE_ROOT; };
-		C0A022BD19533DCD0086F2E6 /* RTCNSGLVideoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCNSGLVideoView.h; path = webrtc/trunk/talk/app/webrtc/objc/public/RTCNSGLVideoView.h; sourceTree = SOURCE_ROOT; };
-		C0A022BE19533DCD0086F2E6 /* RTCOpenGLVideoRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCOpenGLVideoRenderer.h; path = webrtc/trunk/talk/app/webrtc/objc/public/RTCOpenGLVideoRenderer.h; sourceTree = SOURCE_ROOT; };
-		C0A022BF19533DCD0086F2E6 /* RTCPair.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCPair.h; path = webrtc/trunk/talk/app/webrtc/objc/public/RTCPair.h; sourceTree = SOURCE_ROOT; };
-		C0A022C019533DCD0086F2E6 /* RTCPeerConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCPeerConnection.h; path = webrtc/trunk/talk/app/webrtc/objc/public/RTCPeerConnection.h; sourceTree = SOURCE_ROOT; };
-		C0A022C119533DCD0086F2E6 /* RTCPeerConnectionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCPeerConnectionDelegate.h; path = webrtc/trunk/talk/app/webrtc/objc/public/RTCPeerConnectionDelegate.h; sourceTree = SOURCE_ROOT; };
-		C0A022C219533DCD0086F2E6 /* RTCPeerConnectionFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCPeerConnectionFactory.h; path = webrtc/trunk/talk/app/webrtc/objc/public/RTCPeerConnectionFactory.h; sourceTree = SOURCE_ROOT; };
-		C0A022C319533DCD0086F2E6 /* RTCSessionDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCSessionDescription.h; path = webrtc/trunk/talk/app/webrtc/objc/public/RTCSessionDescription.h; sourceTree = SOURCE_ROOT; };
-		C0A022C419533DCD0086F2E6 /* RTCSessionDescriptionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCSessionDescriptionDelegate.h; path = webrtc/trunk/talk/app/webrtc/objc/public/RTCSessionDescriptionDelegate.h; sourceTree = SOURCE_ROOT; };
-		C0A022C519533DCD0086F2E6 /* RTCStatsDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCStatsDelegate.h; path = webrtc/trunk/talk/app/webrtc/objc/public/RTCStatsDelegate.h; sourceTree = SOURCE_ROOT; };
-		C0A022C619533DCD0086F2E6 /* RTCStatsReport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCStatsReport.h; path = webrtc/trunk/talk/app/webrtc/objc/public/RTCStatsReport.h; sourceTree = SOURCE_ROOT; };
-		C0A022C719533DCD0086F2E6 /* RTCTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCTypes.h; path = webrtc/trunk/talk/app/webrtc/objc/public/RTCTypes.h; sourceTree = SOURCE_ROOT; };
-		C0A022C819533DCD0086F2E6 /* RTCVideoCapturer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCVideoCapturer.h; path = webrtc/trunk/talk/app/webrtc/objc/public/RTCVideoCapturer.h; sourceTree = SOURCE_ROOT; };
-		C0A022C919533DCD0086F2E6 /* RTCVideoRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCVideoRenderer.h; path = webrtc/trunk/talk/app/webrtc/objc/public/RTCVideoRenderer.h; sourceTree = SOURCE_ROOT; };
-		C0A022CA19533DCD0086F2E6 /* RTCVideoSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCVideoSource.h; path = webrtc/trunk/talk/app/webrtc/objc/public/RTCVideoSource.h; sourceTree = SOURCE_ROOT; };
-		C0A022CB19533DCD0086F2E6 /* RTCVideoTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCVideoTrack.h; path = webrtc/trunk/talk/app/webrtc/objc/public/RTCVideoTrack.h; sourceTree = SOURCE_ROOT; };
+		C095E5EB1952485F00B9FAA0 /* libWebRTC-LATEST-Universal-Debug.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC-LATEST-Universal-Debug.a"; path = "webrtc/libWebRTC-LATEST-Universal-Debug.a"; sourceTree = "<group>"; };
 		C0A129331951F48300C523D2 /* libWebRTC.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libWebRTC.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0A129361951F48300C523D2 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C0A129441951F48300C523D2 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -113,29 +96,56 @@
 		C0A12ABE195202A600C523D2 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		C0A12AC0195202A600C523D2 /* AppRTCDemo-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AppRTCDemo-Prefix.pch"; sourceTree = "<group>"; };
 		C0A12AC4195202A600C523D2 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		C0A12ADE195202FF00C523D2 /* APPRTCAppClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = APPRTCAppClient.h; path = webrtc/trunk/talk/examples/objc/AppRTCDemo/APPRTCAppClient.h; sourceTree = SOURCE_ROOT; };
-		C0A12ADF195202FF00C523D2 /* APPRTCAppClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = APPRTCAppClient.m; path = webrtc/trunk/talk/examples/objc/AppRTCDemo/APPRTCAppClient.m; sourceTree = SOURCE_ROOT; };
-		C0A12AE0195202FF00C523D2 /* APPRTCConnectionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = APPRTCConnectionManager.h; path = webrtc/trunk/talk/examples/objc/AppRTCDemo/APPRTCConnectionManager.h; sourceTree = SOURCE_ROOT; };
-		C0A12AE1195202FF00C523D2 /* APPRTCConnectionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = APPRTCConnectionManager.m; path = webrtc/trunk/talk/examples/objc/AppRTCDemo/APPRTCConnectionManager.m; sourceTree = SOURCE_ROOT; };
-		C0A12AE2195202FF00C523D2 /* channel.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = channel.html; path = webrtc/trunk/talk/examples/objc/AppRTCDemo/channel.html; sourceTree = SOURCE_ROOT; };
-		C0A12AE3195202FF00C523D2 /* GAEChannelClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GAEChannelClient.h; path = webrtc/trunk/talk/examples/objc/AppRTCDemo/GAEChannelClient.h; sourceTree = SOURCE_ROOT; };
-		C0A12AE4195202FF00C523D2 /* GAEChannelClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GAEChannelClient.m; path = webrtc/trunk/talk/examples/objc/AppRTCDemo/GAEChannelClient.m; sourceTree = SOURCE_ROOT; };
-		C0A12AE6195202FF00C523D2 /* APPRTCAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APPRTCAppDelegate.h; sourceTree = "<group>"; };
-		C0A12AE7195202FF00C523D2 /* APPRTCAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APPRTCAppDelegate.m; sourceTree = "<group>"; };
-		C0A12AE8195202FF00C523D2 /* AppRTCDemo-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppRTCDemo-Prefix.pch"; sourceTree = "<group>"; };
-		C0A12AE9195202FF00C523D2 /* APPRTCViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APPRTCViewController.h; sourceTree = "<group>"; };
-		C0A12AEA195202FF00C523D2 /* APPRTCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APPRTCViewController.m; sourceTree = "<group>"; };
-		C0A12AEB195202FF00C523D2 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
-		C0A12AED195202FF00C523D2 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/APPRTCViewController.xib; sourceTree = "<group>"; };
-		C0A12AEE195202FF00C523D2 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C0A12AEF195202FF00C523D2 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		C0A12AF0195202FF00C523D2 /* ResourceRules.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ResourceRules.plist; sourceTree = "<group>"; };
-		C0A12AF2195202FF00C523D2 /* APPRTCAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APPRTCAppDelegate.h; sourceTree = "<group>"; };
-		C0A12AF3195202FF00C523D2 /* APPRTCAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APPRTCAppDelegate.m; sourceTree = "<group>"; };
-		C0A12AF4195202FF00C523D2 /* APPRTCViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APPRTCViewController.h; sourceTree = "<group>"; };
-		C0A12AF5195202FF00C523D2 /* APPRTCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APPRTCViewController.m; sourceTree = "<group>"; };
-		C0A12AF6195202FF00C523D2 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C0A12AF7195202FF00C523D2 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		C0C3A6D71A13FBA20062D421 /* RTCAudioSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCAudioSource.h; path = webrtc/src/talk/app/webrtc/objc/public/RTCAudioSource.h; sourceTree = SOURCE_ROOT; };
+		C0C3A6D81A13FBA20062D421 /* RTCAudioTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCAudioTrack.h; path = webrtc/src/talk/app/webrtc/objc/public/RTCAudioTrack.h; sourceTree = SOURCE_ROOT; };
+		C0C3A6D91A13FBA20062D421 /* RTCDataChannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCDataChannel.h; path = webrtc/src/talk/app/webrtc/objc/public/RTCDataChannel.h; sourceTree = SOURCE_ROOT; };
+		C0C3A6DA1A13FBA20062D421 /* RTCEAGLVideoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCEAGLVideoView.h; path = webrtc/src/talk/app/webrtc/objc/public/RTCEAGLVideoView.h; sourceTree = SOURCE_ROOT; };
+		C0C3A6DB1A13FBA20062D421 /* RTCI420Frame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCI420Frame.h; path = webrtc/src/talk/app/webrtc/objc/public/RTCI420Frame.h; sourceTree = SOURCE_ROOT; };
+		C0C3A6DC1A13FBA20062D421 /* RTCICECandidate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCICECandidate.h; path = webrtc/src/talk/app/webrtc/objc/public/RTCICECandidate.h; sourceTree = SOURCE_ROOT; };
+		C0C3A6DD1A13FBA20062D421 /* RTCICEServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCICEServer.h; path = webrtc/src/talk/app/webrtc/objc/public/RTCICEServer.h; sourceTree = SOURCE_ROOT; };
+		C0C3A6DE1A13FBA20062D421 /* RTCMediaConstraints.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCMediaConstraints.h; path = webrtc/src/talk/app/webrtc/objc/public/RTCMediaConstraints.h; sourceTree = SOURCE_ROOT; };
+		C0C3A6DF1A13FBA20062D421 /* RTCMediaSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCMediaSource.h; path = webrtc/src/talk/app/webrtc/objc/public/RTCMediaSource.h; sourceTree = SOURCE_ROOT; };
+		C0C3A6E01A13FBA20062D421 /* RTCMediaStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCMediaStream.h; path = webrtc/src/talk/app/webrtc/objc/public/RTCMediaStream.h; sourceTree = SOURCE_ROOT; };
+		C0C3A6E11A13FBA20062D421 /* RTCMediaStreamTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCMediaStreamTrack.h; path = webrtc/src/talk/app/webrtc/objc/public/RTCMediaStreamTrack.h; sourceTree = SOURCE_ROOT; };
+		C0C3A6E21A13FBA20062D421 /* RTCNSGLVideoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCNSGLVideoView.h; path = webrtc/src/talk/app/webrtc/objc/public/RTCNSGLVideoView.h; sourceTree = SOURCE_ROOT; };
+		C0C3A6E31A13FBA20062D421 /* RTCOpenGLVideoRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCOpenGLVideoRenderer.h; path = webrtc/src/talk/app/webrtc/objc/public/RTCOpenGLVideoRenderer.h; sourceTree = SOURCE_ROOT; };
+		C0C3A6E41A13FBA20062D421 /* RTCPair.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCPair.h; path = webrtc/src/talk/app/webrtc/objc/public/RTCPair.h; sourceTree = SOURCE_ROOT; };
+		C0C3A6E51A13FBA20062D421 /* RTCPeerConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCPeerConnection.h; path = webrtc/src/talk/app/webrtc/objc/public/RTCPeerConnection.h; sourceTree = SOURCE_ROOT; };
+		C0C3A6E61A13FBA20062D421 /* RTCPeerConnectionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCPeerConnectionDelegate.h; path = webrtc/src/talk/app/webrtc/objc/public/RTCPeerConnectionDelegate.h; sourceTree = SOURCE_ROOT; };
+		C0C3A6E71A13FBA20062D421 /* RTCPeerConnectionFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCPeerConnectionFactory.h; path = webrtc/src/talk/app/webrtc/objc/public/RTCPeerConnectionFactory.h; sourceTree = SOURCE_ROOT; };
+		C0C3A6E81A13FBA20062D421 /* RTCSessionDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCSessionDescription.h; path = webrtc/src/talk/app/webrtc/objc/public/RTCSessionDescription.h; sourceTree = SOURCE_ROOT; };
+		C0C3A6E91A13FBA20062D421 /* RTCSessionDescriptionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCSessionDescriptionDelegate.h; path = webrtc/src/talk/app/webrtc/objc/public/RTCSessionDescriptionDelegate.h; sourceTree = SOURCE_ROOT; };
+		C0C3A6EA1A13FBA20062D421 /* RTCStatsDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCStatsDelegate.h; path = webrtc/src/talk/app/webrtc/objc/public/RTCStatsDelegate.h; sourceTree = SOURCE_ROOT; };
+		C0C3A6EB1A13FBA20062D421 /* RTCStatsReport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCStatsReport.h; path = webrtc/src/talk/app/webrtc/objc/public/RTCStatsReport.h; sourceTree = SOURCE_ROOT; };
+		C0C3A6EC1A13FBA20062D421 /* RTCTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCTypes.h; path = webrtc/src/talk/app/webrtc/objc/public/RTCTypes.h; sourceTree = SOURCE_ROOT; };
+		C0C3A6ED1A13FBA20062D421 /* RTCVideoCapturer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCVideoCapturer.h; path = webrtc/src/talk/app/webrtc/objc/public/RTCVideoCapturer.h; sourceTree = SOURCE_ROOT; };
+		C0C3A6EE1A13FBA20062D421 /* RTCVideoRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCVideoRenderer.h; path = webrtc/src/talk/app/webrtc/objc/public/RTCVideoRenderer.h; sourceTree = SOURCE_ROOT; };
+		C0C3A6EF1A13FBA20062D421 /* RTCVideoSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCVideoSource.h; path = webrtc/src/talk/app/webrtc/objc/public/RTCVideoSource.h; sourceTree = SOURCE_ROOT; };
+		C0C3A6F01A13FBA20062D421 /* RTCVideoTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCVideoTrack.h; path = webrtc/src/talk/app/webrtc/objc/public/RTCVideoTrack.h; sourceTree = SOURCE_ROOT; };
+		C0C3A6F11A13FBC80062D421 /* APPRTCAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = APPRTCAppDelegate.h; path = webrtc/src/talk/examples/objc/AppRTCDemo/ios/APPRTCAppDelegate.h; sourceTree = SOURCE_ROOT; };
+		C0C3A6F21A13FBC80062D421 /* APPRTCAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = APPRTCAppDelegate.m; path = webrtc/src/talk/examples/objc/AppRTCDemo/ios/APPRTCAppDelegate.m; sourceTree = SOURCE_ROOT; };
+		C0C3A6F31A13FBC80062D421 /* AppRTCDemo-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "AppRTCDemo-Prefix.pch"; path = "webrtc/src/talk/examples/objc/AppRTCDemo/ios/AppRTCDemo-Prefix.pch"; sourceTree = SOURCE_ROOT; };
+		C0C3A6F41A13FBC80062D421 /* APPRTCViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = APPRTCViewController.h; path = webrtc/src/talk/examples/objc/AppRTCDemo/ios/APPRTCViewController.h; sourceTree = SOURCE_ROOT; };
+		C0C3A6F51A13FBC80062D421 /* APPRTCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = APPRTCViewController.m; path = webrtc/src/talk/examples/objc/AppRTCDemo/ios/APPRTCViewController.m; sourceTree = SOURCE_ROOT; };
+		C0C3A6F61A13FBC80062D421 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = webrtc/src/talk/examples/objc/AppRTCDemo/ios/Default.png; sourceTree = SOURCE_ROOT; };
+		C0C3A6F91A13FBC80062D421 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = APPRTCViewController.xib; sourceTree = "<group>"; };
+		C0C3A6FA1A13FBC80062D421 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = webrtc/src/talk/examples/objc/AppRTCDemo/ios/Info.plist; sourceTree = SOURCE_ROOT; };
+		C0C3A6FB1A13FBC80062D421 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = webrtc/src/talk/examples/objc/AppRTCDemo/ios/main.m; sourceTree = SOURCE_ROOT; };
+		C0C3A6FC1A13FBC80062D421 /* ResourceRules.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = ResourceRules.plist; path = webrtc/src/talk/examples/objc/AppRTCDemo/ios/ResourceRules.plist; sourceTree = SOURCE_ROOT; };
+		C0C3A7071A13FBF30062D421 /* APPRTCAppClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = APPRTCAppClient.h; path = webrtc/src/talk/examples/objc/AppRTCDemo/APPRTCAppClient.h; sourceTree = SOURCE_ROOT; };
+		C0C3A7081A13FBF30062D421 /* APPRTCAppClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = APPRTCAppClient.m; path = webrtc/src/talk/examples/objc/AppRTCDemo/APPRTCAppClient.m; sourceTree = SOURCE_ROOT; };
+		C0C3A7091A13FBF30062D421 /* APPRTCConnectionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = APPRTCConnectionManager.h; path = webrtc/src/talk/examples/objc/AppRTCDemo/APPRTCConnectionManager.h; sourceTree = SOURCE_ROOT; };
+		C0C3A70A1A13FBF30062D421 /* APPRTCConnectionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = APPRTCConnectionManager.m; path = webrtc/src/talk/examples/objc/AppRTCDemo/APPRTCConnectionManager.m; sourceTree = SOURCE_ROOT; };
+		C0C3A70B1A13FBF30062D421 /* channel.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = channel.html; path = webrtc/src/talk/examples/objc/AppRTCDemo/channel.html; sourceTree = SOURCE_ROOT; };
+		C0C3A70C1A13FBF30062D421 /* GAEChannelClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GAEChannelClient.h; path = webrtc/src/talk/examples/objc/AppRTCDemo/GAEChannelClient.h; sourceTree = SOURCE_ROOT; };
+		C0C3A70D1A13FBF30062D421 /* GAEChannelClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GAEChannelClient.m; path = webrtc/src/talk/examples/objc/AppRTCDemo/GAEChannelClient.m; sourceTree = SOURCE_ROOT; };
+		C0C3A7151A13FBFF0062D421 /* APPRTCAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = APPRTCAppDelegate.h; path = webrtc/src/talk/examples/objc/AppRTCDemo/mac/APPRTCAppDelegate.h; sourceTree = SOURCE_ROOT; };
+		C0C3A7161A13FBFF0062D421 /* APPRTCAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = APPRTCAppDelegate.m; path = webrtc/src/talk/examples/objc/AppRTCDemo/mac/APPRTCAppDelegate.m; sourceTree = SOURCE_ROOT; };
+		C0C3A7171A13FBFF0062D421 /* APPRTCViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = APPRTCViewController.h; path = webrtc/src/talk/examples/objc/AppRTCDemo/mac/APPRTCViewController.h; sourceTree = SOURCE_ROOT; };
+		C0C3A7181A13FBFF0062D421 /* APPRTCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = APPRTCViewController.m; path = webrtc/src/talk/examples/objc/AppRTCDemo/mac/APPRTCViewController.m; sourceTree = SOURCE_ROOT; };
+		C0C3A7191A13FBFF0062D421 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = webrtc/src/talk/examples/objc/AppRTCDemo/mac/Info.plist; sourceTree = SOURCE_ROOT; };
+		C0C3A71A1A13FBFF0062D421 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = webrtc/src/talk/examples/objc/AppRTCDemo/mac/main.m; sourceTree = SOURCE_ROOT; };
+		C0C3A7221A13FD680062D421 /* libstdc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.dylib"; path = "usr/lib/libstdc++.dylib"; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,6 +162,7 @@
 				C0A12A07195201E400C523D2 /* libc.dylib in Frameworks */,
 				C0A12A08195201E400C523D2 /* libsqlite3.dylib in Frameworks */,
 				C0A12A09195201E400C523D2 /* libstdc++.6.0.9.dylib in Frameworks */,
+				C095E5ED1952488200B9FAA0 /* libWebRTC-LATEST-Universal-Debug.a in Frameworks */,
 				C0A12A0A195201E400C523D2 /* UIKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -160,6 +171,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C0C3A7231A13FD680062D421 /* libstdc++.dylib in Frameworks */,
 				C0A12AB5195202A600C523D2 /* Foundation.framework in Frameworks */,
 				C0A12BC71952064000C523D2 /* AVFoundation.framework in Frameworks */,
 				C0A12AB6195202A600C523D2 /* CoreGraphics.framework in Frameworks */,
@@ -167,7 +179,7 @@
 				C0A12BC21952063100C523D2 /* GLKit.framework in Frameworks */,
 				C0A12BC31952063300C523D2 /* libc.dylib in Frameworks */,
 				C0A12BC41952063600C523D2 /* libsqlite3.dylib in Frameworks */,
-				C0A12BC51952063800C523D2 /* libstdc++.6.0.9.dylib in Frameworks */,
+				C095E5EC1952485F00B9FAA0 /* libWebRTC-LATEST-Universal-Debug.a in Frameworks */,
 				C0A12AB7195202A600C523D2 /* UIKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -198,6 +210,8 @@
 		C0A129351951F48300C523D2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C0C3A7221A13FD680062D421 /* libstdc++.dylib */,
+				C095E5EB1952485F00B9FAA0 /* libWebRTC-LATEST-Universal-Debug.a */,
 				C0A129FD195201E400C523D2 /* CoreGraphics.framework */,
 				C0A129FE195201E400C523D2 /* CoreMedia.framework */,
 				C0A129FF195201E400C523D2 /* GLKit.framework */,
@@ -216,32 +230,32 @@
 		C0A129381951F48300C523D2 /* Headers */ = {
 			isa = PBXGroup;
 			children = (
-				C0A022B219533DCD0086F2E6 /* RTCAudioSource.h */,
-				C0A022B319533DCD0086F2E6 /* RTCAudioTrack.h */,
-				C0A022B419533DCD0086F2E6 /* RTCDataChannel.h */,
-				C0A022B519533DCD0086F2E6 /* RTCEAGLVideoView.h */,
-				C0A022B619533DCD0086F2E6 /* RTCI420Frame.h */,
-				C0A022B719533DCD0086F2E6 /* RTCICECandidate.h */,
-				C0A022B819533DCD0086F2E6 /* RTCICEServer.h */,
-				C0A022B919533DCD0086F2E6 /* RTCMediaConstraints.h */,
-				C0A022BA19533DCD0086F2E6 /* RTCMediaSource.h */,
-				C0A022BB19533DCD0086F2E6 /* RTCMediaStream.h */,
-				C0A022BC19533DCD0086F2E6 /* RTCMediaStreamTrack.h */,
-				C0A022BD19533DCD0086F2E6 /* RTCNSGLVideoView.h */,
-				C0A022BE19533DCD0086F2E6 /* RTCOpenGLVideoRenderer.h */,
-				C0A022BF19533DCD0086F2E6 /* RTCPair.h */,
-				C0A022C019533DCD0086F2E6 /* RTCPeerConnection.h */,
-				C0A022C119533DCD0086F2E6 /* RTCPeerConnectionDelegate.h */,
-				C0A022C219533DCD0086F2E6 /* RTCPeerConnectionFactory.h */,
-				C0A022C319533DCD0086F2E6 /* RTCSessionDescription.h */,
-				C0A022C419533DCD0086F2E6 /* RTCSessionDescriptionDelegate.h */,
-				C0A022C519533DCD0086F2E6 /* RTCStatsDelegate.h */,
-				C0A022C619533DCD0086F2E6 /* RTCStatsReport.h */,
-				C0A022C719533DCD0086F2E6 /* RTCTypes.h */,
-				C0A022C819533DCD0086F2E6 /* RTCVideoCapturer.h */,
-				C0A022C919533DCD0086F2E6 /* RTCVideoRenderer.h */,
-				C0A022CA19533DCD0086F2E6 /* RTCVideoSource.h */,
-				C0A022CB19533DCD0086F2E6 /* RTCVideoTrack.h */,
+				C0C3A6D71A13FBA20062D421 /* RTCAudioSource.h */,
+				C0C3A6D81A13FBA20062D421 /* RTCAudioTrack.h */,
+				C0C3A6D91A13FBA20062D421 /* RTCDataChannel.h */,
+				C0C3A6DA1A13FBA20062D421 /* RTCEAGLVideoView.h */,
+				C0C3A6DB1A13FBA20062D421 /* RTCI420Frame.h */,
+				C0C3A6DC1A13FBA20062D421 /* RTCICECandidate.h */,
+				C0C3A6DD1A13FBA20062D421 /* RTCICEServer.h */,
+				C0C3A6DE1A13FBA20062D421 /* RTCMediaConstraints.h */,
+				C0C3A6DF1A13FBA20062D421 /* RTCMediaSource.h */,
+				C0C3A6E01A13FBA20062D421 /* RTCMediaStream.h */,
+				C0C3A6E11A13FBA20062D421 /* RTCMediaStreamTrack.h */,
+				C0C3A6E21A13FBA20062D421 /* RTCNSGLVideoView.h */,
+				C0C3A6E31A13FBA20062D421 /* RTCOpenGLVideoRenderer.h */,
+				C0C3A6E41A13FBA20062D421 /* RTCPair.h */,
+				C0C3A6E51A13FBA20062D421 /* RTCPeerConnection.h */,
+				C0C3A6E61A13FBA20062D421 /* RTCPeerConnectionDelegate.h */,
+				C0C3A6E71A13FBA20062D421 /* RTCPeerConnectionFactory.h */,
+				C0C3A6E81A13FBA20062D421 /* RTCSessionDescription.h */,
+				C0C3A6E91A13FBA20062D421 /* RTCSessionDescriptionDelegate.h */,
+				C0C3A6EA1A13FBA20062D421 /* RTCStatsDelegate.h */,
+				C0C3A6EB1A13FBA20062D421 /* RTCStatsReport.h */,
+				C0C3A6EC1A13FBA20062D421 /* RTCTypes.h */,
+				C0C3A6ED1A13FBA20062D421 /* RTCVideoCapturer.h */,
+				C0C3A6EE1A13FBA20062D421 /* RTCVideoRenderer.h */,
+				C0C3A6EF1A13FBA20062D421 /* RTCVideoSource.h */,
+				C0C3A6F01A13FBA20062D421 /* RTCVideoTrack.h */,
 			);
 			name = Headers;
 			path = WebRTC;
@@ -262,13 +276,13 @@
 		C0A12AB8195202A600C523D2 /* AppRTCDemo */ = {
 			isa = PBXGroup;
 			children = (
-				C0A12ADE195202FF00C523D2 /* APPRTCAppClient.h */,
-				C0A12ADF195202FF00C523D2 /* APPRTCAppClient.m */,
-				C0A12AE0195202FF00C523D2 /* APPRTCConnectionManager.h */,
-				C0A12AE1195202FF00C523D2 /* APPRTCConnectionManager.m */,
-				C0A12AE2195202FF00C523D2 /* channel.html */,
-				C0A12AE3195202FF00C523D2 /* GAEChannelClient.h */,
-				C0A12AE4195202FF00C523D2 /* GAEChannelClient.m */,
+				C0C3A7071A13FBF30062D421 /* APPRTCAppClient.h */,
+				C0C3A7081A13FBF30062D421 /* APPRTCAppClient.m */,
+				C0C3A7091A13FBF30062D421 /* APPRTCConnectionManager.h */,
+				C0C3A70A1A13FBF30062D421 /* APPRTCConnectionManager.m */,
+				C0C3A70B1A13FBF30062D421 /* channel.html */,
+				C0C3A70C1A13FBF30062D421 /* GAEChannelClient.h */,
+				C0C3A70D1A13FBF30062D421 /* GAEChannelClient.m */,
 				C0A12AE5195202FF00C523D2 /* ios */,
 				C0A12AF1195202FF00C523D2 /* mac */,
 				C0A12AC4195202A600C523D2 /* Images.xcassets */,
@@ -291,16 +305,16 @@
 		C0A12AE5195202FF00C523D2 /* ios */ = {
 			isa = PBXGroup;
 			children = (
-				C0A12AE6195202FF00C523D2 /* APPRTCAppDelegate.h */,
-				C0A12AE7195202FF00C523D2 /* APPRTCAppDelegate.m */,
-				C0A12AE8195202FF00C523D2 /* AppRTCDemo-Prefix.pch */,
-				C0A12AE9195202FF00C523D2 /* APPRTCViewController.h */,
-				C0A12AEA195202FF00C523D2 /* APPRTCViewController.m */,
-				C0A12AEB195202FF00C523D2 /* Default.png */,
-				C0A12AEC195202FF00C523D2 /* APPRTCViewController.xib */,
-				C0A12AEE195202FF00C523D2 /* Info.plist */,
-				C0A12AEF195202FF00C523D2 /* main.m */,
-				C0A12AF0195202FF00C523D2 /* ResourceRules.plist */,
+				C0C3A6F11A13FBC80062D421 /* APPRTCAppDelegate.h */,
+				C0C3A6F21A13FBC80062D421 /* APPRTCAppDelegate.m */,
+				C0C3A6F31A13FBC80062D421 /* AppRTCDemo-Prefix.pch */,
+				C0C3A6F41A13FBC80062D421 /* APPRTCViewController.h */,
+				C0C3A6F51A13FBC80062D421 /* APPRTCViewController.m */,
+				C0C3A6F61A13FBC80062D421 /* Default.png */,
+				C0C3A6F71A13FBC80062D421 /* en.lproj */,
+				C0C3A6FA1A13FBC80062D421 /* Info.plist */,
+				C0C3A6FB1A13FBC80062D421 /* main.m */,
+				C0C3A6FC1A13FBC80062D421 /* ResourceRules.plist */,
 			);
 			name = ios;
 			path = webrtc/trunk/talk/examples/objc/AppRTCDemo/ios;
@@ -309,15 +323,24 @@
 		C0A12AF1195202FF00C523D2 /* mac */ = {
 			isa = PBXGroup;
 			children = (
-				C0A12AF2195202FF00C523D2 /* APPRTCAppDelegate.h */,
-				C0A12AF3195202FF00C523D2 /* APPRTCAppDelegate.m */,
-				C0A12AF4195202FF00C523D2 /* APPRTCViewController.h */,
-				C0A12AF5195202FF00C523D2 /* APPRTCViewController.m */,
-				C0A12AF6195202FF00C523D2 /* Info.plist */,
-				C0A12AF7195202FF00C523D2 /* main.m */,
+				C0C3A7151A13FBFF0062D421 /* APPRTCAppDelegate.h */,
+				C0C3A7161A13FBFF0062D421 /* APPRTCAppDelegate.m */,
+				C0C3A7171A13FBFF0062D421 /* APPRTCViewController.h */,
+				C0C3A7181A13FBFF0062D421 /* APPRTCViewController.m */,
+				C0C3A7191A13FBFF0062D421 /* Info.plist */,
+				C0C3A71A1A13FBFF0062D421 /* main.m */,
 			);
 			name = mac;
 			path = webrtc/trunk/talk/examples/objc/AppRTCDemo/mac;
+			sourceTree = SOURCE_ROOT;
+		};
+		C0C3A6F71A13FBC80062D421 /* en.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				C0C3A6F81A13FBC80062D421 /* APPRTCViewController.xib */,
+			);
+			name = en.lproj;
+			path = webrtc/src/talk/examples/objc/AppRTCDemo/ios/en.lproj;
 			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
@@ -410,11 +433,11 @@
 			files = (
 				C0A12ABD195202A600C523D2 /* InfoPlist.strings in Resources */,
 				C0A12AC5195202A600C523D2 /* Images.xcassets in Resources */,
-				C0A12B00195202FF00C523D2 /* Info.plist in Resources */,
-				C0A12AFA195202FF00C523D2 /* channel.html in Resources */,
-				C0A12AFE195202FF00C523D2 /* Default.png in Resources */,
-				C0A12AFF195202FF00C523D2 /* APPRTCViewController.xib in Resources */,
-				C0A12B02195202FF00C523D2 /* ResourceRules.plist in Resources */,
+				C0C3A7121A13FBF30062D421 /* channel.html in Resources */,
+				C0C3A7031A13FBC80062D421 /* Info.plist in Resources */,
+				C0C3A7021A13FBC80062D421 /* APPRTCViewController.xib in Resources */,
+				C0C3A7011A13FBC80062D421 /* Default.png in Resources */,
+				C0C3A7061A13FBC80062D421 /* ResourceRules.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -425,6 +448,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C0C3A7131A13FBF30062D421 /* GAEChannelClient.m in Sources */,
+				C0C3A6FF1A13FBC80062D421 /* APPRTCViewController.m in Sources */,
+				C0C3A7041A13FBC80062D421 /* main.m in Sources */,
+				C0C3A70E1A13FBF30062D421 /* APPRTCAppClient.m in Sources */,
+				C0C3A6FD1A13FBC80062D421 /* APPRTCAppDelegate.m in Sources */,
+				C0C3A7101A13FBF30062D421 /* APPRTCConnectionManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -432,12 +461,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C0A12AF8195202FF00C523D2 /* APPRTCAppClient.m in Sources */,
-				C0A12AFC195202FF00C523D2 /* APPRTCAppDelegate.m in Sources */,
-				C0A12AFD195202FF00C523D2 /* APPRTCViewController.m in Sources */,
-				C0A12AFB195202FF00C523D2 /* GAEChannelClient.m in Sources */,
-				C0A12B01195202FF00C523D2 /* main.m in Sources */,
-				C0A12AF9195202FF00C523D2 /* APPRTCConnectionManager.m in Sources */,
+				C0C3A7141A13FBF30062D421 /* GAEChannelClient.m in Sources */,
+				C0C3A6FE1A13FBC80062D421 /* APPRTCAppDelegate.m in Sources */,
+				C0C3A7051A13FBC80062D421 /* main.m in Sources */,
+				C0C3A70F1A13FBF30062D421 /* APPRTCAppClient.m in Sources */,
+				C0C3A7001A13FBC80062D421 /* APPRTCViewController.m in Sources */,
+				C0C3A7111A13FBF30062D421 /* APPRTCConnectionManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -460,10 +489,10 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		C0A12AEC195202FF00C523D2 /* APPRTCViewController.xib */ = {
+		C0C3A6F81A13FBC80062D421 /* APPRTCViewController.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				C0A12AED195202FF00C523D2 /* en */,
+				C0C3A6F91A13FBC80062D421 /* en */,
 			);
 			name = APPRTCViewController.xib;
 			sourceTree = "<group>";
@@ -544,14 +573,15 @@
 			buildSettings = {
 				DSTROOT = /tmp/WebRTC.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "WebRTC/WebRTC-Prefix.pch";
+				GCC_PREFIX_HEADER = "webrtc/src/talk/examples/objc/AppRTCDemo/ios/AppRTCDemo-Prefix.pch";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
-					"$(PROJECT_DIR)/webrtc/libjingle_peerconnection_builds/Debug-iphoneos",
+					"/Users/rbehera/webrtc/libjingle_peerconnection_builds/Debug-iphoneos",
 					"$(PROJECT_DIR)/webrtc/libjingle_peerconnection_builds",
 					"$(PROJECT_DIR)/webrtc",
 				);
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -564,14 +594,15 @@
 			buildSettings = {
 				DSTROOT = /tmp/WebRTC.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "WebRTC/WebRTC-Prefix.pch";
+				GCC_PREFIX_HEADER = "webrtc/src/talk/examples/objc/AppRTCDemo/ios/AppRTCDemo-Prefix.pch";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
-					"$(PROJECT_DIR)/webrtc/libjingle_peerconnection_builds/Debug-iphoneos",
+					"/Users/rbehera/webrtc/libjingle_peerconnection_builds/Debug-iphoneos",
 					"$(PROJECT_DIR)/webrtc/libjingle_peerconnection_builds",
 					"$(PROJECT_DIR)/webrtc",
 				);
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -626,10 +657,12 @@
 				INFOPLIST_FILE = "AppRTCDemo/AppRTCDemo-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"/Users/rbehera/webrtc/libjingle_peerconnection_builds/Debug-iphoneos",
+					"$(PROJECT_DIR)/webrtc/libjingle_peerconnection_builds/Profile-iphoneos",
+					"$(PROJECT_DIR)/webrtc/libjingle_peerconnection_builds",
 					"$(PROJECT_DIR)/webrtc",
 				);
 				ONLY_ACTIVE_ARCH = NO;
-				OTHER_LDFLAGS = "-lWebRTC-LATEST-Universal-Debug";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = armv7;
@@ -648,9 +681,11 @@
 				INFOPLIST_FILE = "AppRTCDemo/AppRTCDemo-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"/Users/rbehera/webrtc/libjingle_peerconnection_builds/Debug-iphoneos",
+					"$(PROJECT_DIR)/webrtc/libjingle_peerconnection_builds/Profile-iphoneos",
+					"$(PROJECT_DIR)/webrtc/libjingle_peerconnection_builds",
 					"$(PROJECT_DIR)/webrtc",
 				);
-				OTHER_LDFLAGS = "-lWebRTC-LATEST-Universal-Release";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = armv7;

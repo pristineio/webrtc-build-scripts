@@ -73,6 +73,11 @@
             isEnabled = "YES">
          </EnvironmentVariable>
          <EnvironmentVariable
+            key = "WEBRTC_PROFILE"
+            value = "true"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
             key = "WEBRTC_RELEASE"
             value = "true"
             isEnabled = "YES">
