@@ -91,7 +91,14 @@ function wrX86() {
 function wrX86_64() {
     wrbase
     export GYP_DEFINES="$GYP_DEFINES OS=ios target_arch=x64"
-    export GYP_GENERATOR_FLAGS="$GYP_GENERATOR_FLAGS output_dir=out_ios_x86_64"
+    export GYP_GENERATOR_FLAGS="output_dir=out_ios_x86_64"
+}
+
+# Add the Mac 64 bit intel defines
+function wrMac64() {
+    wrbase
+    export GYP_DEFINES="$GYP_DEFINES OS=mac target_arch=x64 use_system_ssl=1 use_openssl=0 use_nss=0 mac_sdk=10.9"
+    export GYP_GENERATOR_FLAGS="output_dir=out_mac_x86_64"
 }
 
 # Gets the revision number of the current WebRTC svn repo on the filesystem
@@ -165,6 +172,26 @@ function sync() {
 function copy_headers() {
     create_directory_if_not_found "$BUILD"
     ln -s $WEBRTC/src/talk/app/webrtc/objc/public/ $WEBRTC/headers || true
+}
+
+function build_webrtc_mac() {
+    cd "$WEBRTC/src"
+
+    wrMac64
+    gclient runhooks
+
+    copy_headers
+
+    WEBRTC_REVISION=`get_revision_number`
+    if [ "$WEBRTC_DEBUG" = true ] ; then
+        ninja -C "out_mac_x86_64/Debug/" AppRTCDemo
+        libtool -static -o "$BUILD/libWebRTC-$WEBRTC_REVISION-mac-x86_64-Debug.a" $WEBRTC/src/out_mac_x86_64/Debug/*.a
+    fi
+
+    if [ "$WEBRTC_RELEASE" = true ] ; then
+        ninja -C "out_ios_x86/Release/" AppRTCDemo
+        libtool -static -o "$BUILD/libWebRTC-$WEBRTC_REVISION-mac-x86_64-Release.a" $WEBRTC/src/out_ios_x86/Release/*.a
+    fi
 }
 
 # Build AppRTC Demo for the simulator (ia32 architecture)

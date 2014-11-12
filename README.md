@@ -3,7 +3,8 @@ A set of build scripts useful for building WebRTC libraries for Android and iOS.
 
 Bugs: Please submit the [revision](https://code.google.com/p/webrtc/source/list) number that you are using. There are frequent updates to this project so please watch the changelist for bug fixes.
 
-###Android-- [Guide here](http://tech.pristine.io/build-android-apprtc/)
+###Android ARMv7,x86, x86_64 Builds -- [Guide here](http://tech.pristine.io/build-android-apprtc/)
+ARM64 is available but doesn't build, yet
 The following instructions are for building the native WebRTC libraries for Android.
 
 
@@ -20,9 +21,6 @@ source android/build.sh
 # Install any dependencies needed
 install_dependencies
 
-# Setup jdk
-install_jdk1_6
-
 # Pull WebRTC
 get_webrtc
 ```
@@ -33,6 +31,13 @@ If you don't have a Ubuntu machine available, or you are too lazy to setup a vir
 First of all, you need to [download and install](http://www.vagrantup.com/downloads.html) Vagrant. After that, from the `/android` directory, you need to execute the following in you shell:
 
 ```shell
+
+# If you need to use private SSH keys from your host computer 
+# Execute this line of code to ensure your private key is added to your identity
+ssh-add -L
+
+# If there are no identities, add them by:
+ssh-add ~/.ssh/id_rsa
 
 # Boot up and provision the Vagrant box
 vagrant up
@@ -55,17 +60,13 @@ export WEBRTC_DEBUG=true
 build_apprtc
 ```
 
-You can build for x86 platform
+You can build for armv7, armv8, x86, x86_64 platform
 
 ```shell
-# Build apprtc
-export WEBRTC_ARCH=x86
-build_apprtc
-
-# Build in debug mode
-export WEBRTC_ARCH=x86
-export WEBRTC_DEBUG=true
-build_apprtc
+export WEBRTC_ARCH=armv7 #or armv8, x86, or x86_64
+prepare_requirements &&
+prepare_gyp_defines &&
+execute_build
 ```
 
 You can build a particular [revision](https://code.google.com/p/webrtc/source/list)
@@ -82,7 +83,7 @@ When the scripts are done you can find the .jar and .so file in $WEBRTC_HOME und
 
 
 
-###iOS -- [Guide here](http://tech.pristine.io/build-ios-apprtc/)
+###iOS and Mac -- [Guide here](http://tech.pristine.io/build-ios-apprtc/)
 These steps must be run on Mac OSX
 
 Source the [ios build scripts](https://github.com/pristineio/webrtc-build-scripts/blob/master/ios/build.sh) or  [open the Xcode project](https://github.com/pristineio/webrtc-build-scripts/tree/master/ios/WebRTC.xcodeproj)
@@ -102,11 +103,25 @@ WEBRTC_RELEASE=true
 
 #### Building the libraries
 
-Then you can build the Android example
+Then you can build the iOS example
 ```shell
 # We use the term webrtc dance a lot to build 
 dance
+
+# Or in two steps
+get_webrtc
+# Make changes then build WebRTC
+build_webrtc
 ```
+Mac example
+```shell
+# Get WebRTC
+get_webrtc
+# Make changes then build WebRTC
+build_webrtc_mac
+```
+
+
 Check which [revision](https://code.google.com/p/webrtc/source/list) you are using at ./webrtc-build-scripts/ios/webrtc/libWebRTC-LATEST-Universal-Debug.a.version.txt
 
 
@@ -116,15 +131,15 @@ open ./webrtc-build-scripts/ios/WebRTC.xcodeproj
 ```
 
 You can also build a particular [revision](https://code.google.com/p/webrtc/source/list)
-
+```shell
     #Pull WebRTC
     update2Revision 6783
-
+```
 Make changes then,
-
+```shell
     #Build WebRTC
     build_webrtc
-
+```
 Make sure you label your new binaries that are generated in 
 ```shell
 ./webrtc-build-scripts/ios/webrtc/libjingle_peerconnection_builds 
