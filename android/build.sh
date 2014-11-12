@@ -1,9 +1,26 @@
 # !/bin/bash
+# Copyright Pristine Inc 
+# Author: Rahul Behera <rahul@pristine.io>
+# Author: Aaron Alaniz <aaron@pristine.io>
+#
+# Builds the android peer connection library with the first argument as the webrtc directory
+#
+# CHECK OUT http://www.lucidchart.com/invitations/accept/52f3f780-21f0-40f4-a18c-68e20a0093bd
+# FOR A DIAGRAM EXPLAINING THE FUNCTIONS AND THIS FILE IN A HIGHER LEVEL
+#
+
 
 # Set your environment how you want
-PROJECT_ROOT="$HOME"
+if [ -n  "$VAGRANT_MACHINE" ];
+    then
+    PROJECT_ROOT="/vagrant"
+else
+    PROJECT_ROOT="$HOME"
+fi
+
 DEPOT_TOOLS="$PROJECT_ROOT/depot_tools"
 WEBRTC_ROOT="$PROJECT_ROOT/webrtc"
+
 
 # Utility method for creating a directory
 create_directory_if_not_found() {
@@ -16,38 +33,19 @@ create_directory_if_not_found() {
 	fi
 }
 
-# Installs all android related dependencies
+# Installs some of the android dependencies. the rest of the dependecies can be found at 
 install_dependencies() {
-	sudo apt-get -y install wget git gnupg flex bison gperf build-essential zip curl subversion pkg-config
-}
-
-# Installs jdk 1.6
-install_jdk1_6() {
-	WORKING_DIR=`pwd`
-
-    # Download the jdk 1.6
-    wget http://ghaffarian.net/downloads/Java/JDK/jdk-6u45-linux-x64.bin
-
-    # Install the jdk
-    sudo mkdir /usr/lib/jvm
-    cd /usr/lib/jvm && sudo sh $WORKING_DIR/jdk-6u45-linux-x64.bin -noregister
-    sudo update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/jdk1.6.0_45/bin/javac 50000
-    sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/jdk1.6.0_45/bin/java 50000
-    sudo update-alternatives --config javac
-    sudo update-alternatives --config java
-
-    # Set your JAVA_HOME
-    JAVA_HOME=`readlink -f $(which java)`
-    JAVA_HOME=`echo ${JAVA_HOME%/bin/java}`
-    echo "export JAVA_HOME=$JAVA_HOME" >> ~/.bashrc
-    source ~/.bashrc
-
-    # Navigate back and remove jdk bin
-    cd $WORKING_DIR
-    rm $WORKING_DIR/jdk-6u45-linux-x64.bin
+    sudo apt-get -y install wget git gnupg flex bison gperf build-essential zip curl subversion pkg-config
+    #Download the latest script to install the android dependencies for ubuntu
+    curl -o install-build-deps-android.sh https://src.chromium.org/svn/trunk/src/build/install-build-deps-android.sh
+    #use bash (not dash which is default) to run the script
+    sudo /bin/bash ./install-build-deps-android.sh
+    #delete the file we just downloaded... not needed anymore
+    rm install-build-deps-android.sh
 }
 
 # Update/Get/Ensure the Gclient Depot Tools
+# Also will add to your environment
 pull_depot_tools() {
 	WORKING_DIR=`pwd`
 
@@ -109,20 +107,70 @@ prepare_requirements() {
     $WEBRTC_ROOT/src/build/install-build-deps-android.sh
 }
 
+# Prepare our build
+function wrbase() {
+    export GYP_DEFINES="OS=android host_os=linux libjingle_java=1 build_with_libjingle=1 build_with_chromium=0 enable_tracing=1 enable_android_opensl=1"
+    export GYP_GENERATORS="ninja"
+}
+
+# Arm V7 with Neon
+function wrarmv7() {
+    wrbase
+    export GYP_DEFINES="$GYP_DEFINES OS=android"
+    export GYP_GENERATOR_FLAGS="$GYP_GENERATOR_FLAGS output_dir=out_android_armeabi_v7a"
+    export GYP_CROSSCOMPILE=1
+    echo "ARMv7 with Neon Build"
+}
+
+# Arm 64
+function wrarmv8() {
+    wrbase
+    export GYP_DEFINES="$GYP_DEFINES OS=android target_arch=arm64 target_subarch=arm64"
+    export GYP_GENERATOR_FLAGS="$output_dir=out_android_arm64_v8a"
+    export GYP_CROSSCOMPILE=1
+    echo "ARMv8 with Neon Build"
+}
+
+# x86
+function wrX86() {
+    wrbase
+    export GYP_DEFINES="$GYP_DEFINES OS=android target_arch=ia32"
+    export GYP_GENERATOR_FLAGS="output_dir=out_android_x86"
+    echo "x86 Build"
+}
+
+# x86_64
+function wrX86_64() {
+    wrbase
+    export GYP_DEFINES="$GYP_DEFINES OS=android target_arch=x64"
+    export GYP_GENERATOR_FLAGS="output_dir=out_android_x86_64"
+    echo "x86_64 Build"
+}
+
+
 # Setup our defines for the build
 prepare_gyp_defines() {
     # Configure environment for Android
     echo Setting up build environment for Android
-	source $WEBRTC_ROOT/src/build/android/envsetup.sh
+    source $WEBRTC_ROOT/src/build/android/envsetup.sh
 
     # Check to see if the user wants to set their own gyp defines
     echo Export the base settings of GYP_DEFINES so we can define how we want to build
     if [ -n $USER_GYP_DEFINES ]
     then
         echo "User has not specified any gyp defines so we proceed with default"
-        export GYP_DEFINES="OS=android host_os=linux libjingle_java=1 build_with_libjingle=1 build_with_chromium=0 enable_tracing=1 enable_android_opensl=1"
-        if [ "$WEBRTC_ARCH" = "x86" ] ; then
-            export GYP_DEFINES="$GYP_DEFINES target_arch=ia32"
+        if [ "$WEBRTC_ARCH" = "x86" ] ;
+        then
+            wrX86
+        elif [ "$WEBRTC_ARCH" = "x86_64" ] ;
+        then
+            wrX86_64
+        elif [ "$WEBRTC_ARCH" = "armv7" ] ;
+        then
+            wrarmv7
+        elif [ "$WEBRTC_ARCH" = "armv8" ] ;
+        then
+            wrarmv8
         fi
     else
         echo "User has specified their own gyp defines"
@@ -140,36 +188,84 @@ execute_build() {
     echo Run gclient hooks
     gclient runhooks
 
-    if [ "$WEBRTC_DEBUG" = "true" ] ; then
-        WEBRTC_CONFIGURATION="Debug"
-    else
-        WEBRTC_CONFIGURATION="Release"
+    if [ "$WEBRTC_ARCH" = "x86" ] ;
+    then
+        PATH_TO_FILE="out_android_x86/"
+    elif [ "$WEBRTC_ARCH" = "x86_64" ] ;
+    then
+        PATH_TO_FILE="out_android_x86_64/"
+    elif [ "$WEBRTC_ARCH" = "armv7" ] ;
+    then
+        PATH_TO_FILE="out_android_armeabi_v7a/"
+    elif [ "$WEBRTC_ARCH" = "armv8" ] ;
+    then
+        PATH_TO_FILE="out_android_arm64_v8a/"
     fi
 
-    echo "Build AppRTCDemo in $WEBRTC_CONFIGURATION (arch: ${WEBRTC_ARCH:-arm}) mode"
-    ninja -C "out/$WEBRTC_CONFIGURATION/" AppRTCDemo
+    if [ "$WEBRTC_DEBUG" = "true" ] ;
+    then
+        BUILD_TYPE="Debug"
+    else
+        BUILD_TYPE="Release"
+    fi
 
+    echo $PATH_TO_FILE
+
+    echo "Build AppRTCDemo in $WEBRTC_CONFIGURATION (arch: ${WEBRTC_ARCH:-arm}) mode"
+    ninja -C "$PATH_TO_FILE$BUILD_TYPE" AppRTCDemo
+    
+    REVISION_NUM=`get_webrtc_revision`
     # Verify the build actually worked
     if [ $? -eq 0 ]; then
-        SOURCE_DIR="$WEBRTC_ROOT/src/talk/examples/android/libs"
-        TARGET_DIR="$WEBRTC_ROOT/libjingle_peerconnection_builds/$WEBRTC_CONFIGURATION"
+        rm "/vagrant/$REVISION_NUM.aar"
+        rm "$TARGET_DIR/$REVISION_NUM.aar" 
+        SOURCE_DIR="$WEBRTC_ROOT/src/$PATH_TO_FILE$BUILD_TYPE"
+        TARGET_DIR="$WEBRTC_ROOT/libjingle_peerconnection_builds/$REVISION_NUM/$WEBRTC_CONFIGURATION"
         create_directory_if_not_found "$TARGET_DIR"
 
-        echo "copy $SOURCE_DIR/* to $TARGET_DIR"
-        cp -pr "$SOURCE_DIR"/* "$TARGET_DIR"
+        echo "Copy JAR File"
+        create_directory_if_not_found "$TARGET_DIR/libs/"
+        cp -p "$SOURCE_DIR/libjingle_peerconnection.jar" "$TARGET_DIR/libs/" 
+        create_directory_if_not_found "$TARGET_DIR/jniLibs/"
 
-        cd $WORKDING_DIR
+        if [ "$WEBRTC_ARCH" = "x86" ] ;
+        then
+            echo "Strip $WEBRTC_ARCH architecture into $TARGET_DIR/jniLibs/x86"
+            create_directory_if_not_found "$TARGET_DIR/jniLibs/x86"
+            `$WEBRTC_ROOT/src/third_party/android_tools/ndk/toolchains/x86-4.9/prebuilt/linux-x86_64/bin/i686-linux-android-strip -o $TARGET_DIR/jniLibs/x86/libjingle_peerconnection_so.so $WEBRTC_ROOT/src/$PATH_TO_FILE$BUILD_TYPE/libjingle_peerconnection_so.so -s`
+        elif [ "$WEBRTC_ARCH" = "x86_64" ] ;
+        then
+            create_directory_if_not_found "$TARGET_DIR/jniLibs/x86_64"
+            `$WEBRTC_ROOT/src/third_party/android_tools/ndk/toolchains/x86_64-4.9/prebuilt/linux-x86_64/bin/x86_64-linux-android-strip -o $TARGET_DIR/jniLibs/x86_64/libjingle_peerconnection_so.so $WEBRTC_ROOT/src/$PATH_TO_FILE$BUILD_TYPE/libjingle_peerconnection_so.so -s`
+        elif [ "$WEBRTC_ARCH" = "armv7" ] ;
+        then
+            create_directory_if_not_found "$TARGET_DIR/jniLibs/armeabi-v7a"
+            `$WEBRTC_ROOT/src/third_party/android_tools/ndk/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/bin/arm-linux-androideabi-strip -o $TARGET_DIR/jniLibs/armeabi-v7a/libjingle_peerconnection_so.so $WEBRTC_ROOT/src/$PATH_TO_FILE$BUILD_TYPE/libjingle_peerconnection_so.so -s`
+        elif [ "$WEBRTC_ARCH" = "armv8" ] ;
+        then
+            create_directory_if_not_found "$TARGET_DIR/jniLibs/arm64-v8a"
+            `$WEBRTC_ROOT/src/third_party/android_tools/ndk/toolchains/aarch64-linux-android-4.9/prebuilt/linux-x86_64/bin/aarch64-linux-android-strip -o $TARGET_DIR/jniLibs/arm64_v8a/libjingle_peerconnection_so.so $WEBRTC_ROOT/src/$PATH_TO_FILE$BUILD_TYPE/libjingle_peerconnection_so.so -s`
+        fi
 
-        REVISION_NUM=`get_webrtc_revision`
+        #cp -pr "$SOURCE_DIR"/* "$TARGET_DIR"
+        cd $TARGET_DIR
+        mkdir res # make resources directory
+
+        zip -r "/vagrant/$REVISION_NUM.aar" .
+        ln -s "/vagrant/$REVISION_NUM.aar" $TARGET_DIR
+        cd $WORKING_DIR
+
+        
         echo "$WEBRTC_CONFIGURATION build for apprtc complete for revision $REVISION_NUM"
     else
-        REVISION_NUM=`get_webrtc_revision`
+        
         echo "$WEBRTC_CONFIGURATION build for apprtc failed for revision $REVISION_NUM"
     fi
 }
 
 # Gets the webrtc revision
 get_webrtc_revision() {
+ #   git describe --tags  | sed 's/r\([0-9]*\)-.*/\1/' #Here's a nice little git version if you are using a git source
     svn info "$WEBRTC_ROOT/src" | awk '{ if ($1 ~ /Revision/) { print $2 } }'
 }
 
@@ -180,7 +276,21 @@ get_webrtc() {
 
 # Updates webrtc and builds apprtc
 build_apprtc() {
+    export WEBRTC_ARCH=armv7
     prepare_requirements &&
+    prepare_gyp_defines &&
+    execute_build
+
+    # Uncomment once the application can successfully build for arm64
+    #export WEBRTC_ARCH=armv8
+    #prepare_gyp_defines &&
+    #execute_build
+
+    export WEBRTC_ARCH=x86
+    prepare_gyp_defines &&
+    execute_build
+
+    export WEBRTC_ARCH=x86_64
     prepare_gyp_defines &&
     execute_build
 }

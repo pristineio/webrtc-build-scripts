@@ -1,7 +1,7 @@
+export VAGRANT_MACHINE=1 
+echo "export VAGRANT_MACHINE=1" >> .bashrc # we set this environment variable so that we put the webrtc code in a shared directory where the host machine can see the files and modify them
 source /vagrant/build.sh
 
 install_dependencies
-install_jdk1_6
 
 echo "source /vagrant/build.sh" >> /home/vagrant/.bashrc
-echo "export JAVA_HOME=$JAVA_HOME" >> /home/vagrant/.bashrc
