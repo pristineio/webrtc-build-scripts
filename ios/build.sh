@@ -43,7 +43,7 @@ function pull_depot_tools() {
         mkdir -p $DEPOT_TOOLS
 
         echo Pull the depot tools project from chromium source into the depot tools directory
-        git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git $DEPOT_TOOLS
+        git clone "https://chromium.googlesource.com/chromium/tools/depot_tools.git" "$DEPOT_TOOLS"
 
     else
 
@@ -65,23 +65,38 @@ function wrbase() {
 }
 
 # Add the iOS Device specific defines on top of the base
-function wrios() {
+function wrios_armv7() {
     wrbase
-    export GYP_DEFINES="$GYP_DEFINES OS=ios target_arch=armv7"
-    export GYP_GENERATOR_FLAGS="$GYP_GENERATOR_FLAGS output_dir=out_ios"
+    export GYP_DEFINES="$GYP_DEFINES OS=ios target_arch=armv7 arm_neon=1"
+    export GYP_GENERATOR_FLAGS="output_dir=out_ios_armeabi_v7a"
     export GYP_CROSSCOMPILE=1
 }
 
-# Add the iOS Simulator specific defines on top of the base
-function wrsim() {
+# Add the iOS ARM 64 Device specific defines on top of the base
+function wrios_armv8() {
+    wrbase
+    export GYP_DEFINES="$GYP_DEFINES OS=ios target_arch=arm64 target_subarch=arm64"
+    export GYP_GENERATOR_FLAGS="output_dir=out_ios_arm64_v8a"
+    export GYP_CROSSCOMPILE=1
+}
+
+# Add the iOS Simulator X86 specific defines on top of the base
+function wrX86() {
     wrbase
     export GYP_DEFINES="$GYP_DEFINES OS=ios target_arch=ia32"
-    export GYP_GENERATOR_FLAGS="$GYP_GENERATOR_FLAGS output_dir=out_sim"
-    export GYP_CROSSCOMPILE=1
+    export GYP_GENERATOR_FLAGS="output_dir=out_ios_x86"
+}
+
+# Add the iOS Simulator X64 specific defines on top of the base
+function wrX86_64() {
+    wrbase
+    export GYP_DEFINES="$GYP_DEFINES OS=ios target_arch=x64"
+    export GYP_GENERATOR_FLAGS="$GYP_GENERATOR_FLAGS output_dir=out_ios_x86_64"
 }
 
 # Gets the revision number of the current WebRTC svn repo on the filesystem
 function get_revision_number() {
+#    git describe --tags  | sed 's/r\([0-9]*\)-.*/\1/' #Here's a nice little git version if you are using a git source
     svn info $WEBRTC/src | awk '{ if ($1 ~ /Revision/) { print $2 } }'
 }
 
@@ -140,102 +155,163 @@ function sync() {
     cd $WEBRTC
     if [ -z $1 ]
     then
-        gclient sync
+        gclient sync || true
     else
-        gclient sync -r "$1"
+        gclient sync -r "$1" || true
     fi
 }
 
 # Convenience function to copy the headers by creating a symbolic link to the headers directory deep within webrtc src
 function copy_headers() {
     create_directory_if_not_found "$BUILD"
-    ln -s $WEBRTC/src/talk/app/webrtc/objc/public/ $WEBRTC/headers
+    ln -s $WEBRTC/src/talk/app/webrtc/objc/public/ $WEBRTC/headers || true
 }
 
 # Build AppRTC Demo for the simulator (ia32 architecture)
 function build_apprtc_sim() {
     cd "$WEBRTC/src"
 
-    wrsim
+    wrX86
     gclient runhooks
 
     copy_headers
 
     WEBRTC_REVISION=`get_revision_number`
     if [ "$WEBRTC_DEBUG" = true ] ; then
-        ninja -C "out_sim/Debug-iphonesimulator/" AppRTCDemo
-        libtool -static -o "$BUILD/libWebRTC-$WEBRTC_REVISION-sim-Debug.a" $WEBRTC/src/out_sim/Debug-iphonesimulator/*.a
+        ninja -C "out_ios_x86/Debug-iphonesimulator/" AppRTCDemo
+        libtool -static -o "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-x86-Debug.a" $WEBRTC/src/out_ios_x86/Debug-iphonesimulator/*.a
     fi
 
     if [ "$WEBRTC_PROFILE" = true ] ; then
-        ninja -C "out_sim/Profile-iphonesimulator/" AppRTCDemo
-        libtool -static -o "$BUILD/libWebRTC-$WEBRTC_REVISION-sim-Profile.a" $WEBRTC/src/out_sim/Profile-iphonesimulator/*.a
+        ninja -C "out_ios_x86/Profile-iphonesimulator/" AppRTCDemo
+        libtool -static -o "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-x86-Profile.a" $WEBRTC/src/out_ios_x86/Profile-iphonesimulator/*.a
     fi
 
     if [ "$WEBRTC_RELEASE" = true ] ; then
-        ninja -C "out_sim/Release-iphonesimulator/" AppRTCDemo
-        libtool -static -o "$BUILD/libWebRTC-$WEBRTC_REVISION-sim-Release.a" $WEBRTC/src/out_sim/Release-iphonesimulator/*.a
+        ninja -C "out_ios_x86/Release-iphonesimulator/" AppRTCDemo
+        libtool -static -o "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-x86-Release.a" $WEBRTC/src/out_ios_x86/Release-iphonesimulator/*.a
     fi
 }
 
-# Build AppRTC Demo for an armv7 real device
+# Build AppRTC Demo for a real device
 function build_apprtc() {
     cd "$WEBRTC/src"
     
-    wrios
+    wrios_armv7
     gclient runhooks
 
     copy_headers
 
     WEBRTC_REVISION=`get_revision_number`
     if [ "$WEBRTC_DEBUG" = true ] ; then
-        ninja -C "out_ios/Debug-iphoneos/" AppRTCDemo
-        libtool -static -o "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-Debug.a" $WEBRTC/src/out_ios/Debug-iphoneos/*.a
+        ninja -C "out_ios_armeabi_v7a/Debug-iphoneos/" AppRTCDemo
+        libtool -static -o "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-armeabi_v7a-Debug.a" $WEBRTC/src/out_ios_armeabi_v7a/Debug-iphoneos/*.a
     fi
 
     if [ "$WEBRTC_PROFILE" = true ] ; then
-        ninja -C "out_ios/Profile-iphoneos/" AppRTCDemo
-        libtool -static -o "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-Profile.a" $WEBRTC/src/out_ios/Profile-iphoneos/*.a
+        ninja -C "out_ios_armeabi_v7a/Profile-iphoneos/" AppRTCDemo
+        libtool -static -o "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-armeabi_v7a-Profile.a" $WEBRTC/src/out_ios_armeabi_v7a/Profile-iphoneos/*.a
     fi
 
     if [ "$WEBRTC_RELEASE" = true ] ; then
-        ninja -C "out_ios/Release-iphoneos/" AppRTCDemo
-        libtool -static -o "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-Release.a" $WEBRTC/src/out_ios/Release-iphoneos/*.a
+        ninja -C "out_ios_armeabi_v7a/Release-iphoneos/" AppRTCDemo
+        libtool -static -o "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-armeabi_v7a-Release.a" $WEBRTC/src/out_ios_armeabi_v7a/Release-iphoneos/*.a
     fi
 }
 
 
-# This function is used to put together the intel (simulator) and armv7 builds (device) into one static library so its easy to deal with in Xcode
-# Outputs the file into the build directory with the revision number
-function lipo_ia32_and_armv7() {
+# Build AppRTC Demo for an armv7 real device
+function build_apprtc_arm64() {
+    cd "$WEBRTC/src"
+    
+    wrios_armv8
+    gclient runhooks
+
+    copy_headers
+
     WEBRTC_REVISION=`get_revision_number`
     if [ "$WEBRTC_DEBUG" = true ] ; then
+        ninja -C "out_ios_arm64_v8a/Debug-iphoneos/" AppRTCDemo
+        libtool -static -o "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-arm64_v8a-Debug.a" $WEBRTC/src/out_ios_arm64_v8a/Debug-iphoneos/*.a
+    fi
+
+    if [ "$WEBRTC_PROFILE" = true ] ; then
+        ninja -C "out_ios_arm64_v8a/Profile-iphoneos/" AppRTCDemo
+        libtool -static -o "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-arm64_v8a-Profile.a" $WEBRTC/src/out_ios_arm64_v8a/Profile-iphoneos/*.a
+    fi
+
+    if [ "$WEBRTC_RELEASE" = true ] ; then
+        ninja -C "out_ios_arm64_v8a/Release-iphoneos/" AppRTCDemo
+        libtool -static -o "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-arm64_v8a-Release.a" $WEBRTC/src/out_ios_arm64_v8a/Release-iphoneos/*.a
+    fi
+}
+
+# This function is used to put together the intel (simulator), armv7 and arm64 builds (device) into one static library so its easy to deal with in Xcode
+# Outputs the file into the build directory with the revision number
+function lipo_intel_and_arm() {
+    WEBRTC_REVISION=`get_revision_number`
+    if [ "$WEBRTC_DEBUG" = true ] ; then
+        # Directories to use for lipo, armv7 and ia32 as default
+        LIPO_DIRS="$BUILD/libWebRTC-$WEBRTC_REVISION-ios-x86-Debug.a $BUILD/libWebRTC-$WEBRTC_REVISION-ios-armeabi_v7a-Debug.a"
+        #Add ARM64 if it is defined
+        if [ "$ARM64" = true ] ; then
+            LIPO_DIRS="$LIPO_DIRS $BUILD/libWebRTC-$WEBRTC_REVISION-ios-arm64_v8a-Debug.a"
+        fi
         # Lipo the simulator build with the ios build into a universal library
-        lipo -create $BUILD/libWebRTC-$WEBRTC_REVISION-sim-Debug.a $BUILD/libWebRTC-$WEBRTC_REVISION-ios-Debug.a -output $BUILD/libWebRTC-$WEBRTC_REVISION-armv7-ia32-Debug.a
+        lipo -create $LIPO_DIRS -output $BUILD/libWebRTC-$WEBRTC_REVISION-arm-intel-Debug.a
         # Delete the latest symbolic link just in case :)
         rm $WEBRTC/libWebRTC-LATEST-Universal-Debug.a
         # Create a symbolic link pointing to the exact revision that is the latest. This way I don't have to change the xcode project file every time we update the revision number, while still keeping it easy to track which revision you are on
-        ln -s $BUILD/libWebRTC-$WEBRTC_REVISION-armv7-ia32-Debug.a $WEBRTC/libWebRTC-LATEST-Universal-Debug.a
+        ln -s $BUILD/libWebRTC-$WEBRTC_REVISION-arm-intel-Debug.a $WEBRTC/libWebRTC-LATEST-Universal-Debug.a
         # Make it clear which revision you are using .... You don't want to get in the state where you don't know which revision you were using... trust me
         echo "The libWebRTC-LATEST-Universal-Debug.a in this same directory, is revision " > $WEBRTC/libWebRTC-LATEST-Universal-Debug.a.version.txt
         # Also write to a file for funzies
         echo $WEBRTC_REVISION >> $WEBRTC/libWebRTC-LATEST-Universal-Debug.a.version.txt
+
+        # Write the version down to a file
+        echo "Architectures Built" >> $BUILD/libWebRTC-$WEBRTC_REVISION-arm-intel-Debug.a.version.txt
+        echo "ia32 - Intel x86" >> $BUILD/libWebRTC-$WEBRTC_REVISION-arm-intel-Debug.a.version.txt
+        echo "armv7 - Arm x86" >> $BUILD/libWebRTC-$WEBRTC_REVISION-arm-intel-Debug.a.version.txt
+        if [ "$ARM64" = true ] ; then
+            echo "arm64_v8a - Arm 64 (armv8)" >> $BUILD/libWebRTC-$WEBRTC_REVISION-arm-intel-Debug.a.version.txt
+        fi
     fi
 
     if [ "$WEBRTC_PROFILE" = true ] ; then
-        lipo -create $BUILD/libWebRTC-$WEBRTC_REVISION-sim-Profile.a $BUILD/libWebRTC-$WEBRTC_REVISION-ios-Profile.a -output $BUILD/libWebRTC-$WEBRTC_REVISION-armv7-ia32-Profile.a
+        LIPO_DIRS="$BUILD/libWebRTC-$WEBRTC_REVISION-ios-x86-Profile.a $BUILD/libWebRTC-$WEBRTC_REVISION-ios-armeabi_v7a-Profile.a"
+        if [ "$ARM64" = true ] ; then
+            LIPO_DIRS="$LIPO_DIRS $BUILD/libWebRTC-$WEBRTC_REVISION-ios-arm64_v8a-Profile.a"
+        fi
+        lipo -create $LIPO_DIRS -output $BUILD/libWebRTC-$WEBRTC_REVISION-arm-intel-Profile.a
         rm $WEBRTC/libWebRTC-LATEST-Universal-Profile.a
-        ln -s $BUILD/libWebRTC-$WEBRTC_REVISION-armv7-ia32-Profile.a $WEBRTC/libWebRTC-LATEST-Universal-Profile.a
+        ln -s $BUILD/libWebRTC-$WEBRTC_REVISION-arm-intel-Profile.a $WEBRTC/libWebRTC-LATEST-Universal-Profile.a
         echo "The libWebRTC-LATEST-Universal-Profile.a in this same directory, is revision " > $WEBRTC/libWebRTC-LATEST-Universal-Profile.a.version.txt
         echo $WEBRTC_REVISION >> $WEBRTC/libWebRTC-LATEST-Universal-Profile.a.version.txt
+        echo "Architectures Built" >> $BUILD/libWebRTC-$WEBRTC_REVISION-arm-intel-Profile.a.version.txt
+        echo "ia32 - Intel x86" >> $BUILD/libWebRTC-$WEBRTC_REVISION-arm-intel-Profile.a.version.txt
+        echo "armv7 - Arm x86" >> $BUILD/libWebRTC-$WEBRTC_REVISION-arm-intel-Profile.a.version.txt
+        if [ "$ARM64" = true ] ; then
+            echo "arm64_v8a - Arm 64 (armv8)" >> $BUILD/libWebRTC-$WEBRTC_REVISION-arm-intel-Profile.a.version.txt
+        fi
     fi
 
     if [ "$WEBRTC_RELEASE" = true ] ; then
-        lipo -create $BUILD/libWebRTC-$WEBRTC_REVISION-sim-Release.a $BUILD/libWebRTC-$WEBRTC_REVISION-ios-Release.a -output $BUILD/libWebRTC-$WEBRTC_REVISION-armv7-ia32-Release.a
+        LIPO_DIRS="$BUILD/libWebRTC-$WEBRTC_REVISION-ios-x86-Release.a $BUILD/libWebRTC-$WEBRTC_REVISION-ios-armeabi_v7a-Release.a"
+        if [ "$ARM64" = true ] ; then
+            LIPO_DIRS="$LIPO_DIRS $BUILD/libWebRTC-$WEBRTC_REVISION-ios-arm64_v8a-Release.a"
+        fi
+        lipo -create $LIPO_DIRS -output $BUILD/libWebRTC-$WEBRTC_REVISION-arm-intel-Release.a
         rm $WEBRTC/libWebRTC-LATEST-Universal-Release.a
-        ln -s $BUILD/libWebRTC-$WEBRTC_REVISION-armv7-ia32-Release.a $WEBRTC/libWebRTC-LATEST-Universal-Release.a
+        ln -s $BUILD/libWebRTC-$WEBRTC_REVISION-arm-intel-Release.a $WEBRTC/libWebRTC-LATEST-Universal-Release.a
         echo "The libWebRTC-LATEST-Universal-Release.a in this same directory, is revision " > $WEBRTC/libWebRTC-LATEST-Universal-Release.a.version.txt
         echo $WEBRTC_REVISION >> $WEBRTC/libWebRTC-LATEST-Universal-Release.a.version.txt
+        echo "Architectures Built" >> $BUILD/libWebRTC-$WEBRTC_REVISION-arm-intel-Release.a.version.txt
+        echo "ia32 - Intel x86" >> $BUILD/libWebRTC-$WEBRTC_REVISION-arm-intel-Release.a.version.txt
+        echo "armv7 - Arm x86" >> $BUILD/libWebRTC-$WEBRTC_REVISION-arm-intel-Release.a.version.txt
+        if [ "$ARM64" = true ] ; then
+            echo "arm64_v8a - Arm 64 (armv8)" >> $BUILD/libWebRTC-$WEBRTC_REVISION-arm-intel-Release.a.version.txt
+        fi
+        
     fi
 
 }
@@ -245,15 +321,18 @@ function lipo_ia32_and_armv7() {
 # Pass in an argument if you want to get a specific webrtc revision
 function get_webrtc() {
     pull_depot_tools
-    clone "$1"
+    update2Revision "$1"
 }
 
 # Build webrtc for an ios device and simulator, then create a universal library
 function build_webrtc() {
     pull_depot_tools
     build_apprtc
+    if [ "$ARM64" = true ] ; then
+        build_apprtc_arm64
+    fi
     build_apprtc_sim
-    lipo_ia32_and_armv7
+    lipo_intel_and_arm
 }
 
 
