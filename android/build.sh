@@ -33,7 +33,7 @@ create_directory_if_not_found() {
 	fi
 }
 
-# Installs some of the android dependencies. the rest of the dependecies can be found at 
+# Installs the required dependencies on the machine
 install_dependencies() {
     sudo apt-get -y install wget git gnupg flex bison gperf build-essential zip curl subversion pkg-config
     #Download the latest script to install the android dependencies for ubuntu
@@ -99,12 +99,6 @@ pull_webrtc() {
 
     # Navigate back
 	cd $WORKING_DIR
-}
-
-# Install required packages for Android
-prepare_requirements() {
-    echo Install required packages for Android
-    $WEBRTC_ROOT/src/build/install-build-deps-android.sh
 }
 
 # Prepare our build
@@ -277,7 +271,6 @@ get_webrtc() {
 # Updates webrtc and builds apprtc
 build_apprtc() {
     export WEBRTC_ARCH=armv7
-    prepare_requirements &&
     prepare_gyp_defines &&
     execute_build
 

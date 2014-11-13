@@ -64,7 +64,6 @@ You can build for armv7, armv8, x86, x86_64 platform
 
 ```shell
 export WEBRTC_ARCH=armv7 #or armv8, x86, or x86_64
-prepare_requirements &&
 prepare_gyp_defines &&
 execute_build
 ```
