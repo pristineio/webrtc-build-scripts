@@ -217,11 +217,11 @@ execute_build() {
     REVISION_NUM=`get_webrtc_revision`
     # Verify the build actually worked
     if [ $? -eq 0 ]; then
-        rm "/vagrant/$REVISION_NUM.aar"
-        rm "$TARGET_DIR/$REVISION_NUM.aar" 
         SOURCE_DIR="$WEBRTC_ROOT/src/$PATH_TO_FILE$BUILD_TYPE"
         TARGET_DIR="$WEBRTC_ROOT/libjingle_peerconnection_builds/$REVISION_NUM/$WEBRTC_CONFIGURATION"
         create_directory_if_not_found "$TARGET_DIR"
+        
+        rm "$TARGET_DIR/$REVISION_NUM.zip" || true
 
         echo "Copy JAR File"
         create_directory_if_not_found "$TARGET_DIR/libs/"
@@ -251,8 +251,7 @@ execute_build() {
         cd $TARGET_DIR
         mkdir res # make resources directory
 
-        zip -r "/vagrant/$REVISION_NUM.aar" .
-        ln -s "/vagrant/$REVISION_NUM.aar" $TARGET_DIR
+        zip -r "$TARGET_DIR/$REVISION_NUM.zip" .
         cd $WORKING_DIR
 
         
