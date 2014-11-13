@@ -21,7 +21,7 @@ else
         SOURCE="$(readlink "$SOURCE")"
         [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE" # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
     done
-    PROJECT_DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+    PROJECT_ROOT="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 fi
 
 DEPOT_TOOLS="$PROJECT_ROOT/depot_tools"
