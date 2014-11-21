@@ -170,8 +170,10 @@ function sync() {
 
 # Convenience function to copy the headers by creating a symbolic link to the headers directory deep within webrtc src
 function copy_headers() {
-    create_directory_if_not_found "$BUILD"
-    ln -s $WEBRTC/src/talk/app/webrtc/objc/public/ $WEBRTC/headers || true
+    if [ ! -h "$WEBRTC/headers" ]; then
+        create_directory_if_not_found "$BUILD"
+        ln -s "$WEBRTC/src/talk/app/webrtc/objc/public/" "$WEBRTC/headers" || true
+    fi
 }
 
 function build_webrtc_mac() {
@@ -287,7 +289,7 @@ function lipo_intel_and_arm() {
         # Lipo the simulator build with the ios build into a universal library
         lipo -create $LIPO_DIRS -output $BUILD/libWebRTC-$WEBRTC_REVISION-arm-intel-Debug.a
         # Delete the latest symbolic link just in case :)
-        rm $WEBRTC/libWebRTC-LATEST-Universal-Debug.a
+        rm $WEBRTC/libWebRTC-LATEST-Universal-Debug.a || true
         # Create a symbolic link pointing to the exact revision that is the latest. This way I don't have to change the xcode project file every time we update the revision number, while still keeping it easy to track which revision you are on
         ln -s $BUILD/libWebRTC-$WEBRTC_REVISION-arm-intel-Debug.a $WEBRTC/libWebRTC-LATEST-Universal-Debug.a
         # Make it clear which revision you are using .... You don't want to get in the state where you don't know which revision you were using... trust me
@@ -310,7 +312,7 @@ function lipo_intel_and_arm() {
             LIPO_DIRS="$LIPO_DIRS $BUILD/libWebRTC-$WEBRTC_REVISION-ios-arm64_v8a-Profile.a"
         fi
         lipo -create $LIPO_DIRS -output $BUILD/libWebRTC-$WEBRTC_REVISION-arm-intel-Profile.a
-        rm $WEBRTC/libWebRTC-LATEST-Universal-Profile.a
+        rm $WEBRTC/libWebRTC-LATEST-Universal-Profile.a || true
         ln -s $BUILD/libWebRTC-$WEBRTC_REVISION-arm-intel-Profile.a $WEBRTC/libWebRTC-LATEST-Universal-Profile.a
         echo "The libWebRTC-LATEST-Universal-Profile.a in this same directory, is revision " > $WEBRTC/libWebRTC-LATEST-Universal-Profile.a.version.txt
         echo $WEBRTC_REVISION >> $WEBRTC/libWebRTC-LATEST-Universal-Profile.a.version.txt
@@ -328,7 +330,7 @@ function lipo_intel_and_arm() {
             LIPO_DIRS="$LIPO_DIRS $BUILD/libWebRTC-$WEBRTC_REVISION-ios-arm64_v8a-Release.a"
         fi
         lipo -create $LIPO_DIRS -output $BUILD/libWebRTC-$WEBRTC_REVISION-arm-intel-Release.a
-        rm $WEBRTC/libWebRTC-LATEST-Universal-Release.a
+        rm $WEBRTC/libWebRTC-LATEST-Universal-Release.a || true
         ln -s $BUILD/libWebRTC-$WEBRTC_REVISION-arm-intel-Release.a $WEBRTC/libWebRTC-LATEST-Universal-Release.a
         echo "The libWebRTC-LATEST-Universal-Release.a in this same directory, is revision " > $WEBRTC/libWebRTC-LATEST-Universal-Release.a.version.txt
         echo $WEBRTC_REVISION >> $WEBRTC/libWebRTC-LATEST-Universal-Release.a.version.txt
