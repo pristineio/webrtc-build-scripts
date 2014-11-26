@@ -116,7 +116,6 @@ function update2Revision() {
 
     # Configure gclient to pull from the google code master repo (svn). Git is faster, will be put in a later commit
     gclient config --name src http://webrtc.googlecode.com/svn/trunk
-    wrios
 
     # Make sure that the target os is set to JUST MAC at first by adding that to the .gclient file that gclient config command created
     # Note this is a workaround until one of the depot_tools/ios bugs has been fixed
