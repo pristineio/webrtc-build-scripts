@@ -211,14 +211,14 @@ execute_build() {
 
     echo $PATH_TO_FILE
 
-    echo "Build AppRTCDemo in $WEBRTC_CONFIGURATION (arch: ${WEBRTC_ARCH:-arm}) mode"
+    echo "Build AppRTCDemo in $BUILD_TYPE (arch: ${WEBRTC_ARCH:-arm}) mode"
     ninja -C "$PATH_TO_FILE$BUILD_TYPE" AppRTCDemo
     
     REVISION_NUM=`get_webrtc_revision`
     # Verify the build actually worked
     if [ $? -eq 0 ]; then
         SOURCE_DIR="$WEBRTC_ROOT/src/$PATH_TO_FILE$BUILD_TYPE"
-        TARGET_DIR="$WEBRTC_ROOT/libjingle_peerconnection_builds/$REVISION_NUM/$WEBRTC_CONFIGURATION"
+        TARGET_DIR="$WEBRTC_ROOT/libjingle_peerconnection_builds/$REVISION_NUM/$BUILD_TYPE"
         create_directory_if_not_found "$TARGET_DIR"
         
         rm "$TARGET_DIR/$REVISION_NUM.zip" || true
@@ -255,10 +255,10 @@ execute_build() {
         cd $WORKING_DIR
 
         
-        echo "$WEBRTC_CONFIGURATION build for apprtc complete for revision $REVISION_NUM"
+        echo "$BUILD_TYPE build for apprtc complete for revision $REVISION_NUM"
     else
         
-        echo "$WEBRTC_CONFIGURATION build for apprtc failed for revision $REVISION_NUM"
+        echo "$BUILD_TYPE build for apprtc failed for revision $REVISION_NUM"
     fi
 }
 
