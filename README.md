@@ -5,6 +5,7 @@ Bugs: Please submit the [revision](https://code.google.com/p/webrtc/source/list)
 
 ###Android ARMv7,x86, x86_64 Builds -- [Guide here](http://tech.pristine.io/build-android-apprtc/)
 ARM64 is available but doesn't build, yet
+
 The following instructions are for building the native WebRTC libraries for Android.
 
 
@@ -82,7 +83,7 @@ When the scripts are done you can find the .jar and .so file in $WEBRTC_HOME und
 
 
 
-###iOS and Mac -- [Guide here](http://tech.pristine.io/build-ios-apprtc/)
+###iOS (armv7, arm64, i386) and Mac (X86_64) -- [Guide here](http://tech.pristine.io/build-ios-apprtc/)
 These steps must be run on Mac OSX
 
 Source the [ios build scripts](https://github.com/pristineio/webrtc-build-scripts/blob/master/ios/build.sh) or  [open the Xcode project](https://github.com/pristineio/webrtc-build-scripts/tree/master/ios/WebRTC.xcodeproj)
@@ -144,13 +145,6 @@ Make sure you label your new binaries that are generated in
 ./webrtc-build-scripts/ios/webrtc/libjingle_peerconnection_builds 
 ```
 
-Wanna try ARM64 ? -- it doesnt work as of r7663
-```shell
-get_webrtc
-export ARM64=true
-build_webrtc
-```
-
 ##### Cocoapods!!
 [![Version](https://img.shields.io/cocoapods/v/libjingle_peerconnection.svg?style=flat)](http://cocoadocs.org/docsets/libjingle_peerconnection)
 [![License](https://img.shields.io/cocoapods/l/libjingle_peerconnection.svg?style=flat)](http://cocoadocs.org/docsets/libjingle_peerconnection)
@@ -169,29 +163,25 @@ libjingle_peerconnection starting from revision 6931 is available through [Cocoa
 it, simply add the following line to your Podfile:
 
     pod "libjingle_peerconnection"
-    
 
-    # Add this to the bottom so it won't have issues with active architecture
-    post_install do |installer_representation|
-        installer_representation.project.targets.each do |target|
-            target.build_configurations.each do |config|
-                config.build_settings['ONLY_ACTIVE_ARCH'] = 'NO'
-                config.build_settings['VALID_ARCHS'] = ['armv7', 'i386']
-            end
-        end
-    end
+iOS  ARM64 builds are available as of 7810.0.0
+
+mac x86_64 builds are available as of 7759.0.0
 
 
 ###### Versioning
 
 The versioning can be explained as follows:
 
+ 
 [6931](https://code.google.com/p/webrtc/source/detail?r=6931).2.0 
 
 6931 reflects the SVN revision from the WebRTC root Google Code Project
 
 2 reflects a Release Build (0 for Debug, 1 for Profile)
 
-0 reflects any changes I might need to make to the sample xcode project itself to work (incremented normally)
+Profile builds are not available for the mac platform
+
+The minor 0 reflects any changes I might need to make to the sample xcode project itself to work (incremented normally)
 
 
