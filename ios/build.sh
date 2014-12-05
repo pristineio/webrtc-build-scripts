@@ -61,7 +61,7 @@ function pull_depot_tools() {
 # Set the base of the GYP defines, instructing gclient runhooks what to generate
 function wrbase() {
     export GYP_DEFINES="build_with_libjingle=1 build_with_chromium=0 libjingle_objc=1"
-    export GYP_GENERATORS="ninja,xcode"
+    export GYP_GENERATORS="ninja,xcode-ninja"
 }
 
 # Add the iOS Device specific defines on top of the base
