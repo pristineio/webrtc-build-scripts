@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		72A425281A37F035000C45F4 /* ARDSignalingParams.m in Sources */ = {isa = PBXBuildFile; fileRef = 72A425271A37F035000C45F4 /* ARDSignalingParams.m */; };
 		C095E5EC1952485F00B9FAA0 /* libWebRTC-LATEST-Universal-Debug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C095E5EB1952485F00B9FAA0 /* libWebRTC-LATEST-Universal-Debug.a */; };
 		C095E5ED1952488200B9FAA0 /* libWebRTC-LATEST-Universal-Debug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C095E5EB1952485F00B9FAA0 /* libWebRTC-LATEST-Universal-Debug.a */; };
 		C0A129371951F48300C523D2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0A129361951F48300C523D2 /* Foundation.framework */; };
@@ -72,6 +73,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		72A425261A37F035000C45F4 /* ARDSignalingParams.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARDSignalingParams.h; path = webrtc/src/talk/examples/objc/AppRTCDemo/ARDSignalingParams.h; sourceTree = SOURCE_ROOT; };
+		72A425271A37F035000C45F4 /* ARDSignalingParams.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARDSignalingParams.m; path = webrtc/src/talk/examples/objc/AppRTCDemo/ARDSignalingParams.m; sourceTree = SOURCE_ROOT; };
 		C08538F31952400E00C7A2E7 /* clone.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = clone.sh; sourceTree = "<group>"; };
 		C08538F4195240BB00C7A2E7 /* pull.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = pull.sh; sourceTree = "<group>"; };
 		C08538F5195240F800C7A2E7 /* build_webrtc.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = build_webrtc.sh; sourceTree = "<group>"; };
@@ -276,6 +279,8 @@
 		C0A12AB8195202A600C523D2 /* AppRTCDemo */ = {
 			isa = PBXGroup;
 			children = (
+				72A425261A37F035000C45F4 /* ARDSignalingParams.h */,
+				72A425271A37F035000C45F4 /* ARDSignalingParams.m */,
 				C0C3A7071A13FBF30062D421 /* APPRTCAppClient.h */,
 				C0C3A7081A13FBF30062D421 /* APPRTCAppClient.m */,
 				C0C3A7091A13FBF30062D421 /* APPRTCConnectionManager.h */,
@@ -466,6 +471,7 @@
 				C0C3A7051A13FBC80062D421 /* main.m in Sources */,
 				C0C3A70F1A13FBF30062D421 /* APPRTCAppClient.m in Sources */,
 				C0C3A7001A13FBC80062D421 /* APPRTCViewController.m in Sources */,
+				72A425281A37F035000C45F4 /* ARDSignalingParams.m in Sources */,
 				C0C3A7111A13FBF30062D421 /* APPRTCConnectionManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
