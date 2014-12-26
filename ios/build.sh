@@ -35,7 +35,7 @@ function pull_depot_tools() {
 
     echo Get the current working directory so we can change directories back when done
     WORKING_DIR=`pwd`
-    
+
     echo If no directory where depot tools should be...
     if [ ! -d "$DEPOT_TOOLS" ]
     then
@@ -52,7 +52,7 @@ function pull_depot_tools() {
 
         echo Pull the depot tools down to the latest
         git pull
-    fi  
+    fi
     PATH="$PATH:$DEPOT_TOOLS"
     echo Go back to working directory
     cd $WORKING_DIR
@@ -61,10 +61,17 @@ function pull_depot_tools() {
 function choose_code_signing() {
     if [[ -z $IDENTITY ]]
     then
-        security find-identity -v
-        echo "Please select your code signing identity index from the above list:"
-        read INDEX
-        IDENTITY=`security find-identity -v | awk -v i=$INDEX -F ") |\"" '{if (i==$1) {print $3}}'`
+        COUNT=$(security find-identity -v | grep -c "iPhone Developer")
+        if [[ $COUNT -gt 1 ]]
+        then
+          security find-identity -v
+          echo "Please select your code signing identity index from the above list:"
+          read INDEX
+          IDENTITY=$(security find-identity -v | awk -v i=$INDEX -F ") |\"" '{if (i==$1) {print $3}}')
+        else
+          IDENTITY=$(security find-identity -v | grep "iPhone Developer" | awk -F ") |\"" '{print $3}')
+        fi
+        echo Using code signing identity $IDENTITY
     fi
     sed -i -e "s/\'CODE_SIGN_IDENTITY\[sdk=iphoneos\*\]\': \'iPhone Developer\',/\'CODE_SIGN_IDENTITY[sdk=iphoneos*]\': \'$IDENTITY\',/" $WEBRTC/src/build/common.gypi
 }
@@ -122,7 +129,7 @@ function get_revision_number() {
 # Pass in a revision number as an argument to pull that specific revision ex: update2Revision 6798
 function update2Revision() {
     # Ensure that we have gclient added to our environment, so this function can run standalone
-    pull_depot_tools 
+    pull_depot_tools
     cd $WEBRTC
 
     # Configure gclient to pull from the google code master repo (svn). Git is faster, will be put in a later commit
@@ -237,7 +244,7 @@ function build_apprtc_sim() {
 # Build AppRTC Demo for a real device
 function build_apprtc() {
     cd "$WEBRTC/src"
-    
+
     wrios_armv7
     choose_code_signing
     gclient runhooks
@@ -265,7 +272,7 @@ function build_apprtc() {
 # Build AppRTC Demo for an armv7 real device
 function build_apprtc_arm64() {
     cd "$WEBRTC/src"
-    
+
     wrios_armv8
     choose_code_signing
     gclient runhooks
