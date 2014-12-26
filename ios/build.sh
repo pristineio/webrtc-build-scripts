@@ -18,6 +18,8 @@ PROJECT_DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 WEBRTC="$PROJECT_DIR/webrtc"
 DEPOT_TOOLS="$PROJECT_DIR/depot_tools"
 BUILD="$WEBRTC/libjingle_peerconnection_builds"
+WEBRTC_TARGET="AppRTCDemo"
+
 function create_directory_if_not_found() {
     if [ ! -d "$1" ];
     then
@@ -32,7 +34,7 @@ function exec_libtool() {
 
 function exec_ninja() {
   echo "Running ninja"
-  ninja -C $1 $2
+  ninja -C $1 $WEBRTC_TARGET
 }
 
 create_directory_if_not_found "$PROJECT_DIR"
@@ -193,12 +195,12 @@ function build_webrtc_mac() {
 
     WEBRTC_REVISION=`get_revision_number`
     if [ "$WEBRTC_DEBUG" = true ] ; then
-        exec_ninja "out_mac_x86_64/Debug/" AppRTCDemo
+        exec_ninja "out_mac_x86_64/Debug/"
         exec_libtool "$BUILD/libWebRTC-$WEBRTC_REVISION-mac-x86_64-Debug.a" $WEBRTC/src/out_mac_x86_64/Debug/*.a
     fi
 
     if [ "$WEBRTC_RELEASE" = true ] ; then
-        exec_ninja "out_ios_x86/Release/" AppRTCDemo
+        exec_ninja "out_ios_x86/Release/"
         exec_libtool "$BUILD/libWebRTC-$WEBRTC_REVISION-mac-x86_64-Release.a" $WEBRTC/src/out_ios_x86/Release/*.a
     fi
 }
@@ -214,17 +216,17 @@ function build_apprtc_sim() {
 
     WEBRTC_REVISION=`get_revision_number`
     if [ "$WEBRTC_DEBUG" = true ] ; then
-        exec_ninja "out_ios_x86/Debug-iphonesimulator/" AppRTCDemo
+        exec_ninja "out_ios_x86/Debug-iphonesimulator/"
         exec_libtool "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-x86-Debug.a" $WEBRTC/src/out_ios_x86/Debug-iphonesimulator/*.a
     fi
 
     if [ "$WEBRTC_PROFILE" = true ] ; then
-        exec_ninja "out_ios_x86/Profile-iphonesimulator/" AppRTCDemo
+        exec_ninja "out_ios_x86/Profile-iphonesimulator/"
         exec_libtool "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-x86-Profile.a" $WEBRTC/src/out_ios_x86/Profile-iphonesimulator/*.a
     fi
 
     if [ "$WEBRTC_RELEASE" = true ] ; then
-        exec_ninja "out_ios_x86/Release-iphonesimulator/" AppRTCDemo
+        exec_ninja "out_ios_x86/Release-iphonesimulator/"
         exec_libtool "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-x86-Release.a" $WEBRTC/src/out_ios_x86/Release-iphonesimulator/*.a
     fi
 }
@@ -240,17 +242,17 @@ function build_apprtc() {
 
     WEBRTC_REVISION=`get_revision_number`
     if [ "$WEBRTC_DEBUG" = true ] ; then
-        exec_ninja "out_ios_armeabi_v7a/Debug-iphoneos/" AppRTCDemo
+        exec_ninja "out_ios_armeabi_v7a/Debug-iphoneos/"
         exec_libtool "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-armeabi_v7a-Debug.a" $WEBRTC/src/out_ios_armeabi_v7a/Debug-iphoneos/*.a
     fi
 
     if [ "$WEBRTC_PROFILE" = true ] ; then
-        exec_ninja "out_ios_armeabi_v7a/Profile-iphoneos/" AppRTCDemo
+        exec_ninja "out_ios_armeabi_v7a/Profile-iphoneos/"
         exec_libtool "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-armeabi_v7a-Profile.a" $WEBRTC/src/out_ios_armeabi_v7a/Profile-iphoneos/*.a
     fi
 
     if [ "$WEBRTC_RELEASE" = true ] ; then
-        exec_ninja "out_ios_armeabi_v7a/Release-iphoneos/" AppRTCDemo
+        exec_ninja "out_ios_armeabi_v7a/Release-iphoneos/"
         exec_libtool "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-armeabi_v7a-Release.a" $WEBRTC/src/out_ios_armeabi_v7a/Release-iphoneos/*.a
     fi
 }
@@ -267,17 +269,17 @@ function build_apprtc_arm64() {
 
     WEBRTC_REVISION=`get_revision_number`
     if [ "$WEBRTC_DEBUG" = true ] ; then
-        exec_ninja "out_ios_arm64_v8a/Debug-iphoneos/" AppRTCDemo
+        exec_ninja "out_ios_arm64_v8a/Debug-iphoneos/"
         exec_libtool "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-arm64_v8a-Debug.a" $WEBRTC/src/out_ios_arm64_v8a/Debug-iphoneos/*.a
     fi
 
     if [ "$WEBRTC_PROFILE" = true ] ; then
-        exec_ninja "out_ios_arm64_v8a/Profile-iphoneos/" AppRTCDemo
+        exec_ninja "out_ios_arm64_v8a/Profile-iphoneos/"
         exec_libtool "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-arm64_v8a-Profile.a" $WEBRTC/src/out_ios_arm64_v8a/Profile-iphoneos/*.a
     fi
 
     if [ "$WEBRTC_RELEASE" = true ] ; then
-        exec_ninja "out_ios_arm64_v8a/Release-iphoneos/" AppRTCDemo
+        exec_ninja "out_ios_arm64_v8a/Release-iphoneos/"
         exec_libtool "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-arm64_v8a-Release.a" $WEBRTC/src/out_ios_arm64_v8a/Release-iphoneos/*.a
     fi
 }
