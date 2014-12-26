@@ -73,6 +73,24 @@ function pull_depot_tools() {
     cd $WORKING_DIR
 }
 
+function choose_code_signing() {
+    if [[ -z $IDENTITY ]]
+    then
+        COUNT=$(security find-identity -v | grep -c "iPhone Developer")
+        if [[ $COUNT -gt 1 ]]
+        then
+          security find-identity -v
+          echo "Please select your code signing identity index from the above list:"
+          read INDEX
+          IDENTITY=$(security find-identity -v | awk -v i=$INDEX -F ") |\"" '{if (i==$1) {print $3}}')
+        else
+          IDENTITY=$(security find-identity -v | grep "iPhone Developer" | awk -F ") |\"" '{print $3}')
+        fi
+        echo Using code signing identity $IDENTITY
+    fi
+    sed -i -e "s/\'CODE_SIGN_IDENTITY\[sdk=iphoneos\*\]\': \'iPhone Developer\',/\'CODE_SIGN_IDENTITY[sdk=iphoneos*]\': \'$IDENTITY\',/" $WEBRTC/src/build/common.gypi
+}
+
 # Set the base of the GYP defines, instructing gclient runhooks what to generate
 function wrbase() {
     export GYP_DEFINES="build_with_libjingle=1 build_with_chromium=0 libjingle_objc=1"
@@ -161,7 +179,6 @@ function update2Revision() {
 # This function cleans out your webrtc directory and does a fresh clone -- slower than a pull
 # Pass in a revision number as an argument to clone that specific revision ex: clone 6798
 function clone() {
-
     DIR=`pwd`
 
     rm -rf $WEBRTC
@@ -174,6 +191,7 @@ function clone() {
 function sync() {
     pull_depot_tools
     cd $WEBRTC
+    choose_code_signing
     if [ -z $1 ]
     then
         gclient sync || true
@@ -194,6 +212,7 @@ function build_webrtc_mac() {
     cd "$WEBRTC/src"
 
     wrMac64
+    choose_code_signing
     gclient runhooks
 
     copy_headers
@@ -216,6 +235,7 @@ function build_apprtc_sim() {
     cd "$WEBRTC/src"
 
     wrX86
+    choose_code_signing
     gclient runhooks
 
     copy_headers
@@ -243,6 +263,7 @@ function build_apprtc() {
     cd "$WEBRTC/src"
 
     wrios_armv7
+    choose_code_signing
     gclient runhooks
 
     copy_headers
@@ -271,6 +292,7 @@ function build_apprtc_arm64() {
     cd "$WEBRTC/src"
 
     wrios_armv8
+    choose_code_signing
     gclient runhooks
 
     copy_headers
@@ -367,7 +389,6 @@ function build_webrtc() {
     build_apprtc_sim
     lipo_intel_and_arm
 }
-
 
 # Get webrtc then build webrtc
 function dance() {
