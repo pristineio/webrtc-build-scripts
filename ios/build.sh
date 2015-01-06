@@ -74,23 +74,21 @@ function pull_depot_tools() {
 }
 
 function choose_code_signing() {
- #you need the latest awk before it will work
- #   if [[ -z $IDENTITY ]]
- #   then
- #       COUNT=$(security find-identity -v | grep -c "iPhone Developer")
- #       if [[ $COUNT -gt 1 ]]
- #       then
- #         security find-identity -v
- #         echo "Please select your code signing identity index from the above list:"
- #         read INDEX
- #         IDENTITY=$(security find-identity -v | awk -v i=$INDEX -F ") |\"" '{if (i==$1) {print $3}}')
- #       else
- #         IDENTITY=$(security find-identity -v | grep "iPhone Developer" | awk -F ") |\"" '{print $3}')
- #       fi
- #       echo Using code signing identity $IDENTITY
- #   fi
- #   sed -i -e "s/\'CODE_SIGN_IDENTITY\[sdk=iphoneos\*\]\': \'iPhone Developer\',/\'CODE_SIGN_IDENTITY[sdk=iphoneos*]\': \'$IDENTITY\',/" $WEBRTC/src/build/common.gypi
- echo "choose code signing identity disabled by default. if you want to choose a profile install the latest awk then uncomment this part"
+    if [[ -z $IDENTITY ]]
+    then
+        COUNT=$(security find-identity -v | grep -c "iPhone Developer")
+        if [[ $COUNT -gt 1 ]]
+        then
+          security find-identity -v
+          echo "Please select your code signing identity index from the above list:"
+          read INDEX
+          IDENTITY=$(security find-identity -v | awk -v i=$INDEX -F "\) |\"" '{if (i==$1) {print $3}}')
+        else
+          IDENTITY=$(security find-identity -v | grep "iPhone Developer" | awk -F "\) |\"" '{print $3}')
+        fi
+        echo Using code signing identity $IDENTITY
+    fi
+    sed -i -e "s/\'CODE_SIGN_IDENTITY\[sdk=iphoneos\*\]\': \'iPhone Developer\',/\'CODE_SIGN_IDENTITY[sdk=iphoneos*]\': \'$IDENTITY\',/" $WEBRTC/src/build/common.gypi
 }
 
 # Set the base of the GYP defines, instructing gclient runhooks what to generate
