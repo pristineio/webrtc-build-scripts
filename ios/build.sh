@@ -74,21 +74,23 @@ function pull_depot_tools() {
 }
 
 function choose_code_signing() {
-    if [[ -z $IDENTITY ]]
-    then
-        COUNT=$(security find-identity -v | grep -c "iPhone Developer")
-        if [[ $COUNT -gt 1 ]]
-        then
-          security find-identity -v
-          echo "Please select your code signing identity index from the above list:"
-          read INDEX
-          IDENTITY=$(security find-identity -v | awk -v i=$INDEX -F ") |\"" '{if (i==$1) {print $3}}')
-        else
-          IDENTITY=$(security find-identity -v | grep "iPhone Developer" | awk -F ") |\"" '{print $3}')
-        fi
-        echo Using code signing identity $IDENTITY
-    fi
-    sed -i -e "s/\'CODE_SIGN_IDENTITY\[sdk=iphoneos\*\]\': \'iPhone Developer\',/\'CODE_SIGN_IDENTITY[sdk=iphoneos*]\': \'$IDENTITY\',/" $WEBRTC/src/build/common.gypi
+ #you need the latest awk before it will work
+ #   if [[ -z $IDENTITY ]]
+ #   then
+ #       COUNT=$(security find-identity -v | grep -c "iPhone Developer")
+ #       if [[ $COUNT -gt 1 ]]
+ #       then
+ #         security find-identity -v
+ #         echo "Please select your code signing identity index from the above list:"
+ #         read INDEX
+ #         IDENTITY=$(security find-identity -v | awk -v i=$INDEX -F ") |\"" '{if (i==$1) {print $3}}')
+ #       else
+ #         IDENTITY=$(security find-identity -v | grep "iPhone Developer" | awk -F ") |\"" '{print $3}')
+ #       fi
+ #       echo Using code signing identity $IDENTITY
+ #   fi
+ #   sed -i -e "s/\'CODE_SIGN_IDENTITY\[sdk=iphoneos\*\]\': \'iPhone Developer\',/\'CODE_SIGN_IDENTITY[sdk=iphoneos*]\': \'$IDENTITY\',/" $WEBRTC/src/build/common.gypi
+ echo "choose code signing identity disabled by default. if you want to choose a profile install the latest awk then uncomment this part"
 }
 
 # Set the base of the GYP defines, instructing gclient runhooks what to generate
@@ -224,9 +226,9 @@ function build_webrtc_mac() {
     fi
 
     if [ "$WEBRTC_RELEASE" = true ] ; then
-        exec_ninja "out_ios_x86/Release/"
-        exec_strip $WEBRTC/src/out_ios_x86/Release-iphoneos/*.a
-        exec_libtool "$BUILD/libWebRTC-$WEBRTC_REVISION-mac-x86_64-Release.a" $WEBRTC/src/out_ios_x86/Release/*.a
+        exec_ninja "out_mac_x86_64/Release/"
+        exec_libtool "$BUILD/libWebRTC-$WEBRTC_REVISION-mac-x86_64-Release.a" $WEBRTC/src/out_mac_x86_64/Release/*.a
+        exec_strip "$BUILD/libWebRTC-$WEBRTC_REVISION-mac-x86_64-Release.a"
     fi
 }
 
@@ -253,8 +255,8 @@ function build_apprtc_sim() {
 
     if [ "$WEBRTC_RELEASE" = true ] ; then
         exec_ninja "out_ios_x86/Release-iphonesimulator/"
-        exec_strip $WEBRTC/src/out_ios_x86/Release-iphonesimulator/*.a
         exec_libtool "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-x86-Release.a" $WEBRTC/src/out_ios_x86/Release-iphonesimulator/*.a
+        exec_strip "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-x86-Release.a"
     fi
 }
 
@@ -281,8 +283,8 @@ function build_apprtc() {
 
     if [ "$WEBRTC_RELEASE" = true ] ; then
         exec_ninja "out_ios_armeabi_v7a/Release-iphoneos/"
-        exec_strip $WEBRTC/src/out_ios_armeabi_v7a/Release-iphoneos/*.a
         exec_libtool "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-armeabi_v7a-Release.a" $WEBRTC/src/out_ios_armeabi_v7a/Release-iphoneos/*.a
+        exec_strip "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-armeabi_v7a-Release.a"
     fi
 }
 
@@ -310,8 +312,8 @@ function build_apprtc_arm64() {
 
     if [ "$WEBRTC_RELEASE" = true ] ; then
         exec_ninja "out_ios_arm64_v8a/Release-iphoneos/"
-        exec_strip $WEBRTC/src/out_ios_arm64_v8a/Release-iphoneos/*.a
         exec_libtool "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-arm64_v8a-Release.a" $WEBRTC/src/out_ios_arm64_v8a/Release-iphoneos/*.a
+        exec_strip "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-arm64_v8a-Release.a"
     fi
 }
 
@@ -404,7 +406,7 @@ function dance() {
     if [ "$BUILD_DEBUG" = true ] ; then
         WEBRTC_DEBUG=true
     fi
-
+    
 
     get_webrtc
     build_webrtc
