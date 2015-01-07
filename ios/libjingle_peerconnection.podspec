@@ -22,7 +22,7 @@ Pod::Spec.new do |s|
   s.public_header_files = "talk/app/webrtc/objc/public/*.h"
   s.private_header_files = "**/*.h"
   s.ios.deployment_target = '7.0'
-  s.osx.framework = 'AVFoundation', ‘AudioToolbox’, 'CoreGraphics', ‘CoreMedia’, ‘GLKit’
+  s.osx.framework = 'AVFoundation', ‘AudioToolbox’, 'CoreGraphics', ‘CoreMedia’, ‘GLKit’, 'QTKit', 'CoreAudio', 'CoreVideo'
   s.ios.framework = 'AVFoundation', ‘AudioToolbox’, 'CoreGraphics', ‘CoreMedia’, ‘GLKit’, ‘UIKit’
   s.libraries = 'c', 'sqlite3', 'stdc++'
   s.requires_arc = true
