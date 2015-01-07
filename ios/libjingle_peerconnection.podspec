@@ -22,7 +22,8 @@ Pod::Spec.new do |s|
   s.public_header_files = "talk/app/webrtc/objc/public/*.h"
   s.private_header_files = "**/*.h"
   s.ios.deployment_target = '7.0'
-  s.frameworks = 'AVFoundation', 'AudioToolbox', 'CoreGraphics', 'CoreMedia', 'GLKit', 'UIKit'
+  s.osx.framework = 'AVFoundation', ‘AudioToolbox’, 'CoreGraphics', ‘CoreMedia’, ‘GLKit’
+  s.ios.framework = 'AVFoundation', ‘AudioToolbox’, 'CoreGraphics', ‘CoreMedia’, ‘GLKit’, ‘UIKit’
   s.libraries = 'c', 'sqlite3', 'stdc++'
   s.requires_arc = true
   s.xcconfig  =  { 'LIBRARY_SEARCH_PATHS' => '"$(PODS_ROOT)/libjingle_peerconnection"',
