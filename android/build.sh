@@ -195,15 +195,19 @@ execute_build() {
     if [ "$WEBRTC_ARCH" = "x86" ] ;
     then
         ARCH="x86"
+        STRIP=$ANDROID_TOOLCHAINS/x86-4.9/prebuilt/linux-x86_64/bin/i686-linux-android-strip
     elif [ "$WEBRTC_ARCH" = "x86_64" ] ;
     then
         ARCH="x86_64"
+        STRIP=$ANDROID_TOOLCHAINS/x86_64-4.9/prebuilt/linux-x86_64/bin/x86_64-linux-android-strip
     elif [ "$WEBRTC_ARCH" = "armv7" ] ;
     then
         ARCH="armeabi_v7a"
+        STRIP=$ANDROID_TOOLCHAINS/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/bin/arm-linux-androideabi-strip
     elif [ "$WEBRTC_ARCH" = "armv8" ] ;
     then
         ARCH="arm64_v8a"
+        STRIP=$ANDROID_TOOLCHAINS/aarch64-linux-android-4.9/prebuilt/linux-x86_64/bin/aarch64-linux-android-strip
     fi
 
     if [ "$WEBRTC_DEBUG" = "true" ] ;
@@ -235,19 +239,7 @@ execute_build() {
 
         cp -p "$SOURCE_DIR/libjingle_peerconnection.jar" "$TARGET_DIR/libs/" 
 
-        if [ "$WEBRTC_ARCH" = "x86" ] ;
-        then
-            $ANDROID_TOOLCHAINS/x86-4.9/prebuilt/linux-x86_64/bin/i686-linux-android-strip -o $ARCH_JNI/libjingle_peerconnection_so.so $WEBRTC_ROOT/src/$ARCH_OUT/$BUILD_TYPE/lib/libjingle_peerconnection_so.so -s
-        elif [ "$WEBRTC_ARCH" = "x86_64" ] ;
-        then
-            $ANDROID_TOOLCHAINS/x86_64-4.9/prebuilt/linux-x86_64/bin/x86_64-linux-android-strip -o $ARCH_JNI/libjingle_peerconnection_so.so $WEBRTC_ROOT/src/$ARCH_OUT/$BUILD_TYPE/lib/libjingle_peerconnection_so.so -s
-        elif [ "$WEBRTC_ARCH" = "armv7" ] ;
-        then
-            $ANDROID_TOOLCHAINS/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/bin/arm-linux-androideabi-strip -o $ARCH_JNI/libjingle_peerconnection_so.so $WEBRTC_ROOT/src/$ARCH_OUT/$BUILD_TYPE/lib/libjingle_peerconnection_so.so -s
-        elif [ "$WEBRTC_ARCH" = "armv8" ] ;
-        then
-            $ANDROID_TOOLCHAINS/aarch64-linux-android-4.9/prebuilt/linux-x86_64/bin/aarch64-linux-android-strip -o $ARCH_JNI/libjingle_peerconnection_so.so $WEBRTC_ROOT/src/$ARCH_OUT/$BUILD_TYPE/lib/libjingle_peerconnection_so.so -s
-        fi
+        $STRIP -o $ARCH_JNI/libjingle_peerconnection_so.so $WEBRTC_ROOT/src/$ARCH_OUT/$BUILD_TYPE/lib/libjingle_peerconnection_so.so -s
 
         #cp -pr "$SOURCE_DIR"/* "$TARGET_DIR"
         cd $TARGET_DIR
