@@ -243,7 +243,7 @@ execute_build() {
 
         #cp -pr "$SOURCE_DIR"/* "$TARGET_DIR"
         cd $TARGET_DIR
-        mkdir res # make resources directory
+        mkdir -p res # make resources directory
 
         zip -r "$TARGET_DIR/$REVISION_NUM.zip" .
         cd $WORKING_DIR
