@@ -19,7 +19,7 @@ Pod::Spec.new do |s|
   s.ios.vendored_libraries = 'libjingle_peerconnection/libWebRTC.a'
   s.osx.preserve_paths = 'libjingle_peerconnection/libWebRTC-osx.a'
   s.osx.vendored_libraries = 'libjingle_peerconnection/libWebRTC-osx.a'
-  s.public_header_files = "talk/app/webrtc/objc/public/*.h"
+  s.public_header_files = "libjingle_peerconnection/Headers/*.h"
   s.private_header_files = "**/*.h"
   s.ios.deployment_target = '7.0'
   s.osx.deployment_target = '10.7'
