@@ -82,7 +82,7 @@ function choose_code_signing() {
           security find-identity -v
           echo "Please select your code signing identity index from the above list:"
           read INDEX
-          IDENTITY=$(security find-identity -v | awk -v i=$INDEX -F "\) |\"" '{if (i==$1) {print $3}}')
+          IDENTITY=$(security find-identity -v | awk -v i=$INDEX -F "\\\) |\"" '{if (i==$1) {print $3}}')
         else
           IDENTITY=$(security find-identity -v | grep "iPhone Developer" | awk -F "\) |\"" '{print $3}')
         fi
