@@ -406,6 +406,38 @@ function build_webrtc() {
     lipo_intel_and_arm
 }
 
+# Create an iOS "framework" for distribution sans CocoaPods
+function create_ios_framework() {
+    if [ "$WEBRTC_DEBUG" = true ] ; then
+        create_ios_framework_for_configuration "Debug"
+    fi
+
+    if [ "$WEBRTC_PROFILE" = true ] ; then
+        create_ios_framework_for_configuration "Profile"
+    fi
+
+    if [ "$WEBRTC_RELEASE" = true ] ; then
+        create_ios_framework_for_configuration "Release"
+    fi
+}
+
+function create_ios_framework_for_configuration () {
+    CONFIGURATION=$1
+
+    rm -rf $WEBRTC/Framework/$CONFIGURATION/WebRTC.framework
+    mkdir -p $WEBRTC/Framework/$CONFIGURATION/WebRTC.framework/Versions/A/Headers
+    cp $WEBRTC/src/talk/app/webrtc/objc/public/*.h $WEBRTC/Framework/$CONFIGURATION/WebRTC.framework/Versions/A/Headers
+    cp $WEBRTC/libWebRTC-LATEST-Universal-$CONFIGURATION.a $WEBRTC/Framework/$CONFIGURATION/WebRTC.framework/Versions/A/WebRTC
+
+    pushd $WEBRTC/Framework/$CONFIGURATION/WebRTC.framework/Versions
+    ln -sfh A Current
+    popd
+    pushd $WEBRTC/Framework/$CONFIGURATION/WebRTC.framework
+    ln -sfh Versions/Current/Headers Headers
+    ln -sfh Versions/Current/WebRTC WebRTC
+    popd
+}
+
 # Get webrtc then build webrtc
 function dance() {
     # These next if statement trickery is so that if you run from the command line and don't set anything to build, it will default to the debug profile.
