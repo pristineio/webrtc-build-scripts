@@ -29,7 +29,12 @@ function create_directory_if_not_found() {
 
 function exec_libtool() {
   echo "Running libtool"
-  libtool -static -v -o $@
+
+  # RCP: Feels kinda hacky.. But...
+  # Remove the demo project code from the resulting static library
+  LIBS=`ls $@ | grep -E -v "(libapprtc_signaling.a|libsocketrocket.a)"`
+
+  libtool -static -v -o $LIBS
 }
 
 function exec_strip() {
