@@ -372,12 +372,19 @@ function lipo_for_configuration() {
 
     # Lipo the simulator build with the ios build into a universal library
     lipo -create $LIPO_DIRS -output $BUILD/libWebRTC-$WEBRTC_REVISION-arm-intel-$CONFIGURATION.a
+
     # Delete the latest symbolic link just in case :)
-    rm $WEBRTC/libWebRTC-LATEST-Universal-$CONFIGURATION.a || true
+    if [ -a $WEBRTC/libWebRTC-LATEST-Universal-$CONFIGURATION.a ]
+    then
+        rm $WEBRTC/libWebRTC-LATEST-Universal-$CONFIGURATION.a
+    fi
+
     # Create a symbolic link pointing to the exact revision that is the latest. This way I don't have to change the xcode project file every time we update the revision number, while still keeping it easy to track which revision you are on
     ln -s $BUILD/libWebRTC-$WEBRTC_REVISION-arm-intel-$CONFIGURATION.a $WEBRTC/libWebRTC-LATEST-Universal-$CONFIGURATION.a
+
     # Make it clear which revision you are using .... You don't want to get in the state where you don't know which revision you were using... trust me
     echo "The libWebRTC-LATEST-Universal-$CONFIGURATION.a in this same directory, is revision " > $WEBRTC/libWebRTC-LATEST-Universal-$CONFIGURATION.a.version.txt
+
     # Also write to a file for funzies
     echo $WEBRTC_REVISION >> $WEBRTC/libWebRTC-LATEST-Universal-$CONFIGURATION.a.version.txt
 
