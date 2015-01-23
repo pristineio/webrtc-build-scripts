@@ -1,10 +1,5 @@
 #!/bin/sh
 
-#  pull.sh
-#  WebRTC
-#
-#  Created by Rahul Behera on 6/18/14.
-#  Copyright (c) 2014 Pristine, Inc. All rights reserved.
 SOURCE="${BASH_SOURCE[0]}"
 while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
 DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
@@ -14,4 +9,8 @@ done
 PROJECT_DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 source "$PROJECT_DIR/build.sh"
-get_webrtc $@
+
+dance $@
+create_ios_framework
+
+echo "Finished Framework Dancing!"

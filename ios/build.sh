@@ -173,7 +173,7 @@ function update2Revision() {
     echo "target_os = ['ios', 'mac']" >> .gclient
 
     if [ -z $1 ]
-        then
+    then
         sync
     else
         sync "$1"
@@ -386,12 +386,19 @@ function lipo_for_configuration() {
 
     # Lipo the simulator build with the ios build into a universal library
     lipo -create $LIPO_DIRS -output $BUILD/libWebRTC-$WEBRTC_REVISION-arm-intel-$CONFIGURATION.a
+
     # Delete the latest symbolic link just in case :)
-    rm $WEBRTC/libWebRTC-LATEST-Universal-$CONFIGURATION.a || true
+    if [ -a $WEBRTC/libWebRTC-LATEST-Universal-$CONFIGURATION.a ]
+    then
+        rm $WEBRTC/libWebRTC-LATEST-Universal-$CONFIGURATION.a
+    fi
+
     # Create a symbolic link pointing to the exact revision that is the latest. This way I don't have to change the xcode project file every time we update the revision number, while still keeping it easy to track which revision you are on
     ln -s $BUILD/libWebRTC-$WEBRTC_REVISION-arm-intel-$CONFIGURATION.a $WEBRTC/libWebRTC-LATEST-Universal-$CONFIGURATION.a
+
     # Make it clear which revision you are using .... You don't want to get in the state where you don't know which revision you were using... trust me
     echo "The libWebRTC-LATEST-Universal-$CONFIGURATION.a in this same directory, is revision " > $WEBRTC/libWebRTC-LATEST-Universal-$CONFIGURATION.a.version.txt
+
     # Also write to a file for funzies
     echo $WEBRTC_REVISION >> $WEBRTC/libWebRTC-LATEST-Universal-$CONFIGURATION.a.version.txt
 
@@ -420,6 +427,38 @@ function build_webrtc() {
     lipo_intel_and_arm
 }
 
+# Create an iOS "framework" for distribution sans CocoaPods
+function create_ios_framework() {
+    if [ "$WEBRTC_DEBUG" = true ] ; then
+        create_ios_framework_for_configuration "Debug"
+    fi
+
+    if [ "$WEBRTC_PROFILE" = true ] ; then
+        create_ios_framework_for_configuration "Profile"
+    fi
+
+    if [ "$WEBRTC_RELEASE" = true ] ; then
+        create_ios_framework_for_configuration "Release"
+    fi
+}
+
+function create_ios_framework_for_configuration () {
+    CONFIGURATION=$1
+
+    rm -rf $WEBRTC/Framework/$CONFIGURATION/WebRTC.framework
+    mkdir -p $WEBRTC/Framework/$CONFIGURATION/WebRTC.framework/Versions/A/Headers
+    cp $WEBRTC/src/talk/app/webrtc/objc/public/*.h $WEBRTC/Framework/$CONFIGURATION/WebRTC.framework/Versions/A/Headers
+    cp $WEBRTC/libWebRTC-LATEST-Universal-$CONFIGURATION.a $WEBRTC/Framework/$CONFIGURATION/WebRTC.framework/Versions/A/WebRTC
+
+    pushd $WEBRTC/Framework/$CONFIGURATION/WebRTC.framework/Versions
+    ln -sfh A Current
+    popd
+    pushd $WEBRTC/Framework/$CONFIGURATION/WebRTC.framework
+    ln -sfh Versions/Current/Headers Headers
+    ln -sfh Versions/Current/WebRTC WebRTC
+    popd
+}
+
 # Get webrtc then build webrtc
 function dance() {
     # These next if statement trickery is so that if you run from the command line and don't set anything to build, it will default to the debug profile.
@@ -437,7 +476,7 @@ function dance() {
         WEBRTC_DEBUG=true
     fi
 
-    get_webrtc
+    get_webrtc $@
     build_webrtc
     echo "Finished Dancing!"
 }
