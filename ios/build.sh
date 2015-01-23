@@ -183,7 +183,6 @@ function update2Revision() {
     if [ "$WEBRTC_TARGET" == "libWebRTC_objc" ] ; then
         echo "Adding a new libWebRTC_objc target"
         echo "$PROJECT_DIR/insert_before_text.py" 
-        `pwd`
         python "$PROJECT_DIR/insert_before_text.py"  "$WEBRTC/src/talk/libjingle_examples.gyp"
         # rm "$WEBRTC/src/talk/libjingle_examples.gyp"
         # mv "webrtc/src/talk/libjingle_examples.gyp1" "$WEBRTC/src/talk/libjingle_examples.gyp"
