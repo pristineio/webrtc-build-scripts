@@ -23,6 +23,7 @@ Pod::Spec.new do |s|
   s.private_header_files = "**/*.h"
   s.ios.deployment_target = '7.0'
   s.osx.deployment_target = '10.7'
+  s.source_files =  'libjingle_peerconnection/Headers/*.h'
   s.osx.framework = 'AVFoundation', 'AudioToolbox', 'CoreGraphics', 'CoreMedia', 'GLKit', 'QTKit', 'CoreAudio', 'CoreVideo'
   s.ios.framework = 'AVFoundation', 'AudioToolbox', 'CoreGraphics', 'CoreMedia', 'GLKit', 'UIKit'
   s.libraries = 'c', 'sqlite3', 'stdc++'
