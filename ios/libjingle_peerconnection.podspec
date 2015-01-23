@@ -15,12 +15,14 @@ Pod::Spec.new do |s|
   s.author       = { "Rahul Behera" => "rahul@pristine.io" }
   s.social_media_url = 'https://twitter.com/bot_the_builder'
   s.source       = { :http => "https://s3.amazonaws.com/libjingle/_WEBRTC_REVISION_/_BUILD_TYPE_STRING_/libWebRTC.tar.bz2" }
+  s.ios.source_files =  'libjingle_peerconnection/Headers/*.h'
+  s.osx.source_files =  'libjingle_peerconnection/Headers/*.h'
+  s.osx.public_header_files = "libjingle_peerconnection/Headers/*.h"
+  s.ios.public_header_files = "libjingle_peerconnection/Headers/*.h"
   s.ios.preserve_paths = 'libjingle_peerconnection/libWebRTC.a'
   s.ios.vendored_libraries = 'libjingle_peerconnection/libWebRTC.a'
   s.osx.preserve_paths = 'libjingle_peerconnection/libWebRTC-osx.a'
   s.osx.vendored_libraries = 'libjingle_peerconnection/libWebRTC-osx.a'
-  s.public_header_files = "libjingle_peerconnection/Headers/*.h"
-  s.private_header_files = "**/*.h"
   s.ios.deployment_target = '7.0'
   s.osx.deployment_target = '10.7'
   s.source_files =  'libjingle_peerconnection/Headers/*.h'
