@@ -10,7 +10,7 @@ PROJECT_DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 source "$PROJECT_DIR/build.sh"
 
-dance
+dance $@
 create_ios_framework
 
 echo "Finished Framework Dancing!"

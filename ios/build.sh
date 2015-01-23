@@ -173,7 +173,7 @@ function update2Revision() {
     echo "target_os = ['ios', 'mac']" >> .gclient
 
     if [ -z $1 ]
-        then
+    then
         sync
     else
         sync "$1"
@@ -476,7 +476,7 @@ function dance() {
         WEBRTC_DEBUG=true
     fi
 
-    get_webrtc
+    get_webrtc $@
     build_webrtc
     echo "Finished Dancing!"
 }
