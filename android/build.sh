@@ -6,23 +6,18 @@
 #
 # Builds the android peer connection library
 
-# Set your environment how you want
-if [ -n  "$VAGRANT_MACHINE" ];
-    then
-    PROJECT_ROOT="/vagrant"
-else
-    # Get location of the script itself .. thanks SO ! http://stackoverflow.com/a/246128
-    SOURCE="${BASH_SOURCE[0]}"
-    while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
-        DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
-        SOURCE="$(readlink "$SOURCE")"
-        [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE" # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
-    done
-    PROJECT_ROOT="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
-fi
+# Get location of the script itself .. thanks SO ! http://stackoverflow.com/a/246128
+SOURCE="${BASH_SOURCE[0]}"
+while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
+    DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+    SOURCE="$(readlink "$SOURCE")"
+    [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE" # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
+done
+PROJECT_ROOT="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 DEPOT_TOOLS="$PROJECT_ROOT/depot_tools"
 WEBRTC_ROOT="$PROJECT_ROOT/webrtc"
+create_directory_if_not_found $WEBRTC_ROOT
 BUILD="$WEBRTC_ROOT/libjingle_peerconnection_builds"
 WEBRTC_TARGET="AppRTCDemo"
 
@@ -130,7 +125,7 @@ function wrarmv7() {
 function wrarmv8() {
     wrbase
     export GYP_DEFINES="$GYP_DEFINES OS=android target_arch=arm64 target_subarch=arm64"
-    export GYP_GENERATOR_FLAGS="$output_dir=out_android_arm64_v8a"
+    export GYP_GENERATOR_FLAGS="output_dir=out_android_arm64_v8a"
     export GYP_CROSSCOMPILE=1
     echo "ARMv8 with Neon Build"
 }
@@ -239,7 +234,7 @@ execute_build() {
 
         cp -p "$SOURCE_DIR/libjingle_peerconnection.jar" "$TARGET_DIR/libs/" 
 
-        $STRIP -o $ARCH_JNI/libjingle_peerconnection_so.so $WEBRTC_ROOT/src/$ARCH_OUT/$BUILD_TYPE/lib/libjingle_peerconnection_so.so -s
+        $STRIP -o $ARCH_JNI/libjingle_peerconnection_so.so $WEBRTC_ROOT/src/$ARCH_OUT/$BUILD_TYPE/libjingle_peerconnection_so.so -s
 
         #cp -pr "$SOURCE_DIR"/* "$TARGET_DIR"
         cd $TARGET_DIR
