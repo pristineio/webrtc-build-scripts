@@ -15,14 +15,6 @@ while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symli
 done
 PROJECT_ROOT="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
-DEPOT_TOOLS="$PROJECT_ROOT/depot_tools"
-WEBRTC_ROOT="$PROJECT_ROOT/webrtc"
-create_directory_if_not_found $WEBRTC_ROOT
-BUILD="$WEBRTC_ROOT/libjingle_peerconnection_builds"
-WEBRTC_TARGET="AppRTCDemo"
-
-ANDROID_TOOLCHAINS="$WEBRTC_ROOT/src/third_party/android_tools/ndk/toolchains"
-
 # Utility method for creating a directory
 create_directory_if_not_found() {
 	# if we cannot find the directory
@@ -33,6 +25,14 @@ create_directory_if_not_found() {
 	    echo "directory created at $1"
 	fi
 }
+
+DEPOT_TOOLS="$PROJECT_ROOT/depot_tools"
+WEBRTC_ROOT="$PROJECT_ROOT/webrtc"
+create_directory_if_not_found $WEBRTC_ROOT
+BUILD="$WEBRTC_ROOT/libjingle_peerconnection_builds"
+WEBRTC_TARGET="AppRTCDemo"
+
+ANDROID_TOOLCHAINS="$WEBRTC_ROOT/src/third_party/android_tools/ndk/toolchains"
 
 exec_ninja() {
   echo "Running ninja"
