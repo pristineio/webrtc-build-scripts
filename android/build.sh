@@ -108,7 +108,7 @@ pull_webrtc() {
 
 # Prepare our build
 function wrbase() {
-    export GYP_DEFINES="OS=android host_os=linux libjingle_java=1 build_with_libjingle=1 build_with_chromium=0 enable_tracing=1 enable_android_opensl=1"
+    export GYP_DEFINES="OS=android host_os=linux libjingle_java=1 build_with_libjingle=1 build_with_chromium=0 enable_tracing=1 enable_android_opensl=0"
     export GYP_GENERATORS="ninja"
 }
 
