@@ -8,3 +8,9 @@
 
 # Vagrant
 .vagrant
+ 
+# Do not want to check in depot_tools or webrtc source code
+android/depot_tools/
+android/webrtc/
+ios/depot_tools/
+ios/webrtc/

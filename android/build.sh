@@ -26,6 +26,7 @@ create_directory_if_not_found() {
 	fi
 }
 
+DEFAULT_WEBRTC_URL="http://webrtc.googlecode.com/svn/trunk"
 DEPOT_TOOLS="$PROJECT_ROOT/depot_tools"
 WEBRTC_ROOT="$PROJECT_ROOT/webrtc"
 create_directory_if_not_found $WEBRTC_ROOT
@@ -85,9 +86,18 @@ pull_webrtc() {
     create_directory_if_not_found $WEBRTC_ROOT
     cd $WEBRTC_ROOT
 
-    # Ensure our target os is correct building android
+    # Setup gclient config
     echo Configuring gclient for Android build
-	gclient config --name=src http://webrtc.googlecode.com/svn/trunk
+    if [ -z $USER_WEBRTC_URL ]
+    then
+        echo "User has not specified a different webrtc url. Using default"
+        gclient config --name=src "$DEFAULT_WEBRTC_URL"
+    else
+        echo "User has specified their own webrtc url $USER_WEBRTC_URL"
+        gclient config --name=src "$USER_WEBRTC_URL"
+    fi
+
+    # Ensure our target os is correct building android
 	echo "target_os = ['unix', 'android']" >> .gclient
 
     # Get latest webrtc source
@@ -155,7 +165,7 @@ prepare_gyp_defines() {
 
     # Check to see if the user wants to set their own gyp defines
     echo Export the base settings of GYP_DEFINES so we can define how we want to build
-    if [ -n $USER_GYP_DEFINES ]
+    if [ -z $USER_GYP_DEFINES ]
     then
         echo "User has not specified any gyp defines so we proceed with default"
         if [ "$WEBRTC_ARCH" = "x86" ] ;
