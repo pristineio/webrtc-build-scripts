@@ -233,8 +233,6 @@ execute_build() {
         TARGET_DIR="$BUILD/$BUILD_TYPE"
         create_directory_if_not_found "$TARGET_DIR"
         
-        rm "$TARGET_DIR/$REVISION_NUM.zip" || true
-
         echo "Copy JAR File"
         create_directory_if_not_found "$TARGET_DIR/libs/"
         create_directory_if_not_found "$TARGET_DIR/jniLibs/"
@@ -242,9 +240,16 @@ execute_build() {
         ARCH_JNI="$TARGET_DIR/jniLibs/${ARCH}"
         create_directory_if_not_found $ARCH_JNI
 
+        # Copy the joar
         cp -p "$SOURCE_DIR/libjingle_peerconnection.jar" "$TARGET_DIR/libs/" 
 
-        $STRIP -o $ARCH_JNI/libjingle_peerconnection_so.so $WEBRTC_ROOT/src/$ARCH_OUT/$BUILD_TYPE/lib/libjingle_peerconnection_so.so -s
+        # Strip the build only if its release
+        if [ "$WEBRTC_DEBUG" = "true" ] ;
+        then
+            cp -p $WEBRTC_ROOT/src/$ARCH_OUT/$BUILD_TYPE/libjingle_peerconnection_so.so $ARCH_JNI/libjingle_peerconnection_so.so
+        else
+            $STRIP -o $ARCH_JNI/libjingle_peerconnection_so.so $WEBRTC_ROOT/src/$ARCH_OUT/$BUILD_TYPE/libjingle_peerconnection_so.so -s    
+        fi
 
         cd $TARGET_DIR
         mkdir -p aidl
