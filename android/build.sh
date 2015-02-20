@@ -207,11 +207,11 @@ execute_build() {
         STRIP=$ANDROID_TOOLCHAINS/x86_64-4.9/prebuilt/linux-x86_64/bin/x86_64-linux-android-strip
     elif [ "$WEBRTC_ARCH" = "armv7" ] ;
     then
-        ARCH="armeabi_v7a"
+        ARCH="armeabi-v7a"
         STRIP=$ANDROID_TOOLCHAINS/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/bin/arm-linux-androideabi-strip
     elif [ "$WEBRTC_ARCH" = "armv8" ] ;
     then
-        ARCH="arm64_v8a"
+        ARCH="arm64-v8a"
         STRIP=$ANDROID_TOOLCHAINS/aarch64-linux-android-4.9/prebuilt/linux-x86_64/bin/aarch64-linux-android-strip
     fi
 
@@ -223,10 +223,10 @@ execute_build() {
     fi
 
     ARCH_OUT="out_android_${ARCH}"
+    REVISION_NUM=`get_webrtc_revision`
     echo "Build ${WEBRTC_TARGET} in $BUILD_TYPE (arch: ${WEBRTC_ARCH:-arm})"
     exec_ninja "$ARCH_OUT/$BUILD_TYPE"
     
-    REVISION_NUM=`get_webrtc_revision`
     # Verify the build actually worked
     if [ $? -eq 0 ]; then
         SOURCE_DIR="$WEBRTC_ROOT/src/$ARCH_OUT/$BUILD_TYPE"
@@ -246,25 +246,32 @@ execute_build() {
 
         $STRIP -o $ARCH_JNI/libjingle_peerconnection_so.so $WEBRTC_ROOT/src/$ARCH_OUT/$BUILD_TYPE/lib/libjingle_peerconnection_so.so -s
 
-        #cp -pr "$SOURCE_DIR"/* "$TARGET_DIR"
         cd $TARGET_DIR
-        mkdir -p res # make resources directory
+        mkdir -p aidl
+        mkdir -p assets
+        mkdir -p res
 
-        zip -r "$TARGET_DIR/$REVISION_NUM.zip" .
         cd $WORKING_DIR
-
-        
         echo "$BUILD_TYPE build for apprtc complete for revision $REVISION_NUM"
     else
         
         echo "$BUILD_TYPE build for apprtc failed for revision $REVISION_NUM"
+        exit 1
     fi
 }
 
 # Gets the webrtc revision
 get_webrtc_revision() {
- #   git describe --tags  | sed 's/r\([0-9]*\)-.*/\1/' #Here's a nice little git version if you are using a git source
-    svn info "$WEBRTC_ROOT/src" | awk '{ if ($1 ~ /Revision/) { print $2 } }'
+    # Try for svn by default
+    REVISION_NUMBER=`svn info "$WEBRTC_ROOT/src" | awk '{ if ($1 ~ /Revision/) { print $2 } }'`
+
+    # If not set then user is probably using git
+    if [ -z "$REVISION_NUMBER" ]
+    then
+        REVISION_NUMBER=`git describe --tags  | sed 's/r\([0-9]*\)-.*/\1/'`
+    fi
+
+    echo $REVISION_NUMBER
 }
 
 get_webrtc() {
