@@ -126,7 +126,7 @@ function wrbase() {
 function wrarmv7() {
     wrbase
     export GYP_DEFINES="$GYP_DEFINES OS=android"
-    export GYP_GENERATOR_FLAGS="$GYP_GENERATOR_FLAGS output_dir=out_android_armeabi_v7a"
+    export GYP_GENERATOR_FLAGS="$GYP_GENERATOR_FLAGS output_dir=out_android_armeabi-v7a"
     export GYP_CROSSCOMPILE=1
     echo "ARMv7 with Neon Build"
 }
@@ -135,7 +135,7 @@ function wrarmv7() {
 function wrarmv8() {
     wrbase
     export GYP_DEFINES="$GYP_DEFINES OS=android target_arch=arm64 target_subarch=arm64"
-    export GYP_GENERATOR_FLAGS="output_dir=out_android_arm64_v8a"
+    export GYP_GENERATOR_FLAGS="output_dir=out_android_arm64-v8a"
     export GYP_CROSSCOMPILE=1
     echo "ARMv8 with Neon Build"
 }
