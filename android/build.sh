@@ -235,9 +235,9 @@ execute_build() {
         
         echo "Copy JAR File"
         create_directory_if_not_found "$TARGET_DIR/libs/"
-        create_directory_if_not_found "$TARGET_DIR/jniLibs/"
+        create_directory_if_not_found "$TARGET_DIR/jni/"
 
-        ARCH_JNI="$TARGET_DIR/jniLibs/${ARCH}"
+        ARCH_JNI="$TARGET_DIR/jni/${ARCH}"
         create_directory_if_not_found $ARCH_JNI
 
         # Copy the jar
