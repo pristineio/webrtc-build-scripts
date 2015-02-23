@@ -149,7 +149,7 @@ function get_revision_number() {
     # If not set then user is probably using git
     if [ -z "$REVISION_NUMBER" ]
     then
-        REVISION_NUMBER=`git describe --tags  | sed 's/r\([0-9]*\)-.*/\1/'`
+        REVISION_NUMBER=`git describe --tags  | sed 's/\([0-9]*\)-.*/\1/'`
     fi
 
     echo $REVISION_NUMBER
