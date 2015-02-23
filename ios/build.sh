@@ -15,6 +15,7 @@ while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symli
 done
 PROJECT_DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
+DEFAULT_WEBRTC_URL="http://webrtc.googlecode.com/svn/trunk"
 WEBRTC="$PROJECT_DIR/webrtc"
 DEPOT_TOOLS="$PROJECT_DIR/depot_tools"
 BUILD="$WEBRTC/libjingle_peerconnection_builds"
@@ -153,8 +154,16 @@ function update2Revision() {
     pull_depot_tools
     cd $WEBRTC
 
-    # Configure gclient to pull from the google code master repo (svn). Git is faster, will be put in a later commit
-    gclient config --name src http://webrtc.googlecode.com/svn/trunk
+    # Setup gclient config
+    echo Configuring gclient for iOS build
+    if [ -z $USER_WEBRTC_URL ]
+    then
+        echo "User has not specified a different webrtc url. Using default"
+        gclient config --name=src "$DEFAULT_WEBRTC_URL"
+    else
+        echo "User has specified their own webrtc url $USER_WEBRTC_URL"
+        gclient config --name=src "$USER_WEBRTC_URL"
+    fi
 
     # # Make sure that the target os is set to JUST MAC at first by adding that to the .gclient file that gclient config command created
     # # Note this is a workaround until one of the depot_tools/ios bugs has been fixed
