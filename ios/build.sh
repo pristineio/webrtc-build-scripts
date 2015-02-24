@@ -519,9 +519,9 @@ function get_version_build() {
 
     if [ -z $USER_POD_URL ]
     then
-        VERSION_BUILD=`egrep -o 'Versions: .*\[master repo\]' /tmp/libjingle_search.log | egrep -o '\d+\.\d\.\d+' | awk -v REVISION_NUM="$1" -v BUILD_TYPE="$2" -F '.' 'BEGIN{ VERSION_COUNT = 0 }; { if ($1 == $REVISION_NUM && $2 == $BUILD_TYPE) VERSION_COUNT += 1 }; END{ print VERSION_COUNT };'`
+        VERSION_BUILD=`egrep -o 'Versions: .*\[master repo\]' /tmp/libjingle_search.log | egrep -o '\d+\.\d\.\d+' | awk -v REVISION_NUM="$1" -v BUILD_TYPE="$2" -F '.' 'BEGIN{ VERSION_COUNT = 0 }; { if ($1 == REVISION_NUM && $2 == BUILD_TYPE) VERSION_COUNT += 1 }; END{ print VERSION_COUNT };'`
     else
-        VERSION_BUILD=`egrep -o '\[master repo\].*' /tmp/libjingle_search.log | egrep -o '\d+\.\d\.\d+' | awk -v REVISION_NUM="$1" -v BUILD_TYPE="$2" -F '.' 'BEGIN{ VERSION_COUNT = 0 }; { if ($1 == $REVISION_NUM && $2 == $BUILD_TYPE) VERSION_COUNT += 1 }; END{ print VERSION_COUNT };'`
+        VERSION_BUILD=`egrep -o '\[master repo\].*' /tmp/libjingle_search.log | egrep -o '\d+\.\d\.\d+' | awk -v REVISION_NUM="$1" -v BUILD_TYPE="$2" -F '.' 'BEGIN{ VERSION_COUNT = 0 }; { if ($1 == REVISION_NUM && $2 == BUILD_TYPE) VERSION_COUNT += 1 }; END{ print VERSION_COUNT };'`
     fi
 
     echo "$VERSION_BUILD"
