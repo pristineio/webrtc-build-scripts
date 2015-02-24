@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "libjingle_peerconnection"
-  s.version      = "_WEBRTC_REVISION_._BUILD_TYPE_.0"
+  s.version      = "{WEBRTC_REVISION}.{BUILD_TYPE}.{VERSION_BUILD}"
   s.summary      = "WebRTC Video Streaming Peer Connection API's. An iOS WebRTC demo application hosted on App Engine. Builds by Pristine.io"
   s.description      = <<-DESC
                        The WebRTC native APIs are implemented based on the following [WebRTC spec.](http://dev.w3.org/2011/webrtc/editor/webrtc.html) 
@@ -14,7 +14,7 @@ Pod::Spec.new do |s|
   s.osx.platform = :osx, '10.7'
   s.author       = { "Rahul Behera" => "rahul@pristine.io" }
   s.social_media_url = 'https://twitter.com/bot_the_builder'
-  s.source       = { :http => "https://s3.amazonaws.com/libjingle/_WEBRTC_REVISION_/_BUILD_TYPE_STRING_/libWebRTC.tar.bz2" }
+  s.source       = { :http => "{POD_URL}/{WEBRTC_REVISION}/{BUILD_TYPE_STRING}/{VERSION_BUILD}/libWebRTC.tar.bz2" }
   s.ios.source_files =  'libjingle_peerconnection/Headers/*.h'
   s.osx.source_files =  'libjingle_peerconnection/Headers/*.h'
   s.osx.public_header_files = "libjingle_peerconnection/Headers/*.h"

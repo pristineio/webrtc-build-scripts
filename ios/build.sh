@@ -16,6 +16,7 @@ done
 PROJECT_DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 DEFAULT_WEBRTC_URL="http://webrtc.googlecode.com/svn/trunk"
+DEFAULT_POD_URL="https://s3.amazonaws.com/libjingle"
 WEBRTC="$PROJECT_DIR/webrtc"
 DEPOT_TOOLS="$PROJECT_DIR/depot_tools"
 BUILD="$WEBRTC/libjingle_peerconnection_builds"
@@ -442,6 +443,86 @@ function build_webrtc() {
     build_apprtc_sim
     build_apprtc_sim64
     lipo_intel_and_arm
+}
+
+# Create the static library, requires an argument specifiying Debug or Release
+function create_archive_of_static_libraries() {
+    echo Get the current working directory so we can change directories back when done
+    WORKING_DIR=`pwd`
+    VERSION_BUILD=0
+
+    echo "Creating Static Library"
+    create_directory_if_not_found "$BUILD/archives"
+    rm -rf "$BUILD/archives/$WEBRTC_REVISION/$1"
+    create_directory_if_not_found "$BUILD/archives/$WEBRTC_REVISION"
+    create_directory_if_not_found "$BUILD/archives/$WEBRTC_REVISION/$1"
+    
+    cd "$BUILD/archives/$WEBRTC_REVISION/$1"
+
+    create_directory_if_not_found libjingle_peerconnection/
+    
+    # Copy podspec with ios and mac
+    cp -v "$PROJECT_DIR/libjingle_peerconnection.podspec" "libjingle_peerconnection.podspec"
+
+    # inject pod url
+    if [ -z $USER_POD_URL ]
+    then
+        echo "User has not specified a different pod url. Using default"
+        sed -ic "s/{POD_URL}/$USER_POD_URL/g" libjingle_peerconnection.podspec
+    else
+        echo "User has specified their own pod url $USER_POD_URL"
+        sed -ic "s/{POD_URL}/$DEFAULT_POD_URL/g" libjingle_peerconnection.podspec
+    fi
+    
+    # inject revision number
+    sed -ic "s/{WEBRTC_REVISION}/$WEBRTC_REVISION/g" libjingle_peerconnection.podspec
+    # inject build type string
+    sed -ic "s/{BUILD_TYPE_STRING}/$1/g" libjingle_peerconnection.podspec
+    
+    if [ $1 = "Debug" ]; then
+        VERSION_BUILD=`get_version_build "$WEBRTC_REVISION" 0`
+        ln -sfv "$BUILD/libWebRTC-$WEBRTC_REVISION-arm-intel-Debug.a" "libjingle_peerconnection/libWebRTC.a"
+        ln -sfv "$BUILD/libWebRTC-$WEBRTC_REVISION-mac-x86_64-Debug.a" "libjingle_peerconnection/libWebRTC-osx.a"
+        sed -ic "s/{BUILD_TYPE}/0/g" libjingle_peerconnection.podspec
+        sed -ic "s/{VERSION_BUILD}/$VERSION_BUILD/g" libjingle_peerconnection.podspec
+    fi
+    if [ $1 = "Release" ]; then
+        VERSION_BUILD=`get_version_build "$WEBRTC_REVISION" 2`
+        ln -sfv "$BUILD/libWebRTC-$WEBRTC_REVISION-arm-intel-Release.a" "libjingle_peerconnection/libWebRTC.a"
+        ln -sfv "$BUILD/libWebRTC-$WEBRTC_REVISION-mac-x86_64-Release.a" "libjingle_peerconnection/libWebRTC-osx.a"
+        sed -ic "s/{BUILD_TYPE}/2/g" libjingle_peerconnection.podspec
+        sed -ic "s/{VERSION_BUILD}/$VERSION_BUILD/g" libjingle_peerconnection.podspec
+    fi
+
+    # write the revision and build type into a file
+    echo "revision $WEBRTC_REVISION $1 build" > "libjingle_peerconnection/libjingle_peerconnection_revision_build.txt"
+    
+    # add headers
+    ln -sfv "$WEBRTC/src/talk/app/webrtc/objc/public/" "libjingle_peerconnection/Headers"
+
+    # Compress artifact
+    tar --use-compress-prog=pbzip2 -cvLf "libWebRTC.tar.bz2" *
+
+    echo Go back to working directory
+    cd $WORKING_DIR
+}
+
+# Grabs the current version build based on what is
+function get_version_build() {
+    # Set version build
+    VERSION_BUILD=0
+
+    # Create temp output file to parse
+    pod search libjingle_peerconnection > /tmp/libjingle_search.log
+
+    if [ -z $USER_POD_URL ]
+    then
+        VERSION_BUILD=`egrep -o 'Versions: .*\[master repo\]' /tmp/libjingle_search.log | egrep -o '\d+\.\d\.\d+' | awk -v REVISION_NUM="$1" -v BUILD_TYPE="$2" -F '.' 'BEGIN{ VERSION_COUNT = 0 }; { if ($1 == $REVISION_NUM && $2 == $BUILD_TYPE) VERSION_COUNT += 1 }; END{ print VERSION_COUNT };'`
+    else
+        VERSION_BUILD=`egrep -o '\[master repo\].*' /tmp/libjingle_search.log | egrep -o '\d+\.\d\.\d+' | awk -v REVISION_NUM="$1" -v BUILD_TYPE="$2" -F '.' 'BEGIN{ VERSION_COUNT = 0 }; { if ($1 == $REVISION_NUM && $2 == $BUILD_TYPE) VERSION_COUNT += 1 }; END{ print VERSION_COUNT };'`
+    fi
+
+    echo "$VERSION_BUILD"
 }
 
 # Create an iOS "framework" for distribution sans CocoaPods
