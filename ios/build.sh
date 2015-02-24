@@ -450,6 +450,7 @@ function create_archive_of_static_libraries() {
     echo Get the current working directory so we can change directories back when done
     WORKING_DIR=`pwd`
     VERSION_BUILD=0
+    WEBRTC_REVISION=`get_revision_number`
 
     echo "Creating Static Library"
     create_directory_if_not_found "$BUILD/archives"
