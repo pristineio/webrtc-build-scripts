@@ -150,7 +150,9 @@ function get_revision_number() {
     # If not set then user is probably using git
     if [ -z "$REVISION_NUMBER" ]
     then
+        cd "$WEBRTC_ROOT/src"
         REVISION_NUMBER=`git describe --tags  | sed 's/\([0-9]*\)-.*/\1/'`
+        cd - 
     fi
 
     echo $REVISION_NUMBER
