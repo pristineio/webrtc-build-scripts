@@ -471,10 +471,10 @@ function create_archive_of_static_libraries() {
     if [ -z $USER_POD_URL ]
     then
         echo "User has not specified a different pod url. Using default"
-        sed -ic "s|{POD_URL}|"$USER_POD_URL"|g" libjingle_peerconnection.podspec
+        sed -ic "s|{POD_URL}|"$DEFAULT_POD_URL"|g" libjingle_peerconnection.podspec
     else
         echo "User has specified their own pod url $USER_POD_URL"
-        sed -ic "s|{POD_URL}|"$DEFAULT_POD_URL"|g" libjingle_peerconnection.podspec
+        sed -ic "s|{POD_URL}|"$USER_POD_URL"|g" libjingle_peerconnection.podspec
     fi
     
     # inject revision number
