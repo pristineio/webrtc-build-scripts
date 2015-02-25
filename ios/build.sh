@@ -152,7 +152,7 @@ function get_revision_number() {
     then
         cd "$WEBRTC/src"
         REVISION_NUMBER=`git describe --tags  | sed 's/\([0-9]*\)-.*/\1/'`
-        cd - 
+        cd - > /dev/null
     fi
 
     echo $REVISION_NUMBER
