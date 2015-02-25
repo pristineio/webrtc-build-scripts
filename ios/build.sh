@@ -145,12 +145,12 @@ function wrMac64() {
 # Gets the revision number of the current WebRTC svn repo on the filesystem
 function get_revision_number() {
     # Try for svn by default
-    REVISION_NUMBER=`svn info "$WEBRTC_ROOT/src" | awk '{ if ($1 ~ /Revision/) { print $2 } }'`
+    REVISION_NUMBER=`svn info "$WEBRTC/src" | awk '{ if ($1 ~ /Revision/) { print $2 } }'`
 
     # If not set then user is probably using git
     if [ -z "$REVISION_NUMBER" ]
     then
-        cd "$WEBRTC_ROOT/src"
+        cd "$WEBRTC/src"
         REVISION_NUMBER=`git describe --tags  | sed 's/\([0-9]*\)-.*/\1/'`
         cd - 
     fi
