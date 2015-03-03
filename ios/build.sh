@@ -510,6 +510,8 @@ function create_archive_of_static_libraries() {
 
     echo Go back to working directory
     cd $WORKING_DIR
+	
+	ln -sfv "$BUILD/archives/$WEBRTC_REVISION/$1" "$BUILD/LATEST"
 }
 
 # Grabs the current version build based on what is
