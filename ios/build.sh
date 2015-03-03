@@ -503,7 +503,7 @@ function create_archive_of_static_libraries() {
     echo "revision $WEBRTC_REVISION $1 build" > "libjingle_peerconnection/libjingle_peerconnection_revision_build.txt"
     
     # add headers
-    ln -sfv "$WEBRTC/src/talk/app/webrtc/objc/public/" "libjingle_peerconnection/Headers"
+    cp -fvR "$WEBRTC/src/talk/app/webrtc/objc/public/" "libjingle_peerconnection/Headers"
 
     # Compress artifact
     tar --use-compress-prog=pbzip2 -cvLf "libWebRTC.tar.bz2" *
