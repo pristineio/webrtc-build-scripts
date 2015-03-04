@@ -460,6 +460,9 @@ function create_archive_of_static_libraries() {
     create_directory_if_not_found "$BUILD/archives/$WEBRTC_REVISION"
     create_directory_if_not_found "$BUILD/archives/$WEBRTC_REVISION/$1"
     
+    create_directory_if_not_found "$BUILD/archives/LATEST/"
+	ln -sfv "$BUILD/archives/$WEBRTC_REVISION/$1" "$BUILD/archives/LATEST/"
+
     cd "$BUILD/archives/$WEBRTC_REVISION/$1"
 
     create_directory_if_not_found libjingle_peerconnection/
@@ -510,8 +513,6 @@ function create_archive_of_static_libraries() {
 
     echo Go back to working directory
     cd $WORKING_DIR
-	
-	ln -sfv "$BUILD/archives/$WEBRTC_REVISION/$1" "$BUILD/LATEST"
 }
 
 # Grabs the current version build based on what is
