@@ -460,6 +460,9 @@ function create_archive_of_static_libraries() {
     create_directory_if_not_found "$BUILD/archives/$WEBRTC_REVISION"
     create_directory_if_not_found "$BUILD/archives/$WEBRTC_REVISION/$1"
     
+    create_directory_if_not_found "$BUILD/archives/LATEST/"
+	ln -sfv "$BUILD/archives/$WEBRTC_REVISION/$1" "$BUILD/archives/LATEST/"
+
     cd "$BUILD/archives/$WEBRTC_REVISION/$1"
 
     create_directory_if_not_found libjingle_peerconnection/
@@ -485,16 +488,16 @@ function create_archive_of_static_libraries() {
     if [ $1 = "Debug" ] 
     then
         VERSION_BUILD=`get_version_build "$WEBRTC_REVISION" 0`
-        ln -sfv "$BUILD/libWebRTC-$WEBRTC_REVISION-arm-intel-Debug.a" "libjingle_peerconnection/libWebRTC.a"
-        ln -sfv "$BUILD/libWebRTC-$WEBRTC_REVISION-mac-x86_64-Debug.a" "libjingle_peerconnection/libWebRTC-osx.a"
+        cp -fv "$BUILD/libWebRTC-$WEBRTC_REVISION-arm-intel-Debug.a" "libjingle_peerconnection/libWebRTC.a"
+        cp -fv "$BUILD/libWebRTC-$WEBRTC_REVISION-mac-x86_64-Debug.a" "libjingle_peerconnection/libWebRTC-osx.a"
         sed -ic "s/{BUILD_TYPE}/0/g" libjingle_peerconnection.podspec
         sed -ic "s/{VERSION_BUILD}/$VERSION_BUILD/g" libjingle_peerconnection.podspec
     fi
     if [ $1 = "Release" ] 
     then
         VERSION_BUILD=`get_version_build "$WEBRTC_REVISION" 2`
-        ln -sfv "$BUILD/libWebRTC-$WEBRTC_REVISION-arm-intel-Release.a" "libjingle_peerconnection/libWebRTC.a"
-        ln -sfv "$BUILD/libWebRTC-$WEBRTC_REVISION-mac-x86_64-Release.a" "libjingle_peerconnection/libWebRTC-osx.a"
+        cp -fv "$BUILD/libWebRTC-$WEBRTC_REVISION-arm-intel-Release.a" "libjingle_peerconnection/libWebRTC.a"
+        cp -fv "$BUILD/libWebRTC-$WEBRTC_REVISION-mac-x86_64-Release.a" "libjingle_peerconnection/libWebRTC-osx.a"
         sed -ic "s/{BUILD_TYPE}/2/g" libjingle_peerconnection.podspec
         sed -ic "s/{VERSION_BUILD}/$VERSION_BUILD/g" libjingle_peerconnection.podspec
     fi
@@ -510,8 +513,6 @@ function create_archive_of_static_libraries() {
 
     echo Go back to working directory
     cd $WORKING_DIR
-	
-	ln -sfv "$BUILD/archives/$WEBRTC_REVISION/$1" "$BUILD/LATEST"
 }
 
 # Grabs the current version build based on what is
