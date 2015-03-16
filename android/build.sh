@@ -290,10 +290,9 @@ build_apprtc() {
     prepare_gyp_defines &&
     execute_build
 
-    # Uncomment once the application can successfully build for arm64
-    #export WEBRTC_ARCH=armv8
-    #prepare_gyp_defines &&
-    #execute_build
+    export WEBRTC_ARCH=armv8
+    prepare_gyp_defines &&
+    execute_build
 
     export WEBRTC_ARCH=x86
     prepare_gyp_defines &&
