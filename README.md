@@ -3,8 +3,7 @@ A set of build scripts useful for building WebRTC libraries for Android and iOS.
 
 Bugs: Please submit the [revision](https://code.google.com/p/webrtc/source/list) number that you are using. There are frequent updates to this project so please watch the changelist for bug fixes.
 
-###Android ARMv7,x86, x86_64 Builds -- [Guide here](http://tech.pristine.io/build-android-apprtc/)
-ARM64 is available but doesn't build, yet
+###Android ARMv7, ARMv8, x86, x86_64 Builds -- [Guide here](http://tech.pristine.io/build-android-apprtc/)
 
 The following instructions are for building the native WebRTC libraries for Android.
 
@@ -180,7 +179,7 @@ The versioning can be explained as follows:
 
 2 reflects a Release Build (0 for Debug, 1 for Profile)
 
-Profile builds are not available for the mac platform
+Profile builds are no longer built by default
 
 The minor 0 reflects any changes I might need to make to the sample xcode project itself to work (incremented normally)
 
