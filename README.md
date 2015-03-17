@@ -78,7 +78,7 @@ get_webrtc 6783
 build_apprtc
 ```
 
-When the scripts are done you can find the .jar and .so file in $WEBRTC_HOME under "libjingle\_peerconnection\_builds".
+When the scripts are done you can find the .jar and .so file in $WEBRTC_ROOT under "libjingle\_peerconnection\_builds".
 
 
 
