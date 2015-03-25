@@ -15,7 +15,7 @@ while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symli
 done
 PROJECT_DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
-DEFAULT_WEBRTC_URL="http://webrtc.googlecode.com/svn/trunk"
+DEFAULT_WEBRTC_URL="https://chromium.googlesource.com/external/webrtc"
 DEFAULT_POD_URL="https://s3.amazonaws.com/libjingle"
 WEBRTC="$PROJECT_DIR/webrtc"
 DEPOT_TOOLS="$PROJECT_DIR/depot_tools"
@@ -144,15 +144,13 @@ function wrMac64() {
 
 # Gets the revision number of the current WebRTC svn repo on the filesystem
 function get_revision_number() {
-    # Try for svn by default
-    REVISION_NUMBER=`svn info "$WEBRTC/src" | awk '{ if ($1 ~ /Revision/) { print $2 } }'`
+    REVISION_NUMBER=`git log -1 | grep 'Cr-Commit-Position: refs/heads/master@{#' | egrep -o "[0-9]+}" | tr -d '}'`
 
     # If not set then user is probably using git
     if [ -z "$REVISION_NUMBER" ]
     then
-        cd "$WEBRTC/src"
-        REVISION_NUMBER=`git describe --tags  | sed 's/\([0-9]*\)-.*/\1/'`
-        cd - > /dev/null
+      echo "Error grabbing revision number"
+      exit 1
     fi
 
     echo $REVISION_NUMBER

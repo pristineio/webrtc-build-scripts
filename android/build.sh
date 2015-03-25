@@ -26,7 +26,7 @@ create_directory_if_not_found() {
 	fi
 }
 
-DEFAULT_WEBRTC_URL="http://webrtc.googlecode.com/svn/trunk"
+DEFAULT_WEBRTC_URL="https://chromium.googlesource.com/external/webrtc"
 DEPOT_TOOLS="$PROJECT_ROOT/depot_tools"
 WEBRTC_ROOT="$PROJECT_ROOT/webrtc"
 create_directory_if_not_found $WEBRTC_ROOT
@@ -267,13 +267,13 @@ execute_build() {
 
 # Gets the webrtc revision
 get_webrtc_revision() {
-    # Try for svn by default
-    REVISION_NUMBER=`svn info "$WEBRTC_ROOT/src" | awk '{ if ($1 ~ /Revision/) { print $2 } }'`
+    REVISION_NUMBER=`git log -1 | grep 'Cr-Commit-Position: refs/heads/master@{#' | egrep -o "[0-9]+}" | tr -d '}'`
 
     # If not set then user is probably using git
     if [ -z "$REVISION_NUMBER" ]
     then
-        REVISION_NUMBER=`git describe --tags  | sed 's/\([0-9]*\)-.*/\1/'`
+      echo "Error grabbing revision number"
+      exit 1
     fi
 
     echo $REVISION_NUMBER
