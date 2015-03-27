@@ -146,7 +146,11 @@ function wrMac64() {
 function get_revision_number() {
     REVISION_NUMBER=`git log -1 | grep 'Cr-Commit-Position: refs/heads/master@{#' | egrep -o "[0-9]+}" | tr -d '}'`
 
-    # If not set then user is probably using git
+    if [ -z "$REVISION_NUMBER" ]
+    then
+      REVISION_NUMBER=`git describe --tags  | sed 's/\([0-9]*\)-.*/\1/'`
+    fi
+
     if [ -z "$REVISION_NUMBER" ]
     then
       echo "Error grabbing revision number"
