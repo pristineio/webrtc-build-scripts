@@ -267,6 +267,8 @@ execute_build() {
 
 # Gets the webrtc revision
 get_webrtc_revision() {
+    DIR=`pwd`
+    cd "$WEBRTC/src"
     REVISION_NUMBER=`git log -1 | grep 'Cr-Commit-Position: refs/heads/master@{#' | egrep -o "[0-9]+}" | tr -d '}'`
 
     if [ -z "$REVISION_NUMBER" ]
@@ -281,6 +283,7 @@ get_webrtc_revision() {
     fi
 
     echo $REVISION_NUMBER
+    cd $DIR
 }
 
 get_webrtc() {
