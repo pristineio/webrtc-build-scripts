@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
                        DESC
   s.homepage     = "https://github.com/pristineio/webrtc-build-scripts"
   s.ios.platform = :ios, '7.0'
-  s.osx.platform = :osx, '10.7'
+  s.osx.platform = :osx, '10.8'
   s.author       = { "Rahul Behera" => "rahul@pristine.io" }
   s.social_media_url = 'https://twitter.com/bot_the_builder'
   s.source       = { :http => "{POD_URL}/{WEBRTC_REVISION}/{BUILD_TYPE_STRING}/{VERSION_BUILD}/libWebRTC.tar.bz2" }
@@ -24,7 +24,7 @@ Pod::Spec.new do |s|
   s.osx.preserve_paths = 'libjingle_peerconnection/libWebRTC-osx.a'
   s.osx.vendored_libraries = 'libjingle_peerconnection/libWebRTC-osx.a'
   s.ios.deployment_target = '7.0'
-  s.osx.deployment_target = '10.7'
+  s.osx.deployment_target = '10.8'
   s.source_files =  'libjingle_peerconnection/Headers/*.h'
   s.osx.framework = 'AVFoundation', 'AudioToolbox', 'CoreGraphics', 'CoreMedia', 'GLKit', 'QTKit', 'CoreAudio', 'CoreVideo'
   s.ios.framework = 'AVFoundation', 'AudioToolbox', 'CoreGraphics', 'CoreMedia', 'GLKit', 'UIKit'
