@@ -207,8 +207,8 @@ function update2Revision() {
     # Inject the new libWebRTC_objc target so that we can build the files that we need and exclude socket rocket and such
     if [ "$WEBRTC_TARGET" == "libWebRTC_objc" ] ; then
         echo "Adding a new libWebRTC_objc target"
-        echo "$PROJECT_DIR/insert_before_text.py" 
-        python "$PROJECT_DIR/insert_before_text.py"  "$WEBRTC/src/talk/libjingle_examples.gyp"
+        echo "$PROJECT_DIR/insert_two_lines_after_text.py" 
+        python "$PROJECT_DIR/insert_two_lines_after_text.py"  "$WEBRTC/src/talk/libjingle_examples.gyp"
         # rm "$WEBRTC/src/talk/libjingle_examples.gyp"
         # mv "webrtc/src/talk/libjingle_examples.gyp1" "$WEBRTC/src/talk/libjingle_examples.gyp"
     fi
