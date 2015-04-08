@@ -108,7 +108,7 @@ function wrbase() {
 # Add the iOS Device specific defines on top of the base
 function wrios_armv7() {
     wrbase
-    export GYP_DEFINES="$GYP_DEFINES OS=ios target_arch=armv7 arm_neon=1"
+    export GYP_DEFINES="$GYP_DEFINES OS=ios target_arch=armv7 arm_neon=1 target_subarch=arm32"
     export GYP_GENERATOR_FLAGS="output_dir=out_ios_armeabi_v7a"
     export GYP_CROSSCOMPILE=1
 }
