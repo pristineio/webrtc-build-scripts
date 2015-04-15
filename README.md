@@ -52,6 +52,9 @@ vagrant ssh
 Then you can build the Android example
 
 ```shell
+# Pull WebRTC
+get_webrtc
+
 # Build apprtc
 build_apprtc
 
