@@ -108,7 +108,7 @@ function wrbase() {
 # Add the iOS Device specific defines on top of the base
 function wrios_armv7() {
     wrbase
-    export GYP_DEFINES="$GYP_DEFINES OS=ios target_arch=armv7 arm_neon=1 target_subarch=arm32"
+    export GYP_DEFINES="$GYP_DEFINES OS=ios target_arch=arm arm_version=7"
     export GYP_GENERATOR_FLAGS="output_dir=out_ios_armeabi_v7a"
     export GYP_CROSSCOMPILE=1
 }
@@ -409,7 +409,7 @@ function lipo_for_configuration() {
     # Add x86
     #LIPO_DIRS="$LIPO_DIRS $BUILD/libWebRTC-$WEBRTC_REVISION-ios-x86-$CONFIGURATION.a"
     # and add x86_64
-    LIPO_DIRS="$LIPO_DIRS $BUILD/libWebRTC-$WEBRTC_REVISION-ios-x86_64-$CONFIGURATION.a"
+    #LIPO_DIRS="$LIPO_DIRS $BUILD/libWebRTC-$WEBRTC_REVISION-ios-x86_64-$CONFIGURATION.a"
 
     # Lipo the simulator build with the ios build into a universal library
     lipo -create $LIPO_DIRS -output $BUILD/libWebRTC-$WEBRTC_REVISION-arm-intel-$CONFIGURATION.a
@@ -450,7 +450,7 @@ function build_webrtc() {
     build_apprtc
     build_apprtc_arm64
     #build_apprtc_sim
-    build_apprtc_sim64
+    #build_apprtc_sim64
     lipo_intel_and_arm
 }
 
