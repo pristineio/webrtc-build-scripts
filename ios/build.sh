@@ -204,13 +204,9 @@ function update2Revision() {
         sync "$1"
     fi
 
-    # Inject the new libWebRTC_objc target so that we can build the files that we need and exclude socket rocket and such
+    # Inject the new libWebRTC_objc target magic
     if [ "$WEBRTC_TARGET" == "libWebRTC_objc" ] ; then
-        echo "Adding a new libWebRTC_objc target"
-        echo "$PROJECT_DIR/insert_two_lines_after_text.py" 
-        python "$PROJECT_DIR/insert_two_lines_after_text.py"  "$WEBRTC/src/talk/libjingle_examples.gyp"
-        # rm "$WEBRTC/src/talk/libjingle_examples.gyp"
-        # mv "webrtc/src/talk/libjingle_examples.gyp1" "$WEBRTC/src/talk/libjingle_examples.gyp"
+        twiddle_objc_target
     fi
     echo "-- webrtc has been successfully updated"
 }
@@ -231,11 +227,35 @@ function sync() {
     pull_depot_tools
     cd $WEBRTC
     choose_code_signing
+
+    if [ "$WEBRTC_TARGET" == "libWebRTC_objc" ] ; then
+        untwiddle_objc_target
+    fi
+
     if [ -z $1 ]
     then
         gclient sync || true
     else
         gclient sync -r "$1" || true
+    fi
+}
+
+# Functions to twiddle the libWebRTC_objc target so that we can build the files that we need and exclude socket rocket and such
+function twiddle_objc_target () {
+    cd $WEBRTC
+    echo "Adding a new libWebRTC_objc target"
+    echo "$PROJECT_DIR/insert_two_lines_after_text.py" 
+    python "$PROJECT_DIR/insert_two_lines_after_text.py"  "$WEBRTC/src/talk/libjingle_examples.gyp"
+}
+
+function untwiddle_objc_target () {
+    cd $WEBRTC/src
+    
+    file_changed=`git status --porcelain talk/libjingle_examples.gyp | awk '/^ M/{ print $2 }'`
+    
+    if [ "$file_changed" == "talk/libjingle_examples.gyp" ] ; then
+        echo "Untwiddling the libWebRTC_objc target"
+        git checkout -- talk/libjingle_examples.gyp
     fi
 }
 
