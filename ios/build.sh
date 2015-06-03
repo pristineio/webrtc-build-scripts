@@ -146,17 +146,23 @@ function wrMac64() {
 function get_revision_number() {
     DIR=`pwd`
     cd "$WEBRTC/src"
+
     REVISION_NUMBER=`git log -1 | grep 'Cr-Commit-Position: refs/heads/master@{#' | egrep -o "[0-9]+}" | tr -d '}'`
 
     if [ -z "$REVISION_NUMBER" ]
     then
-      REVISION_NUMBER=`git describe --tags  | sed 's/\([0-9]*\)-.*/\1/'`
+        REVISION_NUMBER=`git log -1 | grep 'Cr-Commit-Position: refs/branch-heads/' | egrep -o "[0-9]+" | awk 'NR%2{printf $0"-";next;}1'`
     fi
 
     if [ -z "$REVISION_NUMBER" ]
     then
-      echo "Error grabbing revision number"
-      exit 1
+        REVISION_NUMBER=`git describe --tags | sed 's/\([0-9]*\)-.*/\1/'`
+    fi
+
+    if [ -z "$REVISION_NUMBER" ]
+    then
+        echo "Error grabbing revision number"
+        exit 1
     fi
 
     echo $REVISION_NUMBER
@@ -175,10 +181,10 @@ function update2Revision() {
     if [ -z $USER_WEBRTC_URL ]
     then
         echo "User has not specified a different webrtc url. Using default"
-        gclient config --name=src "$DEFAULT_WEBRTC_URL"
+        gclient config --unmanaged --name=src "$DEFAULT_WEBRTC_URL"
     else
         echo "User has specified their own webrtc url $USER_WEBRTC_URL"
-        gclient config --name=src "$USER_WEBRTC_URL"
+        gclient config  --unmanaged --name=src "$USER_WEBRTC_URL"
     fi
 
     # # Make sure that the target os is set to JUST MAC at first by adding that to the .gclient file that gclient config command created
@@ -234,9 +240,9 @@ function sync() {
 
     if [ -z $1 ]
     then
-        gclient sync || true
+        gclient sync --with_branch_heads || true
     else
-        gclient sync -r "$1" || true
+        gclient sync -r "$1" --with_branch_heads || true
     fi
 }
 
@@ -582,6 +588,9 @@ function create_ios_framework_for_configuration () {
     mkdir -p $WEBRTC/Framework/$CONFIGURATION/WebRTC.framework/Versions/A/Headers
     cp $WEBRTC/src/talk/app/webrtc/objc/public/*.h $WEBRTC/Framework/$CONFIGURATION/WebRTC.framework/Versions/A/Headers
     cp $WEBRTC/libWebRTC-LATEST-Universal-$CONFIGURATION.a $WEBRTC/Framework/$CONFIGURATION/WebRTC.framework/Versions/A/WebRTC
+
+    WEBRTC_REVISION=`get_revision_number`
+    echo $WEBRTC_REVISION >> $WEBRTC/Framework/$CONFIGURATION/WebRTC.framework/Version.txt
 
     pushd $WEBRTC/Framework/$CONFIGURATION/WebRTC.framework/Versions
     ln -sfh A Current
