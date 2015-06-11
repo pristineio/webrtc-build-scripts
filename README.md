@@ -1,4 +1,6 @@
 ##WebRTC Build Scripts
+
+[![Join the chat at https://gitter.im/pristineio/webrtc-build-scripts](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/pristineio/webrtc-build-scripts?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 A set of build scripts useful for building WebRTC libraries for Android and iOS.
 
 Bugs: Please submit the [revision](https://code.google.com/p/webrtc/source/list) number that you are using. There are frequent updates to this project so please watch the changelist for bug fixes.
