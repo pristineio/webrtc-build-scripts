@@ -98,9 +98,9 @@ function choose_code_signing() {
 
 # Set the base of the GYP defines, instructing gclient runhooks what to generate
 function wrbase() {
-    export GYP_DEFINES="build_with_libjingle=1 build_with_chromium=0 libjingle_objc=1"
+	export GYP_CROSSCOMPILE=1
     if [ "$WEBRTC_TARGET" != "AppRTCDemo" ]; then
-        GYP_DEFINES="$GYP_DEFINES chromium_ios_signing=0"
+        GYP_DEFINES="chromium_ios_signing=0"
     fi
     export GYP_GENERATORS="ninja,xcode-ninja"
 }
@@ -108,7 +108,7 @@ function wrbase() {
 # Add the iOS Device specific defines on top of the base
 function wrios_armv7() {
     wrbase
-    export GYP_DEFINES="$GYP_DEFINES OS=ios target_arch=arm arm_version=7"
+    export GYP_DEFINES="$GYP_DEFINES OS=ios target_arch=arm"
     export GYP_GENERATOR_FLAGS="output_dir=out_ios_armeabi_v7a"
     export GYP_CROSSCOMPILE=1
 }
@@ -116,7 +116,7 @@ function wrios_armv7() {
 # Add the iOS ARM 64 Device specific defines on top of the base
 function wrios_armv8() {
     wrbase
-    export GYP_DEFINES="$GYP_DEFINES OS=ios target_arch=arm64 target_subarch=arm64"
+    export GYP_DEFINES="$GYP_DEFINES OS=ios target_arch=arm64"
     export GYP_GENERATOR_FLAGS="output_dir=out_ios_arm64_v8a"
     export GYP_CROSSCOMPILE=1
 }
@@ -138,7 +138,7 @@ function wrX86_64() {
 # Add the Mac 64 bit intel defines
 function wrMac64() {
     wrbase
-    export GYP_DEFINES="$GYP_DEFINES OS=mac target_arch=x64 use_system_ssl=1 use_openssl=0 use_nss=0 mac_sdk=10.9"
+    export GYP_DEFINES="$GYP_DEFINES OS=mac target_arch=x64"
     export GYP_GENERATOR_FLAGS="output_dir=out_mac_x86_64"
 }
 
