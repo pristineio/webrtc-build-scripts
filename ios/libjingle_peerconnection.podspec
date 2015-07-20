@@ -26,8 +26,8 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '7.0'
   s.osx.deployment_target = '10.8'
   s.source_files =  'libjingle_peerconnection/Headers/*.h'
-  s.osx.framework = 'AVFoundation', 'AudioToolbox', 'CoreGraphics', 'CoreMedia', 'GLKit', 'QTKit', 'CoreAudio', 'CoreVideo'
-  s.ios.framework = 'AVFoundation', 'AudioToolbox', 'CoreGraphics', 'CoreMedia', 'GLKit', 'UIKit'
+  s.osx.framework = 'AVFoundation', 'AudioToolbox', 'CoreGraphics', 'CoreMedia', 'GLKit', 'QTKit', 'CoreAudio', 'CoreVideo', 'VideoToolbox'
+  s.ios.framework = 'AVFoundation', 'AudioToolbox', 'CoreGraphics', 'CoreMedia', 'GLKit', 'UIKit', 'VideoToolbox'
   s.libraries = 'c', 'sqlite3', 'stdc++'
   s.requires_arc = true
   s.xcconfig  =  { 'LIBRARY_SEARCH_PATHS' => '"$(PODS_ROOT)/libjingle_peerconnection"',
