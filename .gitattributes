@@ -1,0 +1,3 @@
+# default to text file with UNIX style
+* text=auto eol=lf
+
