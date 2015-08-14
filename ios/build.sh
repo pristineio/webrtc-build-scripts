@@ -251,7 +251,7 @@ function twiddle_objc_target () {
     cd $WEBRTC
     echo "Adding a new libWebRTC_objc target"
     echo "$PROJECT_DIR/insert_two_lines_after_text.py" 
-    python "$PROJECT_DIR/insert_two_lines_after_text.py"  "$WEBRTC/src/talk/libjingle_examples.gyp"
+    python "$PROJECT_DIR/insert_two_lines_after_text.py"  "$WEBRTC/src/webrtc/libjingle_examples.gyp"
 }
 
 function untwiddle_objc_target () {
