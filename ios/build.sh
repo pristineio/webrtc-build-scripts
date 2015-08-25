@@ -257,11 +257,11 @@ function twiddle_objc_target () {
 function untwiddle_objc_target () {
     cd $WEBRTC/src
     
-    file_changed=`git status --porcelain talk/libjingle_examples.gyp | awk '/^ M/{ print $2 }'`
+    file_changed=`git status --porcelain webrtc/libjingle_examples.gyp | awk '/^ M/{ print $2 }'`
     
-    if [ "$file_changed" == "talk/libjingle_examples.gyp" ] ; then
+    if [ "$file_changed" == "webrtc/libjingle_examples.gyp" ] ; then
         echo "Untwiddling the libWebRTC_objc target"
-        git checkout -- talk/libjingle_examples.gyp
+        git checkout -- webrtc/libjingle_examples.gyp
     fi
 }
 
