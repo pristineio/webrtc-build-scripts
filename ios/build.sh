@@ -147,11 +147,11 @@ function get_revision_number() {
     DIR=`pwd`
     cd "$WEBRTC/src"
 
-    REVISION_NUMBER=`git log -1 | grep 'Cr-Commit-Position: refs/heads/master@{#' | egrep -o "[0-9]+}" | tr -d '}'`
+    REVISION_NUMBER=`git log -1 | grep 'Cr-Commit-Position: refs/heads/master@{#' | grep -v '>' | egrep -o "[0-9]+}" | tr -d '}'`
 
     if [ -z "$REVISION_NUMBER" ]
     then
-        REVISION_NUMBER=`git log -1 | grep 'Cr-Commit-Position: refs/branch-heads/' | egrep -o "[0-9]+" | awk 'NR%2{printf $0"-";next;}1'`
+        REVISION_NUMBER=`git log -1 | grep 'Cr-Commit-Position: refs/branch-heads/' | grep -v '>' | egrep -o "[0-9]+" | awk 'NR%2{printf $0"-";next;}1'`
     fi
 
     if [ -z "$REVISION_NUMBER" ]
