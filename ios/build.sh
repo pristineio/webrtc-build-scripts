@@ -21,6 +21,7 @@ WEBRTC="$PROJECT_DIR/webrtc"
 DEPOT_TOOLS="$PROJECT_DIR/depot_tools"
 BUILD="$WEBRTC/libjingle_peerconnection_builds"
 WEBRTC_TARGET="libWebRTC_objc"
+MAC_SDK="10.8"
 
 function create_directory_if_not_found() {
     if [ ! -d "$1" ];
@@ -71,7 +72,7 @@ function pull_depot_tools() {
         git pull
     fi
     PATH="$PATH:$DEPOT_TOOLS"
-    echo Go back to working directory
+    echo "Go back to working directory"
     cd $WORKING_DIR
 }
 
@@ -138,7 +139,7 @@ function wrX86_64() {
 # Add the Mac 64 bit intel defines
 function wrMac64() {
     wrbase
-    export GYP_DEFINES="$GYP_DEFINES OS=mac target_arch=x64"
+    export GYP_DEFINES="$GYP_DEFINES OS=mac target_arch=x64 mac_sdk=$MAC_SDK"
     export GYP_GENERATOR_FLAGS="output_dir=out_mac_x86_64"
 }
 
@@ -235,6 +236,8 @@ function sync() {
     choose_code_signing
 
     if [ "$WEBRTC_TARGET" == "libWebRTC_objc" ] ; then
+        twiddle_objc_target
+      else
         untwiddle_objc_target
     fi
 
@@ -274,24 +277,37 @@ function copy_headers() {
 }
 
 function build_webrtc_mac() {
-    cd "$WEBRTC/src"
+    if [ -d "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX$MAC_SDK.sdk" ]
+      then
+      echo "Found $MAC_SDK sdk"
+      cd "$WEBRTC/src"
 
-    wrMac64
-    choose_code_signing
-    gclient runhooks
+      wrMac64
+      export MACOSX_DEPLOYMENT_TARGET="$MAC_SDK"
 
-    copy_headers
+      choose_code_signing
+      gclient runhooks
 
-    WEBRTC_REVISION=`get_revision_number`
-    if [ "$WEBRTC_DEBUG" = true ] ; then
-        exec_ninja "out_mac_x86_64/Debug/"
-        exec_libtool "$BUILD/libWebRTC-$WEBRTC_REVISION-mac-x86_64-Debug.a" $WEBRTC/src/out_mac_x86_64/Debug/*.a
-    fi
+      copy_headers
 
-    if [ "$WEBRTC_RELEASE" = true ] ; then
-        exec_ninja "out_mac_x86_64/Release/"
-        exec_libtool "$BUILD/libWebRTC-$WEBRTC_REVISION-mac-x86_64-Release.a" $WEBRTC/src/out_mac_x86_64/Release/*.a
-        exec_strip "$BUILD/libWebRTC-$WEBRTC_REVISION-mac-x86_64-Release.a"
+      WEBRTC_REVISION=`get_revision_number`
+      if [ "$WEBRTC_DEBUG" = true ] ; then
+          exec_ninja "out_mac_x86_64/Debug/"
+          exec_libtool "$BUILD/libWebRTC-$WEBRTC_REVISION-mac-x86_64-Debug.a" $WEBRTC/src/out_mac_x86_64/Debug/*.a
+      fi
+
+      if [ "$WEBRTC_RELEASE" = true ] ; then
+          exec_ninja "out_mac_x86_64/Release/"
+          exec_libtool "$BUILD/libWebRTC-$WEBRTC_REVISION-mac-x86_64-Release.a" $WEBRTC/src/out_mac_x86_64/Release/*.a
+          exec_strip "$BUILD/libWebRTC-$WEBRTC_REVISION-mac-x86_64-Release.a"
+      fi
+    else
+      echo "Change the OSX Target by changing the MAC_SDK environment variable to 10.9. There is a bug with building mac target 10.10 (it assumes its 10.1 and lower than 10.8)"
+      echo "---------- OR ----------"
+      echo "Please download Xcode 5.1.1 (http://adcdownload.apple.com/Developer_Tools/xcode_5.1.1/xcode_5.1.1.dmg) and open"
+      echo "Copy the MacOSX10.8.sdk from the DMG to the current Xcode SDK"
+      echo "sudo cp -a /Volumes/Xcode/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs"
+      exit 1
     fi
 }
 
