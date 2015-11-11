@@ -250,18 +250,18 @@ function sync() {
 function twiddle_objc_target () {
     cd $WEBRTC
     echo "Adding a new libWebRTC_objc target"
-    echo "$PROJECT_DIR/insert_two_lines_after_text.py" 
-    python "$PROJECT_DIR/insert_two_lines_after_text.py"  "$WEBRTC/src/webrtc/libjingle_examples.gyp"
+    echo "$PROJECT_DIR/insert_two_lines_after_text.py"
+    python "$PROJECT_DIR/insert_two_lines_after_text.py"  "$WEBRTC/src/webrtc/webrtc_examples.gyp"
 }
 
 function untwiddle_objc_target () {
     cd $WEBRTC/src
-    
-    file_changed=`git status --porcelain webrtc/libjingle_examples.gyp | awk '/^ M/{ print $2 }'`
-    
-    if [ "$file_changed" == "webrtc/libjingle_examples.gyp" ] ; then
+
+    file_changed=`git status --porcelain webrtc/webrtc_examples.gyp | awk '/^ M/{ print $2 }'`
+
+    if [ "$file_changed" == "webrtc/webrtc_examples.gyp" ] ; then
         echo "Untwiddling the libWebRTC_objc target"
-        git checkout -- webrtc/libjingle_examples.gyp
+        git checkout -- webrtc/webrtc_examples.gyp
     fi
 }
 
