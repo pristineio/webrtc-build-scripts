@@ -4,7 +4,7 @@ import sys, ast, json
 
 FILE = sys.argv[1]
 
-FIND = """    ['OS=="ios" or (OS=="mac" and target_arch!="ia32" and mac_sdk>="10.8")', {"""
+FIND = """    ['OS=="ios" or (OS=="mac" and target_arch!="ia32")', {"""
 APPEND = """        { 'target_name': 'libWebRTC_objc', # Injected target using github.com/pristineio/webrtc-build-scripts
           'type': 'shared_library', # We are creating a dummy shared_library so all the dependencies are built as static libraries. i think this is a bug
           'dependencies': [
