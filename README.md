@@ -12,7 +12,7 @@ The following instructions are for building the native WebRTC libraries for Andr
 
 #### Getting Started
 ##### On Linux
-You should only need Ubuntu 12.04 on a 64 bit machine to get going.
+The scripts can probably work on most distros, although we only have experience with Ubuntu 12.04 and 14.04 on 64 bit machines.
 
 This is only required once.
 ```shell
