@@ -11,7 +11,7 @@ SOURCE="${BASH_SOURCE[0]}"
 while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
     DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
     SOURCE="$(readlink "$SOURCE")"
-    [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE" # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
+    [[ "$SOURCE" != /* ]] && SOURCE="$DIR/$SOURCE" # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
 done
 PROJECT_DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
@@ -58,7 +58,7 @@ function pull_depot_tools() {
     if [ ! -d "$DEPOT_TOOLS" ]
     then
         echo Make directory for gclient called Depot Tools
-        mkdir -p $DEPOT_TOOLS
+        mkdir -p "$DEPOT_TOOLS"
 
         echo Pull the depot tools project from chromium source into the depot tools directory
         git clone "https://chromium.googlesource.com/chromium/tools/depot_tools.git" "$DEPOT_TOOLS"
@@ -66,14 +66,14 @@ function pull_depot_tools() {
     else
 
         echo Change directory into the depot tools
-        cd $DEPOT_TOOLS
+        cd "$DEPOT_TOOLS"
 
         echo Pull the depot tools down to the latest
         git pull
     fi
     PATH="$PATH:$DEPOT_TOOLS"
     echo "Go back to working directory"
-    cd $WORKING_DIR
+    cd "$WORKING_DIR"
 }
 
 function choose_code_signing() {
@@ -167,7 +167,7 @@ function get_revision_number() {
     fi
 
     echo $REVISION_NUMBER
-    cd $DIR
+    cd "$DIR"
 }
 
 # This function allows you to pull the latest changes from WebRTC without doing an entire clone, much faster to build and try changes
@@ -175,7 +175,7 @@ function get_revision_number() {
 function update2Revision() {
     # Ensure that we have gclient added to our environment, so this function can run standalone
     pull_depot_tools
-    cd $WEBRTC
+    cd "$WEBRTC"
 
     # Setup gclient config
     echo Configuring gclient for iOS build
@@ -223,8 +223,8 @@ function update2Revision() {
 function clone() {
     DIR=`pwd`
 
-    rm -rf $WEBRTC
-    mkdir -v $WEBRTC
+    rm -rf "$WEBRTC"
+    mkdir -v "$WEBRTC"
 
     update2Revision "$1"
 }
@@ -232,7 +232,7 @@ function clone() {
 # Fire the sync command. Accepts an argument as the revision number that you want to sync to
 function sync() {
     pull_depot_tools
-    cd $WEBRTC
+    cd "$WEBRTC"
     choose_code_signing
 
     if [ "$WEBRTC_TARGET" == "libWebRTC_objc" ] ; then
@@ -251,14 +251,14 @@ function sync() {
 
 # Functions to twiddle the libWebRTC_objc target so that we can build the files that we need and exclude socket rocket and such
 function twiddle_objc_target () {
-    cd $WEBRTC
+    cd "$WEBRTC"
     echo "Adding a new libWebRTC_objc target"
     echo "$PROJECT_DIR/insert_two_lines_after_text.py"
     python "$PROJECT_DIR/insert_two_lines_after_text.py"  "$WEBRTC/src/webrtc/webrtc_examples.gyp"
 }
 
 function untwiddle_objc_target () {
-    cd $WEBRTC/src
+    cd "$WEBRTC/src"
 
     file_changed=`git status --porcelain webrtc/webrtc_examples.gyp | awk '/^ M/{ print $2 }'`
 
@@ -293,12 +293,12 @@ function build_webrtc_mac() {
       WEBRTC_REVISION=`get_revision_number`
       if [ "$WEBRTC_DEBUG" = true ] ; then
           exec_ninja "out_mac_x86_64/Debug/"
-          exec_libtool "$BUILD/libWebRTC-$WEBRTC_REVISION-mac-x86_64-Debug.a" $WEBRTC/src/out_mac_x86_64/Debug/*.a
+          exec_libtool "$BUILD/libWebRTC-$WEBRTC_REVISION-mac-x86_64-Debug.a" "$WEBRTC"/src/out_mac_x86_64/Debug/*.a
       fi
 
       if [ "$WEBRTC_RELEASE" = true ] ; then
           exec_ninja "out_mac_x86_64/Release/"
-          exec_libtool "$BUILD/libWebRTC-$WEBRTC_REVISION-mac-x86_64-Release.a" $WEBRTC/src/out_mac_x86_64/Release/*.a
+          exec_libtool "$BUILD/libWebRTC-$WEBRTC_REVISION-mac-x86_64-Release.a" "$WEBRTC"/src/out_mac_x86_64/Release/*.a
           exec_strip "$BUILD/libWebRTC-$WEBRTC_REVISION-mac-x86_64-Release.a"
       fi
     else
@@ -324,17 +324,17 @@ function build_apprtc_sim() {
     WEBRTC_REVISION=`get_revision_number`
     if [ "$WEBRTC_DEBUG" = true ] ; then
         exec_ninja "out_ios_x86/Debug-iphonesimulator/"
-        exec_libtool "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-x86-Debug.a" $WEBRTC/src/out_ios_x86/Debug-iphonesimulator/*.a
+        exec_libtool "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-x86-Debug.a" "$WEBRTC"/src/out_ios_x86/Debug-iphonesimulator/*.a
     fi
 
     if [ "$WEBRTC_PROFILE" = true ] ; then
         exec_ninja "out_ios_x86/Profile-iphonesimulator/"
-        exec_libtool "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-x86-Profile.a" $WEBRTC/src/out_ios_x86/Profile-iphonesimulator/*.a
+        exec_libtool "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-x86-Profile.a" "$WEBRTC"/src/out_ios_x86/Profile-iphonesimulator/*.a
     fi
 
     if [ "$WEBRTC_RELEASE" = true ] ; then
         exec_ninja "out_ios_x86/Release-iphonesimulator/"
-        exec_libtool "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-x86-Release.a" $WEBRTC/src/out_ios_x86/Release-iphonesimulator/*.a
+        exec_libtool "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-x86-Release.a" "$WEBRTC"/src/out_ios_x86/Release-iphonesimulator/*.a
         exec_strip "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-x86-Release.a"
     fi
 }
@@ -352,17 +352,17 @@ function build_apprtc_sim64() {
     WEBRTC_REVISION=`get_revision_number`
     if [ "$WEBRTC_DEBUG" = true ] ; then
         exec_ninja "out_ios_x86_64/Debug-iphonesimulator/"
-        exec_libtool "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-x86_64-Debug.a" $WEBRTC/src/out_ios_x86_64/Debug-iphonesimulator/*.a
+        exec_libtool "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-x86_64-Debug.a" "$WEBRTC"/src/out_ios_x86_64/Debug-iphonesimulator/*.a
     fi
 
     if [ "$WEBRTC_PROFILE" = true ] ; then
         exec_ninja "out_ios_x86_64/Profile-iphonesimulator/"
-        exec_libtool "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-x86_64-Profile.a" $WEBRTC/src/out_ios_x86_64/Profile-iphonesimulator/*.a
+        exec_libtool "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-x86_64-Profile.a" "$WEBRTC"/src/out_ios_x86_64/Profile-iphonesimulator/*.a
     fi
 
     if [ "$WEBRTC_RELEASE" = true ] ; then
         exec_ninja "out_ios_x86_64/Release-iphonesimulator/"
-        exec_libtool "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-x86_64-Release.a" $WEBRTC/src/out_ios_x86_64/Release-iphonesimulator/*.a
+        exec_libtool "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-x86_64-Release.a" "$WEBRTC"/src/out_ios_x86_64/Release-iphonesimulator/*.a
         exec_strip "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-x86_64-Release.a"
     fi
 }
@@ -380,17 +380,17 @@ function build_apprtc() {
     WEBRTC_REVISION=`get_revision_number`
     if [ "$WEBRTC_DEBUG" = true ] ; then
         exec_ninja "out_ios_armeabi_v7a/Debug-iphoneos/"
-        exec_libtool "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-armeabi_v7a-Debug.a" $WEBRTC/src/out_ios_armeabi_v7a/Debug-iphoneos/*.a
+        exec_libtool "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-armeabi_v7a-Debug.a" "$WEBRTC"/src/out_ios_armeabi_v7a/Debug-iphoneos/*.a
     fi
 
     if [ "$WEBRTC_PROFILE" = true ] ; then
         exec_ninja "out_ios_armeabi_v7a/Profile-iphoneos/"
-        exec_libtool "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-armeabi_v7a-Profile.a" $WEBRTC/src/out_ios_armeabi_v7a/Profile-iphoneos/*.a
+        exec_libtool "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-armeabi_v7a-Profile.a" "$WEBRTC"/src/out_ios_armeabi_v7a/Profile-iphoneos/*.a
     fi
 
     if [ "$WEBRTC_RELEASE" = true ] ; then
         exec_ninja "out_ios_armeabi_v7a/Release-iphoneos/"
-        exec_libtool "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-armeabi_v7a-Release.a" $WEBRTC/src/out_ios_armeabi_v7a/Release-iphoneos/*.a
+        exec_libtool "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-armeabi_v7a-Release.a" "$WEBRTC"/src/out_ios_armeabi_v7a/Release-iphoneos/*.a
         exec_strip "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-armeabi_v7a-Release.a"
     fi
 }
@@ -409,17 +409,17 @@ function build_apprtc_arm64() {
     WEBRTC_REVISION=`get_revision_number`
     if [ "$WEBRTC_DEBUG" = true ] ; then
         exec_ninja "out_ios_arm64_v8a/Debug-iphoneos/"
-        exec_libtool "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-arm64_v8a-Debug.a" $WEBRTC/src/out_ios_arm64_v8a/Debug-iphoneos/*.a
+        exec_libtool "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-arm64_v8a-Debug.a" "$WEBRTC"/src/out_ios_arm64_v8a/Debug-iphoneos/*.a
     fi
 
     if [ "$WEBRTC_PROFILE" = true ] ; then
         exec_ninja "out_ios_arm64_v8a/Profile-iphoneos/"
-        exec_libtool "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-arm64_v8a-Profile.a" $WEBRTC/src/out_ios_arm64_v8a/Profile-iphoneos/*.a
+        exec_libtool "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-arm64_v8a-Profile.a" "$WEBRTC"/src/out_ios_arm64_v8a/Profile-iphoneos/*.a
     fi
 
     if [ "$WEBRTC_RELEASE" = true ] ; then
         exec_ninja "out_ios_arm64_v8a/Release-iphoneos/"
-        exec_libtool "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-arm64_v8a-Release.a" $WEBRTC/src/out_ios_arm64_v8a/Release-iphoneos/*.a
+        exec_libtool "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-arm64_v8a-Release.a" "$WEBRTC"/src/out_ios_arm64_v8a/Release-iphoneos/*.a
         exec_strip "$BUILD/libWebRTC-$WEBRTC_REVISION-ios-arm64_v8a-Release.a"
     fi
 }
@@ -454,29 +454,29 @@ function lipo_for_configuration() {
     LIPO_DIRS="$LIPO_DIRS $BUILD/libWebRTC-$WEBRTC_REVISION-ios-x86_64-$CONFIGURATION.a"
 
     # Lipo the simulator build with the ios build into a universal library
-    lipo -create $LIPO_DIRS -output $BUILD/libWebRTC-$WEBRTC_REVISION-arm-intel-$CONFIGURATION.a
+    lipo -create "$LIPO_DIRS" -output "$BUILD/libWebRTC-$WEBRTC_REVISION-arm-intel-$CONFIGURATION.a"
 
     # Delete the latest symbolic link just in case :)
-    if [ -a $WEBRTC/libWebRTC-LATEST-Universal-$CONFIGURATION.a ]
+    if [ -a "$WEBRTC/libWebRTC-LATEST-Universal-$CONFIGURATION.a" ]
     then
-        rm $WEBRTC/libWebRTC-LATEST-Universal-$CONFIGURATION.a
+        rm "$WEBRTC/libWebRTC-LATEST-Universal-$CONFIGURATION.a"
     fi
 
     # Create a symbolic link pointing to the exact revision that is the latest. This way I don't have to change the xcode project file every time we update the revision number, while still keeping it easy to track which revision you are on
-    ln -sf $BUILD/libWebRTC-$WEBRTC_REVISION-arm-intel-$CONFIGURATION.a $WEBRTC/libWebRTC-LATEST-Universal-$CONFIGURATION.a
+    ln -sf "$BUILD/libWebRTC-$WEBRTC_REVISION-arm-intel-$CONFIGURATION.a" "$WEBRTC/libWebRTC-LATEST-Universal-$CONFIGURATION.a"
 
     # Make it clear which revision you are using .... You don't want to get in the state where you don't know which revision you were using... trust me
-    echo "The libWebRTC-LATEST-Universal-$CONFIGURATION.a in this same directory, is revision " > $WEBRTC/libWebRTC-LATEST-Universal-$CONFIGURATION.a.version.txt
+    echo "The libWebRTC-LATEST-Universal-$CONFIGURATION.a in this same directory, is revision " > "$WEBRTC/libWebRTC-LATEST-Universal-$CONFIGURATION.a.version.txt"
 
     # Also write to a file for funzies
-    echo $WEBRTC_REVISION >> $WEBRTC/libWebRTC-LATEST-Universal-$CONFIGURATION.a.version.txt
+    echo $WEBRTC_REVISION >> "$WEBRTC/libWebRTC-LATEST-Universal-$CONFIGURATION.a.version.txt"
 
     # Write the version down to a file
-    echo "Architectures Built" >> $BUILD/libWebRTC-$WEBRTC_REVISION-arm-intel-$CONFIGURATION.a.version.txt
-    echo "ia32 - Intel x86" >> $BUILD/libWebRTC-$WEBRTC_REVISION-arm-intel-$CONFIGURATION.a.version.txt
-    echo "ia64 - Intel x86_64" >> $BUILD/libWebRTC-$WEBRTC_REVISION-arm-intel-$CONFIGURATION.a.version.txt
-    echo "armv7 - Arm x86" >> $BUILD/libWebRTC-$WEBRTC_REVISION-arm-intel-$CONFIGURATION.a.version.txt
-    echo "arm64_v8a - Arm 64 (armv8)" >> $BUILD/libWebRTC-$WEBRTC_REVISION-arm-intel-$CONFIGURATION.a.version.txt
+    echo "Architectures Built" >> "$BUILD/libWebRTC-$WEBRTC_REVISION-arm-intel-$CONFIGURATION.a.version.txt"
+    echo "ia32 - Intel x86" >> "$BUILD/libWebRTC-$WEBRTC_REVISION-arm-intel-$CONFIGURATION.a.version.txt"
+    echo "ia64 - Intel x86_64" >> "$BUILD/libWebRTC-$WEBRTC_REVISION-arm-intel-$CONFIGURATION.a.version.txt"
+    echo "armv7 - Arm x86" >> "$BUILD/libWebRTC-$WEBRTC_REVISION-arm-intel-$CONFIGURATION.a.version.txt"
+    echo "arm64_v8a - Arm 64 (armv8)" >> "$BUILD/libWebRTC-$WEBRTC_REVISION-arm-intel-$CONFIGURATION.a.version.txt"
 }
 
 # Convenience method to just "get webrtc" -- a clone
@@ -561,7 +561,7 @@ function create_archive_of_static_libraries() {
     tar --use-compress-prog=pbzip2 -cvLf "libWebRTC.tar.bz2" *
 
     echo Go back to working directory
-    cd $WORKING_DIR
+    cd "$WORKING_DIR"
 }
 
 # Grabs the current version build based on what is
@@ -600,18 +600,18 @@ function create_ios_framework() {
 function create_ios_framework_for_configuration () {
     CONFIGURATION=$1
 
-    rm -rf $WEBRTC/Framework/$CONFIGURATION/WebRTC.framework
-    mkdir -p $WEBRTC/Framework/$CONFIGURATION/WebRTC.framework/Versions/A/Headers
-    cp $WEBRTC/src/talk/app/webrtc/objc/public/*.h $WEBRTC/Framework/$CONFIGURATION/WebRTC.framework/Versions/A/Headers
-    cp $WEBRTC/libWebRTC-LATEST-Universal-$CONFIGURATION.a $WEBRTC/Framework/$CONFIGURATION/WebRTC.framework/Versions/A/WebRTC
+    rm -rf "$WEBRTC/Framework/$CONFIGURATION/WebRTC.framework"
+    mkdir -p "$WEBRTC/Framework/$CONFIGURATION/WebRTC.framework/Versions/A/Headers"
+    cp "$WEBRTC"/src/talk/app/webrtc/objc/public/*.h "$WEBRTC/Framework/$CONFIGURATION/WebRTC.framework/Versions/A/Headers"
+    cp "$WEBRTC/libWebRTC-LATEST-Universal-$CONFIGURATION.a" "$WEBRTC/Framework/$CONFIGURATION/WebRTC.framework/Versions/A/WebRTC"
 
     WEBRTC_REVISION=`get_revision_number`
-    echo $WEBRTC_REVISION >> $WEBRTC/Framework/$CONFIGURATION/WebRTC.framework/Version.txt
+    echo $WEBRTC_REVISION >> "$WEBRTC/Framework/$CONFIGURATION/WebRTC.framework/Version.txt"
 
-    pushd $WEBRTC/Framework/$CONFIGURATION/WebRTC.framework/Versions
+    pushd "$WEBRTC/Framework/$CONFIGURATION/WebRTC.framework/Versions"
     ln -sfh A Current
     popd
-    pushd $WEBRTC/Framework/$CONFIGURATION/WebRTC.framework
+    pushd "$WEBRTC/Framework/$CONFIGURATION/WebRTC.framework"
     ln -sfh Versions/Current/Headers Headers
     ln -sfh Versions/Current/WebRTC WebRTC
     popd
