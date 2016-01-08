@@ -29,7 +29,7 @@ create_directory_if_not_found() {
 DEFAULT_WEBRTC_URL="https://chromium.googlesource.com/external/webrtc"
 DEPOT_TOOLS="$PROJECT_ROOT/depot_tools"
 WEBRTC_ROOT="$PROJECT_ROOT/webrtc"
-create_directory_if_not_found $WEBRTC_ROOT
+create_directory_if_not_found "$WEBRTC_ROOT"
 BUILD="$WEBRTC_ROOT/libjingle_peerconnection_builds"
 WEBRTC_TARGET="AppRTCDemo"
 
@@ -60,14 +60,14 @@ pull_depot_tools() {
 	if [ ! -d "$DEPOT_TOOLS" ]
 	then
 	    echo Make directory for gclient called Depot Tools
-	    mkdir -p $DEPOT_TOOLS
+	    mkdir -p "$DEPOT_TOOLS"
 
 	    echo Pull the depo tools project from chromium source into the depot tools directory
 	    git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git $DEPOT_TOOLS
 
 	else
 		echo Change directory into the depot tools
-		cd $DEPOT_TOOLS
+		cd "$DEPOT_TOOLS"
 
 		echo Pull the depot tools down to the latest
 		git pull
@@ -75,7 +75,7 @@ pull_depot_tools() {
 	PATH="$PATH:$DEPOT_TOOLS"
 
     # Navigate back
-	cd $WORKING_DIR
+	cd "$WORKING_DIR"
 }
 
 # Update/Get the webrtc code base
@@ -83,8 +83,8 @@ pull_webrtc() {
     WORKING_DIR=`pwd`
 
     # If no directory where webrtc root should be...
-    create_directory_if_not_found $WEBRTC_ROOT
-    cd $WEBRTC_ROOT
+    create_directory_if_not_found "$WEBRTC_ROOT"
+    cd "$WEBRTC_ROOT"
 
     # Setup gclient config
     echo Configuring gclient for Android build
@@ -113,7 +113,7 @@ pull_webrtc() {
     fi
 
     # Navigate back
-	cd $WORKING_DIR
+	cd "$WORKING_DIR"
 }
 
 # Prepare our build
@@ -161,7 +161,7 @@ function wrX86_64() {
 prepare_gyp_defines() {
     # Configure environment for Android
     echo Setting up build environment for Android
-    source $WEBRTC_ROOT/src/build/android/envsetup.sh
+    source "$WEBRTC_ROOT/src/build/android/envsetup.sh"
 
     # Check to see if the user wants to set their own gyp defines
     echo Export the base settings of GYP_DEFINES so we can define how we want to build
@@ -200,19 +200,19 @@ execute_build() {
     if [ "$WEBRTC_ARCH" = "x86" ] ;
     then
         ARCH="x86"
-        STRIP=$ANDROID_TOOLCHAINS/x86-4.9/prebuilt/linux-x86_64/bin/i686-linux-android-strip
+        STRIP="$ANDROID_TOOLCHAINS/x86-4.9/prebuilt/linux-x86_64/bin/i686-linux-android-strip"
     elif [ "$WEBRTC_ARCH" = "x86_64" ] ;
     then
         ARCH="x86_64"
-        STRIP=$ANDROID_TOOLCHAINS/x86_64-4.9/prebuilt/linux-x86_64/bin/x86_64-linux-android-strip
+        STRIP="$ANDROID_TOOLCHAINS/x86_64-4.9/prebuilt/linux-x86_64/bin/x86_64-linux-android-strip"
     elif [ "$WEBRTC_ARCH" = "armv7" ] ;
     then
         ARCH="armeabi-v7a"
-        STRIP=$ANDROID_TOOLCHAINS/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/bin/arm-linux-androideabi-strip
+        STRIP="$ANDROID_TOOLCHAINS/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/bin/arm-linux-androideabi-strip"
     elif [ "$WEBRTC_ARCH" = "armv8" ] ;
     then
         ARCH="arm64-v8a"
-        STRIP=$ANDROID_TOOLCHAINS/aarch64-linux-android-4.9/prebuilt/linux-x86_64/bin/aarch64-linux-android-strip
+        STRIP="$ANDROID_TOOLCHAINS/aarch64-linux-android-4.9/prebuilt/linux-x86_64/bin/aarch64-linux-android-strip"
     fi
 
     if [ "$WEBRTC_DEBUG" = "true" ] ;
@@ -238,7 +238,7 @@ execute_build() {
         create_directory_if_not_found "$TARGET_DIR/jni/"
 
         ARCH_JNI="$TARGET_DIR/jni/${ARCH}"
-        create_directory_if_not_found $ARCH_JNI
+        create_directory_if_not_found "$ARCH_JNI"
 
         # Copy the jar
         cp -p "$SOURCE_DIR/gen/libjingle_peerconnection_java/libjingle_peerconnection_java.jar" "$TARGET_DIR/libs/libjingle_peerconnection.jar" 
@@ -246,17 +246,17 @@ execute_build() {
         # Strip the build only if its release
         if [ "$WEBRTC_DEBUG" = "true" ] ;
         then
-            cp -p $WEBRTC_ROOT/src/$ARCH_OUT/$BUILD_TYPE/lib/libjingle_peerconnection_so.so $ARCH_JNI/libjingle_peerconnection_so.so
+            cp -p "$WEBRTC_ROOT/src/$ARCH_OUT/$BUILD_TYPE/lib/libjingle_peerconnection_so.so" "$ARCH_JNI/libjingle_peerconnection_so.so"
         else
-            $STRIP -o $ARCH_JNI/libjingle_peerconnection_so.so $WEBRTC_ROOT/src/$ARCH_OUT/$BUILD_TYPE/lib/libjingle_peerconnection_so.so -s    
+            "$STRIP" -o "$ARCH_JNI/libjingle_peerconnection_so.so" "$WEBRTC_ROOT/src/$ARCH_OUT/$BUILD_TYPE/lib/libjingle_peerconnection_so.so" -s    
         fi
 
-        cd $TARGET_DIR
+        cd "$TARGET_DIR"
         mkdir -p aidl
         mkdir -p assets
         mkdir -p res
 
-        cd $WORKING_DIR
+        cd "$WORKING_DIR"
         echo "$BUILD_TYPE build for apprtc complete for revision $REVISION_NUM"
     else
         
@@ -283,7 +283,7 @@ get_webrtc_revision() {
     fi
 
     echo $REVISION_NUMBER
-    cd $DIR
+    cd "$DIR"
 }
 
 get_webrtc() {
