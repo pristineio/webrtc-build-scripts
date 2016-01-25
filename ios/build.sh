@@ -454,7 +454,7 @@ function lipo_for_configuration() {
     LIPO_DIRS="$LIPO_DIRS $BUILD/libWebRTC-$WEBRTC_REVISION-ios-x86_64-$CONFIGURATION.a"
 
     # Lipo the simulator build with the ios build into a universal library
-    lipo -create "$LIPO_DIRS" -output "$BUILD/libWebRTC-$WEBRTC_REVISION-arm-intel-$CONFIGURATION.a"
+    lipo -create -output "$BUILD/libWebRTC-$WEBRTC_REVISION-arm-intel-$CONFIGURATION.a" $LIPO_DIRS 
 
     # Delete the latest symbolic link just in case :)
     if [ -a "$WEBRTC/libWebRTC-LATEST-Universal-$CONFIGURATION.a" ]
