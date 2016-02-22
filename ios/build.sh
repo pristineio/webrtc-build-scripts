@@ -21,7 +21,7 @@ WEBRTC="$PROJECT_DIR/webrtc"
 DEPOT_TOOLS="$PROJECT_DIR/depot_tools"
 BUILD="$WEBRTC/libjingle_peerconnection_builds"
 WEBRTC_TARGET="libWebRTC_objc"
-MAC_SDK="10.9"
+MAC_SDK="10.11"
 
 function create_directory_if_not_found() {
     if [ ! -d "$1" ];
