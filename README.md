@@ -1,3 +1,5 @@
+##PSA - WebRTC builds have moved to using GN instead of GYP. We currently don't have the capacity to update these. Feel free to fork and update them
+
 ##WebRTC Build Scripts
 
 [![Join the chat at https://gitter.im/pristineio/webrtc-build-scripts](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/pristineio/webrtc-build-scripts?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)</br>
