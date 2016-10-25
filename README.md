@@ -1,4 +1,4 @@
-##PSA - WebRTC builds have moved to using GN instead of GYP. We currently don't have the capacity to update these. Feel free to fork and update them
+##PSA - WebRTC builds have moved to using GN instead of GYP. Android build script is adapted, but iOS script is still break. Feel free to fork and update them.
 
 ##WebRTC Build Scripts
 
