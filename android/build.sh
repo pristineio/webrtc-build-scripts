@@ -254,7 +254,7 @@ execute_build() {
         # Strip the build only if its release
         if [ "$WEBRTC_DEBUG" = "true" ] ;
         then
-            cp -p "$WEBRTC_ROOT/src/$ARCH_OUT/$BUILD_TYPE/lib/libjingle_peerconnection_so.so" "$ARCH_JNI/libjingle_peerconnection_so.so"
+            cp -p "$WEBRTC_ROOT/src/$ARCH_OUT/$BUILD_TYPE/libjingle_peerconnection_so.so" "$ARCH_JNI/libjingle_peerconnection_so.so"
         else
             "$STRIP" -o "$ARCH_JNI/libjingle_peerconnection_so.so" "$WEBRTC_ROOT/src/$ARCH_OUT/$BUILD_TYPE/libjingle_peerconnection_so.so" -s    
         fi
