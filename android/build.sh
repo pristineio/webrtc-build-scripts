@@ -1,5 +1,5 @@
 # !/bin/bash
-# Copyright Pristine Inc 
+# Copyright Pristine Inc
 # Author: Rahul Behera <rahul@pristine.io>
 # Author: Aaron Alaniz <aaron@pristine.io>
 # Author: Arik Yaacob   <arik@pristine.io>
@@ -226,21 +226,21 @@ execute_build() {
     fi
 
     ARCH_OUT="out_android_${ARCH}"
-    
+
     echo Generate projects using GN
     gn gen "$ARCH_OUT/$BUILD_TYPE" --args="$DEBUG_ARG symbol_level=1 target_os=\"android\" target_cpu=\"${ARCH}\""
     #gclient runhooks
-    
+
     REVISION_NUM=`get_webrtc_revision`
     echo "Build ${WEBRTC_TARGET} in $BUILD_TYPE (arch: ${WEBRTC_ARCH})"
     exec_ninja "$ARCH_OUT/$BUILD_TYPE"
-    
+
     # Verify the build actually worked
     if [ $? -eq 0 ]; then
         SOURCE_DIR="$WEBRTC_ROOT/src/$ARCH_OUT/$BUILD_TYPE"
         TARGET_DIR="$BUILD/$BUILD_TYPE"
         create_directory_if_not_found "$TARGET_DIR"
-        
+
         echo "Copy JAR File"
         create_directory_if_not_found "$TARGET_DIR/libs/"
         create_directory_if_not_found "$TARGET_DIR/jni/"
@@ -248,15 +248,16 @@ execute_build() {
         ARCH_JNI="$TARGET_DIR/jni/${WEBRTC_ARCH}"
         create_directory_if_not_found "$ARCH_JNI"
 
-        # Copy the jar
-        cp -p "$SOURCE_DIR/lib.java/webrtc/api/libjingle_peerconnection_java.jar" "$TARGET_DIR/libs/libjingle_peerconnection.jar" 
+        # Copy the jars
+        cp -p "$SOURCE_DIR/lib.java/webrtc/api/libjingle_peerconnection_java.jar" "$TARGET_DIR/libs/libjingle_peerconnection.jar"
+        cp -p "$SOURCE_DIR/lib.java/webrtc/base/base_java.jar" "$TARGET_DIR/libs/base_java.jar"
 
         # Strip the build only if its release
         if [ "$WEBRTC_DEBUG" = "true" ] ;
         then
             cp -p "$WEBRTC_ROOT/src/$ARCH_OUT/$BUILD_TYPE/libjingle_peerconnection_so.so" "$ARCH_JNI/libjingle_peerconnection_so.so"
         else
-            "$STRIP" -o "$ARCH_JNI/libjingle_peerconnection_so.so" "$WEBRTC_ROOT/src/$ARCH_OUT/$BUILD_TYPE/libjingle_peerconnection_so.so" -s    
+            "$STRIP" -o "$ARCH_JNI/libjingle_peerconnection_so.so" "$WEBRTC_ROOT/src/$ARCH_OUT/$BUILD_TYPE/libjingle_peerconnection_so.so" -s
         fi
 
         cd "$TARGET_DIR"
@@ -267,7 +268,7 @@ execute_build() {
         cd "$WORKING_DIR"
         echo "$BUILD_TYPE build for apprtc complete for revision $REVISION_NUM"
     else
-        
+
         echo "$BUILD_TYPE build for apprtc failed for revision $REVISION_NUM"
         #exit 1
     fi
