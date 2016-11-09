@@ -206,11 +206,11 @@ execute_build() {
     then
         ARCH="x64"
         STRIP="$ANDROID_TOOLCHAINS/x86_64-4.9/prebuilt/linux-x86_64/bin/x86_64-linux-android-strip"
-    elif [ "$WEBRTC_ARCH" = "armeabi-v7a" ] ;
+    elif [ "$WEBRTC_ARCH" = "armv7" ] ;
     then
         ARCH="arm"
         STRIP="$ANDROID_TOOLCHAINS/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/bin/arm-linux-androideabi-strip"
-    elif [ "$WEBRTC_ARCH" = "arm64-v8a" ] ;
+    elif [ "$WEBRTC_ARCH" = "armv8" ] ;
     then
         ARCH="arm64"
         STRIP="$ANDROID_TOOLCHAINS/aarch64-linux-android-4.9/prebuilt/linux-x86_64/bin/aarch64-linux-android-strip"
@@ -302,11 +302,11 @@ get_webrtc() {
 
 # Updates webrtc and builds apprtc
 build_apprtc() {
-    export WEBRTC_ARCH=armeabi-v7a
+    export WEBRTC_ARCH=armv7
     prepare_gyp_defines &&
     execute_build
 
-    export WEBRTC_ARCH=arm64-v8a
+    export WEBRTC_ARCH=armv8
     prepare_gyp_defines &&
     execute_build
 
