@@ -250,7 +250,7 @@ execute_build() {
         	ARCH_JNI="$TARGET_DIR/jni/x86"
         elif [ "$WEBRTC_ARCH" = "x86_64" ] ;
         then
-        	ARCH_JNI="$TARGET_DIR/jni/x86"
+        	ARCH_JNI="$TARGET_DIR/jni/x86_64"
         elif [ "$WEBRTC_ARCH" = "armv7" ] ;
         then
         	ARCH_JNI="$TARGET_DIR/jni/armeabi-v7a"
