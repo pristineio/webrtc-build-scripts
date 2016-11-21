@@ -245,7 +245,19 @@ execute_build() {
         create_directory_if_not_found "$TARGET_DIR/libs/"
         create_directory_if_not_found "$TARGET_DIR/jni/"
 
-        ARCH_JNI="$TARGET_DIR/jni/${WEBRTC_ARCH}"
+        if [ "$WEBRTC_ARCH" = "x86" ] ;
+        then
+        	ARCH_JNI="$TARGET_DIR/jni/x86"
+        elif [ "$WEBRTC_ARCH" = "x86_64" ] ;
+        then
+        	ARCH_JNI="$TARGET_DIR/jni/x86_64"
+        elif [ "$WEBRTC_ARCH" = "armv7" ] ;
+        then
+        	ARCH_JNI="$TARGET_DIR/jni/armeabi-v7a"
+        elif [ "$WEBRTC_ARCH" = "armv8" ] ;
+        then
+        	ARCH_JNI="$TARGET_DIR/jni/arm64-v8a"
+        fi
         create_directory_if_not_found "$ARCH_JNI"
 
         # Copy the jars
