@@ -261,7 +261,7 @@ execute_build() {
         create_directory_if_not_found "$ARCH_JNI"
 
         # Copy the jars
-        cp -p "$SOURCE_DIR/lib.java/webrtc/api/libjingle_peerconnection_java.jar" "$TARGET_DIR/libs/libjingle_peerconnection.jar"
+        cp -p "$SOURCE_DIR/lib.java/webrtc/sdk/android/libjingle_peerconnection_java.jar" "$TARGET_DIR/libs/libjingle_peerconnection.jar"
         cp -p "$SOURCE_DIR/lib.java/webrtc/base/base_java.jar" "$TARGET_DIR/libs/base_java.jar"
 
         # Strip the build only if its release
