@@ -189,6 +189,27 @@ iOS  ARM64 builds are available as of 7810.0.0
 
 mac x86_64 builds are available as of 7759.0.0
 
+###Linux x86, x86_64 Builds
+
+The following instructions are for building the native WebRTC libraries for Linux.
+
+
+#### Getting Started
+##### On Linux
+The scripts can probably work on most distros, although we only have experience with Ubuntu 12.04, 14.04, 16.04 and 16.10 on 64 bit machines.
+
+This is only required once.
+```shell
+
+# Source all the routines
+source linux/build.sh
+
+# Install any dependencies needed
+install_dependencies
+
+# Pull WebRTC
+get_webrtc
+
 
 ###### Versioning
 
