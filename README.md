@@ -211,6 +211,24 @@ get_webrtc
 build_apprtc
 ```
 
+You can build for arm-linaro-gnueabihf, x86, x86_64 platform
+
+```shell
+export WEBRTC_ARCH=x86 #, arm-linaro-gnueabihf or x86_64
+prepare_gyp_defines &&
+execute_build
+```
+
+You can build a particular revision
+
+```shell
+# Pull WebRTC
+get_webrtc 6783
+
+# Build apprtc
+build_apprtc
+```
+
 ###### Versioning
 
 The versioning can be explained as follows:
