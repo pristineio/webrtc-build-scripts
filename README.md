@@ -209,6 +209,9 @@ install_dependencies
 
 # Pull WebRTC
 get_webrtc
+
+# Build apprtc
+build_apprtc
 ```
 
 ###### Versioning
