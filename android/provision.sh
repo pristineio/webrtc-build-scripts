@@ -5,4 +5,4 @@ source /vagrant/build.sh
 
 install_dependencies
 
-echo "source /vagrant/build.sh" >> /home/vagrant/.bashrc
+echo "source /vagrant/build.sh" >> /home/ubuntu/.bashrc
