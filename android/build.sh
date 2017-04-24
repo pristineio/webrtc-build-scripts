@@ -52,7 +52,10 @@ install_dependencies() {
     curl https://chromium.googlesource.com/chromium/src/+/master/build/install-build-deps-android.sh?format=TEXT | base64 -d > install-build-deps-android.sh
     curl https://chromium.googlesource.com/chromium/src/+/master/build/install-build-deps.sh?format=TEXT | base64 -d > install-build-deps.sh
     chmod u+x ./install-build-deps.sh
+    #Migrate to Ubuntu, minor fixes for android build script
     #use bash (not dash which is default) to run the script
+    echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | sudo debconf-set-selections
+    sudo chmod +x install-build-deps.sh
     sudo /bin/bash ./install-build-deps-android.sh
     #delete the file we just downloaded... not needed anymore
     #rm install-build-deps-android.sh
