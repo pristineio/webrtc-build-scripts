@@ -270,6 +270,7 @@ execute_build() {
         # Copy the jars
         cp -p "$SOURCE_DIR/lib.java/webrtc/sdk/android/libjingle_peerconnection_java.jar" "$TARGET_DIR/libs/libjingle_peerconnection.jar"
         cp -p "$SOURCE_DIR/lib.java/webrtc/rtc_base/base_java.jar" "$TARGET_DIR/libs/base_java.jar"
+        #Copy required jar file containing package "org.webrtc.voiceengine"
         cp -p "$SOURCE_DIR/lib.java/webrtc/modules/audio_device/audio_device_java.jar" "$TARGET_DIR/libs/audio_device_java.jar"
 
         # Strip the build only if its release
