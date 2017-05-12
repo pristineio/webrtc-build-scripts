@@ -101,7 +101,7 @@ function choose_code_signing() {
 function wrbase() {
 	export GYP_CROSSCOMPILE=1
     if [ "$WEBRTC_TARGET" != "AppRTCDemo" ]; then
-        GYP_DEFINES="chromium_ios_signing=0"
+        GYP_DEFINES="$GYP_DEFINES chromium_ios_signing=0"
     fi
     export GYP_GENERATORS="ninja,xcode-ninja"
 }
