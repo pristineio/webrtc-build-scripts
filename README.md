@@ -207,6 +207,9 @@ install_dependencies
 # Pull WebRTC
 get_webrtc
 
+# if you want to build in debug mode
+export WEBRTC_DEBUG=true
+
 # Build apprtc
 build_apprtc
 ```
