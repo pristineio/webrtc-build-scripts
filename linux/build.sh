@@ -363,10 +363,10 @@ execute_build() {
         	ARCH_JNI="$TARGET_DIR/jni/x86_64"
         elif [ "$WEBRTC_ARCH" = "arm-linaro-gnueabihf" ] ;
         then
-        	#ARCH_JNI="$TARGET_DIR/jni/linaro"
+        	ARCH_JNI=""
         elif [ "$WEBRTC_ARCH" = "raspberrypi3" ] ;
         then
-                #ARCH_JNI="$TARGET_DIR/jni/linaro"
+                ARCH_JNI=""
         fi
         create_directory_if_not_found "$ARCH_JNI"
 
