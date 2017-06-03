@@ -59,9 +59,9 @@ install_dependencies() {
     #Download the latest script to install the linux dependencies for ubuntu
     curl https://chromium.googlesource.com/chromium/src/+/master/build/install-build-deps.sh?format=TEXT | base64 -d > install-build-deps.sh
     #use bash (not dash which is default) to run the script
-    sudo /bin/bash ./install-build-deps.sh
+    sudo /bin/bash ./install-build-deps.sh --no-chromeos-fonts
     #delete the file we just downloaded... not needed anymore
-    #rm install-build-deps.sh
+    rm install-build-deps.sh
 }
 
 # Update/Get/Ensure the Gclient Depot Tools
