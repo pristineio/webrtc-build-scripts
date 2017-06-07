@@ -116,12 +116,15 @@ pull_raspberrypi3_toolchin() {
     if [ ! -d $RASPBERRYPI3_TOOLCHAIN_PATH ];
     then
         git init $RASPBERRYPI3_TOOLCHAIN
-        cd $RASPBERRYPI3_TOOLCHAIN
+        cd $RASPBERRYPI3_TOOLCHAIN_PATH
 
         git remote add -f origin $RASPBERRYPI3_TOOLCHAIN_GITHUB_URL
-        git config core.sparseCheckout true
-        echo “arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian” >> .git/info/sparse-checkout
+        git config core.sparsecheckout true
+        echo "arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian/*" >> .git/info/sparse-checkout
         git pull origin master
+		#mv arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian/* ./
+		#rm -fR arm-bcm2708
+		#chmod 755 bin/* arm-linux-gnueabihf/bin/*
     fi
 }
 
@@ -254,14 +257,14 @@ function wrarm_raspberrypi3() {
     export GYP_GENERATOR_FLAGS="$GYP_GENERATOR_FLAGS output_dir=out-linux-${WEBRTC_ARCH}"
     export GYP_CROSSCOMPILE=1
 
-    export CC="$RASPBERRYPI3_TOOLCHAIN_PATH/bin/arm-linux-gnueabihf-gcc"
-    export CXX="$RASPBERRYPI3_TOOLCHAIN_PATH/bin/arm-linux-gnueabihf-g++"
-    export AR="$RASPBERRYPI3_TOOLCHAIN_PATH/bin/arm-linux-gnueabihf-ar"
-    export STRIP="$RASPBERRYPI3_TOOLCHAIN_PATH/bin/arm-linux-gnueabihf-strip"
-	export CC_host="gcc"
-	export CXX_host="g++"
+    export CC="$RASPBERRYPI3_TOOLCHAIN_PATH/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin/arm-linux-gnueabihf-gcc"
+    export CXX="$RASPBERRYPI3_TOOLCHAIN_PATH/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin/arm-linux-gnueabihf-g++"
+    export AR="$RASPBERRYPI3_TOOLCHAIN_PATH/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin/arm-linux-gnueabihf-ar"
+    export STRIP="$RASPBERRYPI3_TOOLCHAIN_PATH/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin/arm-linux-gnueabihf-strip"
+    export CC_host="gcc"
+    export CXX_host="g++"
 
-    echo "ARM with Linaro Build"
+    echo "ARM with Raspberrypi3 Build"
 }
 
 # Setup our defines for the build
@@ -335,13 +338,16 @@ execute_build() {
 
     ARCH_OUT="out-linux-${WEBRTC_ARCH}"
 
-#	${WEBRTC_ROOT}/src/build/linux/sysroot_scripts/install-sysroot.py --arch=arm
+	${WEBRTC_ROOT}/src/build/linux/sysroot_scripts/install-sysroot.py --arch=arm
 	
     echo Generate projects using GN
     gn gen "$ARCH_OUT/$BUILD_TYPE" --args="$DEBUG_ARG symbol_level=1 target_os=\"linux\" target_cpu=\"${ARCH}\""
     #gclient runhooks
+	
+	#touch ${WEBRTC_ROOT}/webrtc/modules/rtp_rtcp/test/testFec/test_packet_masks_metrics.cc
 
     REVISION_NUM=`get_webrtc_revision`
+	echo $REVISION_NUM
     echo "Build ${WEBRTC_TARGET} in $BUILD_TYPE (arch: ${WEBRTC_ARCH})"
     exec_ninja "$ARCH_OUT/$BUILD_TYPE"
 
@@ -419,7 +425,7 @@ get_webrtc_revision() {
 
 get_webrtc() {
     pull_depot_tools &&
-	pull_linaro_toolchain &&
+    pull_linaro_toolchain &&
     pull_raspberrypi3_toolchin &&
     pull_webrtc $1
 }
@@ -427,9 +433,9 @@ get_webrtc() {
 # Updates webrtc and builds apprtc
 build_apprtc() {
     #export WEBRTC_DEBUG=true
-    export WEBRTC_ARCH=x86
-    prepare_gyp_defines $1 &&
-    execute_build
+#    export WEBRTC_ARCH=x86
+#    prepare_gyp_defines $1 &&
+#    execute_build
 
     export WEBRTC_ARCH=x86_64
     prepare_gyp_defines $1 &&

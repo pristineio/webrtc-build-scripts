@@ -232,6 +232,14 @@ get_webrtc 6783
 build_apprtc
 ```
 
+If you want to compile with shared option.
+
+```shell
+# Build apprtc
+build_apprtc shared
+```
+
+
 ###### Versioning
 
 The versioning can be explained as follows:
