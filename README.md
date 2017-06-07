@@ -207,6 +207,9 @@ install_dependencies
 # Pull WebRTC
 get_webrtc
 
+# if you want to build in debug mode
+export WEBRTC_DEBUG=true
+
 # Build apprtc
 build_apprtc
 ```
@@ -228,6 +231,14 @@ get_webrtc 6783
 # Build apprtc
 build_apprtc
 ```
+
+If you want to compile with shared option.
+
+```shell
+# Build apprtc
+build_apprtc shared
+```
+
 
 ###### Versioning
 

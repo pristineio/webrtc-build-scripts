@@ -28,9 +28,18 @@ create_directory_if_not_found() {
 
 DEFAULT_WEBRTC_URL="https://chromium.googlesource.com/external/webrtc.git"
 DEPOT_TOOLS="$PROJECT_ROOT/depot_tools"
+
+
+TOOLCHAIN_ROOT_PATH="$PROJECT_ROOT/toolchains"
+
 LINARO_TOOLCHAIN="gcc-linaro-arm-linux-gnueabihf-4.9-2014.09_linux"
 LINARO_TOOLCHAIN_URL="https://releases.linaro.org/archive/14.09/components/toolchain/binaries/gcc-linaro-arm-linux-gnueabihf-4.9-2014.09_linux.tar.bz2"
-LINARO_TOOLCHAIN_PATH="$PROJECT_ROOT/toolchains"
+LINARO_TOOLCHAIN_PATH="$TOOLCHAIN_ROOT_PATH/$LINARO_TOOLCHAIN"
+
+RASPBERRYPI3_TOOLCHAIN="gcc-linaro-arm-linux-gnueabihf-raspbian"
+RASPBERRYPI3_TOOLCHAIN_GITHUB_URL="https://github.com/raspberrypi/tools.git"
+RASPBERRYPI3_TOOLCHAIN_PATH="$TOOLCHAIN_ROOT_PATH/$RASPBERRYPI3_TOOLCHAIN"
+
 WEBRTC_ROOT="$PROJECT_ROOT/webrtc"
 create_directory_if_not_found "$WEBRTC_ROOT"
 BUILD="$WEBRTC_ROOT/libjingle_peerconnection_builds"
@@ -50,9 +59,9 @@ install_dependencies() {
     #Download the latest script to install the linux dependencies for ubuntu
     curl https://chromium.googlesource.com/chromium/src/+/master/build/install-build-deps.sh?format=TEXT | base64 -d > install-build-deps.sh
     #use bash (not dash which is default) to run the script
-    sudo /bin/bash ./install-build-deps.sh
+    sudo /bin/bash ./install-build-deps.sh --no-chromeos-fonts
     #delete the file we just downloaded... not needed anymore
-    #rm install-build-deps.sh
+    rm install-build-deps.sh
 }
 
 # Update/Get/Ensure the Gclient Depot Tools
@@ -68,7 +77,6 @@ pull_depot_tools() {
 
 	    echo Pull the depo tools project from chromium source into the depot tools directory
 	    git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git $DEPOT_TOOLS
-
 	else
 		echo Change directory into the depot tools
 		cd "$DEPOT_TOOLS"
@@ -82,19 +90,42 @@ pull_depot_tools() {
 }
 
 pull_linaro_toolchain() {
-	if [ ! -d ${LINARO_TOOLCHAIN_PATH} ];
+    if [ ! -d $TOOLCHAIN_ROOT_PATH ];
 	then
-		mkdir -p ${LINARO_TOOLCHAIN_PATH}
+        mkdir -p $TOOLCHAIN_ROOT_PATH
 	fi
 	
-	cd ${LINARO_TOOLCHAIN_PATH}
+    cd $TOOLCHAIN_ROOT_PATH
 
-	if [ ! -d "${LINARO_TOOLCHAIN_PATH}/${LINARO_TOOLCHAIN}" ];
+    if [ ! -d $LINARO_TOOLCHAIN_PATH ];
 	then
 		#curl -s ${LINARO_TOOLCHAIN_URL} -o ${LINARO_TOOLCHAIN}/gcc-linaro-arm-linux-gnueabihf-4.9-2014.09_linux.tar.bz2
-		wget ${LINARO_TOOLCHAIN_URL}
+        wget $LINARO_TOOLCHAIN_URL
 		tar xvfpj gcc-linaro-arm-linux-gnueabihf-4.9-2014.09_linux.tar.bz2
 	fi
+}
+
+pull_raspberrypi3_toolchin() {
+    if [ ! -d $TOOLCHAIN_ROOT_PATH ];
+    then
+        mkdir -p $TOOLCHAIN_ROOT_PATH
+    fi
+
+    cd $TOOLCHAIN_ROOT_PATH
+
+    if [ ! -d $RASPBERRYPI3_TOOLCHAIN_PATH ];
+    then
+        git init $RASPBERRYPI3_TOOLCHAIN
+        cd $RASPBERRYPI3_TOOLCHAIN_PATH
+
+        git remote add -f origin $RASPBERRYPI3_TOOLCHAIN_GITHUB_URL
+        git config core.sparsecheckout true
+        echo "arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian/*" >> .git/info/sparse-checkout
+        git pull origin master
+		#mv arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian/* ./
+		#rm -fR arm-bcm2708
+		#chmod 755 bin/* arm-linux-gnueabihf/bin/*
+    fi
 }
 
 # Update/Get the webrtc code base
@@ -152,38 +183,38 @@ function shared_library_option() {
 }
 
 # Arm V7 with Neon
-function wrarmv7() {
-    wrbase
-    export GYP_DEFINES="$GYP_DEFINES OS=linux"
-    export GYP_GENERATOR_FLAGS="$GYP_GENERATOR_FLAGS output_dir=out_linux_armeabi-v7a"
-    export GYP_CROSSCOMPILE=1
+#function wrarmv7() {
+#    wrbase
+#    export GYP_DEFINES="$GYP_DEFINES OS=linux"
+#    export GYP_GENERATOR_FLAGS="$GYP_GENERATOR_FLAGS output_dir=out_linux_armeabi-v7a"
+#    export GYP_CROSSCOMPILE=1
 
-	export CC=""
-	export CXX=""
-	export AR=""
-	export STRIP=""
-	export CC_host=""
-	export CXX_host=""
+#    export CC=""
+#    export CXX=""
+#    export AR=""
+#    export STRIP=""
+#    export CC_host=""
+#    export CXX_host=""
 
-    echo "ARMv7 with Neon Build"
-}
+#    echo "ARMv7 with Neon Build"
+#}
 
 # Arm 64
-function wrarmv8() {
-    wrbase
-    export GYP_DEFINES="$GYP_DEFINES OS=linux target_arch=arm64 target_subarch=arm64"
-    export GYP_GENERATOR_FLAGS="output_dir=out_linux_arm64-v8a"
-    export GYP_CROSSCOMPILE=1
+#function wrarmv8() {
+#    wrbase
+#    export GYP_DEFINES="$GYP_DEFINES OS=linux target_arch=arm64 target_subarch=arm64"
+#    export GYP_GENERATOR_FLAGS="output_dir=out_linux_arm64-v8a"
+#    export GYP_CROSSCOMPILE=1
 
-	export CC=""
-	export CXX=""
-	export AR=""
-	export STRIP=""
-	export CC_host=""
-	export CXX_host=""
+#    export CC=""
+#    export CXX=""
+#    export AR=""
+#    export STRIP=""
+#    export CC_host=""
+#    export CXX_host=""
 
-    echo "ARMv8 with Neon Build"
-}
+#    echo "ARMv8 with Neon Build"
+#}
 
 # x86
 function wrX86() {
@@ -191,13 +222,6 @@ function wrX86() {
     #export GYP_DEFINES="$GYP_DEFINES OS=linux target_arch=ia32"
 	export GYP_DEFINES="$GYP_DEFINES OS=linux target_arch=x86"
     export GYP_GENERATOR_FLAGS="output_dir=out-linux-${WEBRTC_ARCH}"
-
-	export CC=""
-	export CXX=""
-	export AR=""
-	export STRIP=""
-	export CC_host=""
-	export CXX_host=""
 
     echo "x86 Build"
 }
@@ -208,13 +232,6 @@ function wrX86_64() {
     export GYP_DEFINES="$GYP_DEFINES OS=linux target_arch=x64"
     export GYP_GENERATOR_FLAGS="output_dir=out-linux-${WEBRTC_ARCH}"
 
-	export CC=""
-	export CXX=""
-	export AR=""
-	export STRIP=""
-	export CC_host=""
-	export CXX_host=""
-
     echo "x86_64 Build"
 }
 
@@ -224,14 +241,30 @@ function wrarm_linaro-gnueabihf() {
     export GYP_GENERATOR_FLAGS="$GYP_GENERATOR_FLAGS output_dir=out-linux-${WEBRTC_ARCH}"
     export GYP_CROSSCOMPILE=1
 
-	export CC="${LINARO_TOOLCHAIN_PATH}/${LINARO_TOOLCHAIN}/bin/arm-linux-gnueabihf-gcc"
-	export CXX="${LINARO_TOOLCHAIN_PATH}/${LINARO_TOOLCHAIN}/bin/arm-linux-gnueabihf-g++"
-	export AR="${LINARO_TOOLCHAIN_PATH}/${LINARO_TOOLCHAIN}/bin/arm-linux-gnueabihf-ar"
-	export STRIP="${LINARO_TOOLCHAIN_PATH}/${LINARO_TOOLCHAIN}/bin/arm-linux-gnueabihf-strip"
-	export CC_host="gcc"
-	export CXX_host="g++"
+    export CC="$LINARO_TOOLCHAIN_PATH/bin/arm-linux-gnueabihf-gcc"
+    export CXX="$LINARO_TOOLCHAIN_PATH/bin/arm-linux-gnueabihf-g++"
+    export AR="$LINARO_TOOLCHAIN_PATH/bin/arm-linux-gnueabihf-ar"
+    export STRIP="$LINARO_TOOLCHAIN_PATH/bin/arm-linux-gnueabihf-strip"
+    export CC_host="gcc"
+    export CXX_host="g++"
 
     echo "ARM with Linaro Build"
+}
+
+function wrarm_raspberrypi3() {
+    wrbase
+    export GYP_DEFINES="$GYP_DEFINES OS=linux"
+    export GYP_GENERATOR_FLAGS="$GYP_GENERATOR_FLAGS output_dir=out-linux-${WEBRTC_ARCH}"
+    export GYP_CROSSCOMPILE=1
+
+    export CC="$RASPBERRYPI3_TOOLCHAIN_PATH/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin/arm-linux-gnueabihf-gcc"
+    export CXX="$RASPBERRYPI3_TOOLCHAIN_PATH/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin/arm-linux-gnueabihf-g++"
+    export AR="$RASPBERRYPI3_TOOLCHAIN_PATH/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin/arm-linux-gnueabihf-ar"
+    export STRIP="$RASPBERRYPI3_TOOLCHAIN_PATH/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin/arm-linux-gnueabihf-strip"
+    export CC_host="gcc"
+    export CXX_host="g++"
+
+    echo "ARM with Raspberrypi3 Build"
 }
 
 # Setup our defines for the build
@@ -251,15 +284,12 @@ prepare_gyp_defines() {
         elif [ "$WEBRTC_ARCH" = "x86_64" ] ;
         then
             wrX86_64
-#        elif [ "$WEBRTC_ARCH" = "armv7" ] ;
-#        then
-#           wrarmv7
-#        elif [ "$WEBRTC_ARCH" = "armv8" ] ;
-#        then
-#            wrarmv8
         elif [ "$WEBRTC_ARCH" = "arm-linaro-gnueabihf" ] ;
         then
             wrarm_linaro-gnueabihf
+        elif [ "$WEBRTC_ARCH" = "raspberrypi3" ] ;
+        then
+            wrarm_raspberrypi3
         fi
     else
         echo "User has specified their own gyp defines"
@@ -285,22 +315,16 @@ execute_build() {
     if [ "$WEBRTC_ARCH" = "x86" ] ;
     then
         ARCH="x86"
-#        STRIP="$ANDROID_TOOLCHAINS/x86-4.9/prebuilt/linux-x86_64/bin/i686-linux-strip"
     elif [ "$WEBRTC_ARCH" = "x86_64" ] ;
     then
         ARCH="x64"
-#        STRIP="$ANDROID_TOOLCHAINS/x86_64-4.9/prebuilt/linux-x86_64/bin/x86_64-linux-strip"
-#    elif [ "$WEBRTC_ARCH" = "armv7" ] ;
-#    then
-#        ARCH="arm"
-#        STRIP="$ANDROID_TOOLCHAINS/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/bin/arm-linux-eabi-strip"
-#    elif [ "$WEBRTC_ARCH" = "armv8" ] ;
-#    then
-#        ARCH="arm64"
-#        STRIP="$ANDROID_TOOLCHAINS/aarch64-linux-android-4.9/prebuilt/linux-x86_64/bin/aarch64-linux-strip"
-    elif [ "$WEBRTC_ARCH" = "linaro-gnueabihf" ] ;
+    elif [ "$WEBRTC_ARCH" = "arm-linaro-gnueabihf" ] ;
     then
         ARCH="arm"
+    elif [ "$WEBRTC_ARCH" = "raspberrypi3" ] ;
+    then
+        ARCH="arm"
+
     fi
 
     if [ "$WEBRTC_DEBUG" = "true" ] ;
@@ -314,13 +338,16 @@ execute_build() {
 
     ARCH_OUT="out-linux-${WEBRTC_ARCH}"
 
-#	${WEBRTC_ROOT}/src/build/linux/sysroot_scripts/install-sysroot.py --arch=arm
+	${WEBRTC_ROOT}/src/build/linux/sysroot_scripts/install-sysroot.py --arch=arm
 	
     echo Generate projects using GN
     gn gen "$ARCH_OUT/$BUILD_TYPE" --args="$DEBUG_ARG symbol_level=1 target_os=\"linux\" target_cpu=\"${ARCH}\""
     #gclient runhooks
+	
+	#touch ${WEBRTC_ROOT}/webrtc/modules/rtp_rtcp/test/testFec/test_packet_masks_metrics.cc
 
     REVISION_NUM=`get_webrtc_revision`
+	echo $REVISION_NUM
     echo "Build ${WEBRTC_TARGET} in $BUILD_TYPE (arch: ${WEBRTC_ARCH})"
     exec_ninja "$ARCH_OUT/$BUILD_TYPE"
 
@@ -340,15 +367,12 @@ execute_build() {
         elif [ "$WEBRTC_ARCH" = "x86_64" ] ;
         then
         	ARCH_JNI="$TARGET_DIR/jni/x86_64"
-#        elif [ "$WEBRTC_ARCH" = "armv7" ] ;
-#        then
-#        	ARCH_JNI="$TARGET_DIR/jni/armeabi-v7a"
-#        elif [ "$WEBRTC_ARCH" = "armv8" ] ;
-#        then
-#        	ARCH_JNI="$TARGET_DIR/jni/arm64-v8a"
-        elif [ "$WEBRTC_ARCH" = "linaro" ] ;
+        elif [ "$WEBRTC_ARCH" = "arm-linaro-gnueabihf" ] ;
         then
-        	ARCH_JNI="$TARGET_DIR/jni/linaro"
+        	ARCH_JNI=""
+        elif [ "$WEBRTC_ARCH" = "raspberrypi3" ] ;
+        then
+                ARCH_JNI=""
         fi
         create_directory_if_not_found "$ARCH_JNI"
 
@@ -401,47 +425,27 @@ get_webrtc_revision() {
 
 get_webrtc() {
     pull_depot_tools &&
-	pull_linaro_toolchain &&
+    pull_linaro_toolchain &&
+    pull_raspberrypi3_toolchin &&
     pull_webrtc $1
 }
 
 # Updates webrtc and builds apprtc
 build_apprtc() {
-#    export WEBRTC_ARCH=armv7
+    #export WEBRTC_DEBUG=true
+#    export WEBRTC_ARCH=x86
 #    prepare_gyp_defines $1 &&
 #    execute_build
 
-#    export WEBRTC_ARCH=armv8
-#    prepare_gyp_defines $1 &&
-#    execute_build
-
-	export WEBRTC_DEBUG=true
-    export WEBRTC_ARCH=x86
-    prepare_gyp_defines $1 &&
-    execute_build
-
-	export WEBRTC_DEBUG=false
-    export WEBRTC_ARCH=x86
-    prepare_gyp_defines $1 &&
-    execute_build	
-
-	export WEBRTC_DEBUG=true
     export WEBRTC_ARCH=x86_64
     prepare_gyp_defines $1 &&
     execute_build
 
-	export WEBRTC_DEBUG=false
-    export WEBRTC_ARCH=x86_64
-    prepare_gyp_defines $1 &&
-    execute_build
-
-	export WEBRTC_DEBUG=true
     export WEBRTC_ARCH=arm-linaro-gnueabihf
     prepare_gyp_defines $1 &&
     execute_build
 
-	export WEBRTC_DEBUG=false
-    export WEBRTC_ARCH=arm-linaro-gnueabihf
+    export WEBRTC_ARCH=raspberrypi3
     prepare_gyp_defines $1 &&
-    execute_build		
+    execute_build
 }
