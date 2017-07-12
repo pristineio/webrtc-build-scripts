@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # !/bin/bash
 # Copyright Pristine Inc
 # Author: Rahul Behera <rahul@pristine.io>
@@ -17,13 +18,13 @@ PROJECT_ROOT="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 # Utility method for creating a directory
 create_directory_if_not_found() {
-	# if we cannot find the directory
-	if [ ! -d "$1" ];
-		then
-		echo "$1 directory not found, creating..."
-	    mkdir -p "$1"
-	    echo "directory created at $1"
-	fi
+    # if we cannot find the directory
+    if [ ! -d "$1" ];
+        then
+        echo "$1 directory not found, creating..."
+        mkdir -p "$1"
+        echo "directory created at $1"
+    fi
 }
 
 DEFAULT_WEBRTC_URL="https://chromium.googlesource.com/external/webrtc.git"
@@ -46,9 +47,8 @@ install_dependencies() {
     #Download the latest script to install the android dependencies for ubuntu
     curl https://chromium.googlesource.com/chromium/src/+/master/build/install-build-deps-android.sh?format=TEXT | base64 -d > install-build-deps-android.sh
     curl https://chromium.googlesource.com/chromium/src/+/master/build/install-build-deps.sh?format=TEXT | base64 -d > install-build-deps.sh
+    chmod u+x ./install-build-deps.sh
     #use bash (not dash which is default) to run the script
-    echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | sudo debconf-set-selections
-    sudo chmod +x install-build-deps.sh
     sudo /bin/bash ./install-build-deps-android.sh
     #delete the file we just downloaded... not needed anymore
     #rm install-build-deps-android.sh
@@ -57,28 +57,28 @@ install_dependencies() {
 # Update/Get/Ensure the Gclient Depot Tools
 # Also will add to your environment
 pull_depot_tools() {
-	WORKING_DIR=`pwd`
+    WORKING_DIR=`pwd`
 
     # Either clone or get latest depot tools
-	if [ ! -d "$DEPOT_TOOLS" ]
-	then
-	    echo Make directory for gclient called Depot Tools
-	    mkdir -p "$DEPOT_TOOLS"
+    if [ ! -d "$DEPOT_TOOLS" ]
+    then
+        echo Make directory for gclient called Depot Tools
+        mkdir -p "$DEPOT_TOOLS"
 
-	    echo Pull the depo tools project from chromium source into the depot tools directory
-	    git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git $DEPOT_TOOLS
+        echo Pull the depo tools project from chromium source into the depot tools directory
+        git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git $DEPOT_TOOLS
 
-	else
-		echo Change directory into the depot tools
-		cd "$DEPOT_TOOLS"
+    else
+        echo Change directory into the depot tools
+        cd "$DEPOT_TOOLS"
 
-		echo Pull the depot tools down to the latest
-		git pull
-	fi
-	PATH="$PATH:$DEPOT_TOOLS"
+        echo Pull the depot tools down to the latest
+        git pull
+    fi
+    PATH="$PATH:$DEPOT_TOOLS"
 
     # Navigate back
-	cd "$WORKING_DIR"
+    cd "$WORKING_DIR"
 }
 
 # Update/Get the webrtc code base
@@ -101,12 +101,12 @@ pull_webrtc() {
     fi
 
     # Ensure our target os is correct building android
-	echo 'target_os = ["android", "unix"]' >> .gclient
+    echo 'target_os = ["android", "unix"]' >> .gclient
 
     # Get latest webrtc source
-	echo Pull down the latest from the webrtc repo
-	echo this can take a while
-	if [ -z $1 ]
+    echo Pull down the latest from the webrtc repo
+    echo this can take a while
+    if [ -z $1 ]
     then
         echo "gclient sync with newest"
         gclient sync
@@ -116,7 +116,7 @@ pull_webrtc() {
     fi
 
     # Navigate back
-	cd "$WORKING_DIR"
+    cd "$WORKING_DIR"
 }
 
 # Prepare our build
@@ -124,7 +124,7 @@ function wrbase() {
     export GYP_DEFINES="host_os=linux libjingle_java=1 build_with_libjingle=1 build_with_chromium=0 enable_tracing=1 enable_android_opensl=0 use_sysroot=0 include_tests=0"
     if [ "$WEBRTC_DEBUG" != "true" ] ;
     then
-    	export GYP_DEFINES="$GYP_DEFINES fastbuild=2"
+        export GYP_DEFINES="$GYP_DEFINES fastbuild=2"
     fi
     export GYP_GENERATORS="ninja"
 }
@@ -250,22 +250,23 @@ execute_build() {
 
         if [ "$WEBRTC_ARCH" = "x86" ] ;
         then
-        	ARCH_JNI="$TARGET_DIR/jni/x86"
+            ARCH_JNI="$TARGET_DIR/jni/x86"
         elif [ "$WEBRTC_ARCH" = "x86_64" ] ;
         then
-        	ARCH_JNI="$TARGET_DIR/jni/x86_64"
+            ARCH_JNI="$TARGET_DIR/jni/x86_64"
         elif [ "$WEBRTC_ARCH" = "armv7" ] ;
         then
-        	ARCH_JNI="$TARGET_DIR/jni/armeabi-v7a"
+            ARCH_JNI="$TARGET_DIR/jni/armeabi-v7a"
         elif [ "$WEBRTC_ARCH" = "armv8" ] ;
         then
-        	ARCH_JNI="$TARGET_DIR/jni/arm64-v8a"
+            ARCH_JNI="$TARGET_DIR/jni/arm64-v8a"
         fi
         create_directory_if_not_found "$ARCH_JNI"
 
         # Copy the jars
         cp -p "$SOURCE_DIR/lib.java/webrtc/sdk/android/libjingle_peerconnection_java.jar" "$TARGET_DIR/libs/libjingle_peerconnection.jar"
-        cp -p "$SOURCE_DIR/lib.java/webrtc/base/base_java.jar" "$TARGET_DIR/libs/base_java.jar"
+        cp -p "$SOURCE_DIR/lib.java/webrtc/rtc_base/base_java.jar" "$TARGET_DIR/libs/base_java.jar"
+        cp -p "$SOURCE_DIR/lib.java/webrtc/modules/audio_device/audio_device_java.jar" "$TARGET_DIR/libs/audio_device_java.jar"
 
         # Strip the build only if its release
         if [ "$WEBRTC_DEBUG" = "true" ] ;
