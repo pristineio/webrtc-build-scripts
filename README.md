@@ -49,6 +49,9 @@ vagrant up
 # SSH into the Vagrant box
 vagrant ssh
 
+# Installs the required dependencies on the machine
+install_dependencies
+
 ```
 On Windows machines you may face issues with long path names on the VM that aren't handled correctly. A work around is to copy the script to another directory (not the one shared between the VM and Windows host), and build there:
 

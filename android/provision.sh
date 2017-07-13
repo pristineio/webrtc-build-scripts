@@ -3,6 +3,6 @@ echo "export VAGRANT_MACHINE=1" >> .bashrc # we set this environment variable so
 apt-get update
 source /vagrant/build.sh
 
-install_dependencies
+#install_dependencies
 
-echo "source /vagrant/build.sh" >> /home/vagrant/.bashrc
+echo "source /vagrant/build.sh" >> /home/ubuntu/.bashrc

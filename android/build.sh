@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # !/bin/bash
 # Copyright Pristine Inc
 # Author: Rahul Behera <rahul@pristine.io>
@@ -17,13 +18,13 @@ PROJECT_ROOT="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 # Utility method for creating a directory
 create_directory_if_not_found() {
-	# if we cannot find the directory
-	if [ ! -d "$1" ];
-		then
-		echo "$1 directory not found, creating..."
-	    mkdir -p "$1"
-	    echo "directory created at $1"
-	fi
+    # if we cannot find the directory
+    if [ ! -d "$1" ];
+        then
+        echo "$1 directory not found, creating..."
+        mkdir -p "$1"
+        echo "directory created at $1"
+    fi
 }
 
 DEFAULT_WEBRTC_URL="https://chromium.googlesource.com/external/webrtc.git"
@@ -43,6 +44,10 @@ exec_ninja() {
 # Installs the required dependencies on the machine
 install_dependencies() {
     sudo apt-get -y install wget git gnupg flex bison gperf build-essential zip curl subversion pkg-config libglib2.0-dev libgtk2.0-dev libxtst-dev libxss-dev libpci-dev libdbus-1-dev libgconf2-dev libgnome-keyring-dev libnss3-dev
+    #install git lfs
+    curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash
+    sudo apt-get install git-lfs
+    git lfs install
     #Download the latest script to install the android dependencies for ubuntu
     curl https://chromium.googlesource.com/chromium/src/+/master/build/install-build-deps-android.sh?format=TEXT | base64 -d > install-build-deps-android.sh
     curl https://chromium.googlesource.com/chromium/src/+/master/build/install-build-deps.sh?format=TEXT | base64 -d > install-build-deps.sh
@@ -56,28 +61,28 @@ install_dependencies() {
 # Update/Get/Ensure the Gclient Depot Tools
 # Also will add to your environment
 pull_depot_tools() {
-	WORKING_DIR=`pwd`
+    WORKING_DIR=`pwd`
 
     # Either clone or get latest depot tools
-	if [ ! -d "$DEPOT_TOOLS" ]
-	then
-	    echo Make directory for gclient called Depot Tools
-	    mkdir -p "$DEPOT_TOOLS"
+    if [ ! -d "$DEPOT_TOOLS" ]
+    then
+        echo Make directory for gclient called Depot Tools
+        mkdir -p "$DEPOT_TOOLS"
 
-	    echo Pull the depo tools project from chromium source into the depot tools directory
-	    git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git $DEPOT_TOOLS
+        echo Pull the depo tools project from chromium source into the depot tools directory
+        git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git $DEPOT_TOOLS
 
-	else
-		echo Change directory into the depot tools
-		cd "$DEPOT_TOOLS"
+    else
+        echo Change directory into the depot tools
+        cd "$DEPOT_TOOLS"
 
-		echo Pull the depot tools down to the latest
-		git pull
-	fi
-	PATH="$PATH:$DEPOT_TOOLS"
+        echo Pull the depot tools down to the latest
+        git pull
+    fi
+    PATH="$PATH:$DEPOT_TOOLS"
 
     # Navigate back
-	cd "$WORKING_DIR"
+    cd "$WORKING_DIR"
 }
 
 # Update/Get the webrtc code base
@@ -100,12 +105,12 @@ pull_webrtc() {
     fi
 
     # Ensure our target os is correct building android
-	echo 'target_os = ["android", "unix"]' >> .gclient
+    echo 'target_os = ["android", "unix"]' >> .gclient
 
     # Get latest webrtc source
-	echo Pull down the latest from the webrtc repo
-	echo this can take a while
-	if [ -z $1 ]
+    echo Pull down the latest from the webrtc repo
+    echo this can take a while
+    if [ -z $1 ]
     then
         echo "gclient sync with newest"
         gclient sync
@@ -115,7 +120,7 @@ pull_webrtc() {
     fi
 
     # Navigate back
-	cd "$WORKING_DIR"
+    cd "$WORKING_DIR"
 }
 
 # Prepare our build
@@ -123,7 +128,7 @@ function wrbase() {
     export GYP_DEFINES="host_os=linux libjingle_java=1 build_with_libjingle=1 build_with_chromium=0 enable_tracing=1 enable_android_opensl=0 use_sysroot=0 include_tests=0"
     if [ "$WEBRTC_DEBUG" != "true" ] ;
     then
-    	export GYP_DEFINES="$GYP_DEFINES fastbuild=2"
+        export GYP_DEFINES="$GYP_DEFINES fastbuild=2"
     fi
     export GYP_GENERATORS="ninja"
 }
@@ -249,28 +254,33 @@ execute_build() {
 
         if [ "$WEBRTC_ARCH" = "x86" ] ;
         then
-        	ARCH_JNI="$TARGET_DIR/jni/x86"
+            ARCH_JNI="$TARGET_DIR/jni/x86"
         elif [ "$WEBRTC_ARCH" = "x86_64" ] ;
         then
-        	ARCH_JNI="$TARGET_DIR/jni/x86_64"
+            ARCH_JNI="$TARGET_DIR/jni/x86_64"
         elif [ "$WEBRTC_ARCH" = "armv7" ] ;
         then
-        	ARCH_JNI="$TARGET_DIR/jni/armeabi-v7a"
+            ARCH_JNI="$TARGET_DIR/jni/armeabi-v7a"
         elif [ "$WEBRTC_ARCH" = "armv8" ] ;
         then
-        	ARCH_JNI="$TARGET_DIR/jni/arm64-v8a"
+            ARCH_JNI="$TARGET_DIR/jni/arm64-v8a"
         fi
         create_directory_if_not_found "$ARCH_JNI"
 
         # Copy the jars
         cp -p "$SOURCE_DIR/lib.java/webrtc/sdk/android/libjingle_peerconnection_java.jar" "$TARGET_DIR/libs/libjingle_peerconnection.jar"
-        cp -p "$SOURCE_DIR/lib.java/webrtc/base/base_java.jar" "$TARGET_DIR/libs/base_java.jar"
+        cp -p "$SOURCE_DIR/lib.java/webrtc/rtc_base/base_java.jar" "$TARGET_DIR/libs/base_java.jar"
+        #Copy required jar file containing package "org.webrtc.voiceengine"
         cp -p "$SOURCE_DIR/lib.java/webrtc/modules/audio_device/audio_device_java.jar" "$TARGET_DIR/libs/audio_device_java.jar"
 
         # Strip the build only if its release
         if [ "$WEBRTC_DEBUG" = "true" ] ;
         then
             cp -p "$WEBRTC_ROOT/src/$ARCH_OUT/$BUILD_TYPE/libjingle_peerconnection_so.so" "$ARCH_JNI/libjingle_peerconnection_so.so"
+            cp -p "$WEBRTC_ROOT/src/$ARCH_OUT/$BUILD_TYPE/libboringssl.cr.so" "$ARCH_JNI/libboringssl.cr.so"
+            cp -p "$WEBRTC_ROOT/src/$ARCH_OUT/$BUILD_TYPE/libbase.cr.so" "$ARCH_JNI/libbase.cr.so"
+            cp -p "$WEBRTC_ROOT/src/$ARCH_OUT/$BUILD_TYPE/libc++_shared.so" "$ARCH_JNI/libc++_shared.so"
+            cp -p "$WEBRTC_ROOT/src/$ARCH_OUT/$BUILD_TYPE/libprotobuf_lite.cr.so" "$ARCH_JNI/libprotobuf_lite.cr.so"
         else
             "$STRIP" -o "$ARCH_JNI/libjingle_peerconnection_so.so" "$WEBRTC_ROOT/src/$ARCH_OUT/$BUILD_TYPE/libjingle_peerconnection_so.so" -s
         fi
