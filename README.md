@@ -1,13 +1,13 @@
-##PSA - WebRTC builds have moved to using GN instead of GYP. Android build script is adapted, but iOS script is still break. Feel free to fork and update them.
+## PSA - WebRTC builds have moved to using GN instead of GYP. Android build script is adapted, but iOS script is still break. Feel free to fork and update them.
 
-##WebRTC Build Scripts
+## WebRTC Build Scripts
 
 [![Join the chat at https://gitter.im/pristineio/webrtc-build-scripts](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/pristineio/webrtc-build-scripts?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)</br>
 A set of build scripts useful for building WebRTC libraries for Android and iOS.
 
 Bugs: Please submit the [revision](https://code.google.com/p/webrtc/source/list) number that you are using. There are frequent updates to this project so please watch the changelist for bug fixes.
 
-###Android ARMv7, ARMv8, x86, x86_64 Builds -- [Guide here](http://tech.pristine.io/build-android-apprtc/)
+### Android ARMv7, ARMv8, x86, x86_64 Builds -- [Guide here](http://tech.pristine.io/build-android-apprtc/)
 
 The following instructions are for building the native WebRTC libraries for Android.
 
@@ -104,7 +104,7 @@ When the scripts are done you can find the .jar and .so file in $WEBRTC_ROOT und
 
 
 
-###iOS (armv7, arm64, i386) and Mac (X86_64) -- [Guide here](http://tech.pristine.io/build-ios-apprtc/)
+### iOS (armv7, arm64, i386) and Mac (X86_64) -- [Guide here](http://tech.pristine.io/build-ios-apprtc/)
 These steps must be run on Mac OSX
 
 Source the [ios build scripts](https://github.com/pristineio/webrtc-build-scripts/blob/master/ios/build.sh) or  [open the Xcode project](https://github.com/pristineio/webrtc-build-scripts/tree/master/ios/WebRTC.xcodeproj)
