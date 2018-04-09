@@ -268,8 +268,8 @@ execute_build() {
         create_directory_if_not_found "$ARCH_JNI"
 
         # Copy the jars
-        cp -p "$SOURCE_DIR/lib.java/sdk/android/libjingle_peerconnection_java.jar" "$TARGET_DIR/libs/libjingle_peerconnection.jar"
-        cp -p "$SOURCE_DIR/lib.java/rtc_base/base_java.jar" "$TARGET_DIR/libs/base_java.jar"
+        cp -p $SOURCE_DIR/lib.java/sdk/android/*_java.jar "$TARGET_DIR/libs/"
+        cp -p "$SOURCE_DIR/lib.java/rtc_base/base_java.jar" "$TARGET_DIR/libs/rtc_base_java.jar"
         #Copy required jar file containing package "org.webrtc.voiceengine"
         cp -p "$SOURCE_DIR/lib.java/modules/audio_device/audio_device_java.jar" "$TARGET_DIR/libs/audio_device_java.jar"
 
